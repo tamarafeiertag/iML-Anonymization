@@ -1,1 +1,100 @@
 <p>This is the partial for view 1.</p>
+
+<form id="sampleinput">
+    <input type="text" value="M250,240 v-140 a140,-140 0 0,0 -140,-140 z" ng-model="sampletext"  width="100%">
+</form>
+
+<style>
+
+    svg {
+        height: 50em
+    }
+
+    .cat1:hover, .cat2:hover, .cat3:hover, .cat4:hover {
+        opacity: 0.6;
+    }
+
+
+</style>
+
+<div id="circleView">
+
+<svg id="imgCircleView" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+    <g id="circle" style="opacity: 0">
+        <path d="M440,240 v-140 a140,140 0 0,0 -140,140 z"
+              fill="yellow" stroke="black" stroke-width="5" class="cat1" />
+
+        <path d="M450,240 v-140 a140,140 0 0,1 140,140 z"
+              fill="green" stroke="black" stroke-width="5" class="cat2"  />
+
+        <path d="M440,250 v140 a140,140 0 0,1 -140,-140 z"
+              fill="red" stroke="black" stroke-width="5" class="cat3"  />
+
+        <path d="M450,250 h140 a140,140 0 0,1 -140,140 z"
+              fill="blue" stroke="black" stroke-width="5" class="cat4"  />
+    </g>
+
+    <g id="labels" style="opacity: 0">
+        <g id="lines">
+            <path d="M400,200 300, 100" fill="none" stroke="black"  class="cat1" />
+            <path d="M500,200 600, 100" fill="none" stroke="black"  class="cat2" />
+            <path d="M400,300 300, 400" fill="none" stroke="black"  class="cat3" />
+            <path d="M500,300 600, 400" fill="none" stroke="black"  class="cat4" />
+        </g>
+
+        <g id="text">
+            <text x="300" y="100" text-anchor="end" class="cat1" > White, Male, USA</text>
+            <text x="600" y="100" text-anchor="start" class="cat2" > *, *, Massachusetts</text>
+            <text x="300" y="400" text-anchor="end" class="cat3" > {{sampletext}} </text>
+            <text x="600" y="400" text-anchor="start" class="cat4" > Category 4 </text>
+        </g>
+    </g>
+
+  <!--
+
+    <path d="M250,250 v-150 a150,150 0 0,0 -150,150 z"
+          fill="red" stroke="black" stroke-width="5" />
+
+    <path d="M250,250 v-150 a150,150 0 0,0 -150,150 z"
+          fill="blue" stroke="black" stroke-width="5" />
+-->
+</svg>
+
+</div>
+
+<script>
+
+    d3.select('#circle')
+        .transition()
+        .on("end", function() {
+            $('#labels').animate({
+                opacity: 1
+            }, 600)
+        })
+        .duration(600)
+        .attrTween("transform", tween);
+
+    function tween(d, i, a) {
+        return d3.interpolateString("rotate(-180, 445, 245)", "rotate(0, 445, 245)");
+    }
+
+    $(document).ready(function() {
+        $('#circle').animate({
+            opacity: 1
+        }, 1200,  function() {
+            //completed
+
+        })
+    });
+
+
+    $('.cat1').on('mousein', function(){
+        $('')
+    });
+
+</script>
+
+<div id="preview">
+
+</div>
