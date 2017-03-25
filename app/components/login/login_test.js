@@ -1,15 +1,15 @@
 'use strict';
 
-describe('myApp.view1 module', function () {
+describe('myApp.login module', function () {
 
-  beforeEach(module('myApp.view1'));
+  beforeEach(module('myApp.login'));
 
-  describe('view1 controller', function () {
+  describe('login controller', function () {
 
     it('should ....', inject(function ($controller, $rootScope) {
       //spec body
       var $scope = $rootScope.$new();
-      var view1Ctrl = $controller('View1Ctrl', {$scope: $scope});
+      var view1Ctrl = $controller('LoginCtrl', {$scope: $scope});
       expect(view1Ctrl).toBeDefined();
     }));
 

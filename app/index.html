@@ -11,10 +11,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-  <link rel="stylesheet" href="app.css">
-  <script type="application/javascript" src="js/jquery.min.js" > </script>
-  <script type="application/javascript" src="js/d3.min.js"> </script>
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <script type="application/javascript" src="../assets/js/jquery.min.js" > </script>
+  <script type="application/javascript" src="../assets/js/d3.min.js"> </script>
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
 </head>
 <body data-ng-app="myApp">
   <ul class="menu">
@@ -36,10 +38,14 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
+  <script src="app.routes.js"></script>
+  <script src="components/login/login.js"></script>
+  <script src="components/login/login-controller.js"></script>
+  <script src="components/login/login-service.js"></script>
+  <script src="components/view2/view2.js"></script>
+  <script src="components/view2/view2-controller.js"></script>
+  <script src="reusable_components/version/version.js"></script>
+  <script src="reusable_components/version/version-directive.js"></script>
+  <script src="reusable_components/version/interpolate-filter.js"></script>
 </body>
 </html>
