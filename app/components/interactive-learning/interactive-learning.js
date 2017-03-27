@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.interactive-learning', [
-  'myApp.interactive-learning.interactive-learning-controller',
-  'myApp.interactive-learning.interactive-learning-service'
+angular.module('iMLApp.interactive-learning', [
+  'iMLApp.interactive-learning.interactive-learning-controller',
+  'iMLApp.interactive-learning.interactive-learning-service'
 ]);

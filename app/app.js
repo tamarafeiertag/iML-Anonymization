@@ -1,13 +1,13 @@
 'use strict';
 
 // Declare app level module which depends on views, components and reusable_components
-angular.module('myApp', [
+angular.module('iMLApp', [
   'ngRoute',
   'ngResource',
-  'myApp.routes',
-  'myApp.login',
-  'myApp.interactive-learning',
-  'myApp.version'
+  'iMLApp.routes',
+  'iMLApp.login',
+  'iMLApp.interactive-learning',
+  'iMLApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');

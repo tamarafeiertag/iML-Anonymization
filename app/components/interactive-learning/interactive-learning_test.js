@@ -1,8 +1,8 @@
 'use strict';
 
-describe('myApp.interactive-learning module', function() {
+describe('iMLApp.interactive-learning module', function() {
 
-  beforeEach(module('myApp.interactive-learning'));
+  beforeEach(module('iMLApp.interactive-learning'));
 
   describe('interactive-learning controller', function(){
 

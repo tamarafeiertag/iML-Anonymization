@@ -1,8 +1,8 @@
 'use strict';
 
-describe('myApp.login module', function () {
+describe('iMLApp.login module', function () {
 
-  beforeEach(module('myApp.login'));
+  beforeEach(module('iMLApp.login'));
 
   describe('login controller', function () {
 

@@ -1,9 +1,10 @@
 <div id="il">
+
+  <h3>Where would you put the data record in the middle?</h3>
   <div class="panel panel-primary">
     <!-- option: could add panel header and content text here -->
 
-    <!-- Table -->
-    <table class="table">
+    <table class="table" id="cluster-top">
       <thead>
       <tr class="bg-primary">
         <th>Age</th>
@@ -38,4 +39,77 @@
       </tbody>
     </table>
   </div>
+
+  <div class="button-arrow">
+    <button type="button" class="btn btn-default" aria-label="arrow up" data-ng-click="up()">
+      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="panel panel-primary">
+    <table class="table" id="new-record">
+      <thead>
+      <tr class="bg-primary">
+        <th>Age</th>
+        <th>Status</th>
+        <th>Country</th>
+        <th>Gender</th>
+        <th>Disease</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th class="info" scope="row">52</th>
+        <td class="info">Private</td>
+        <td class="info">America</td>
+        <td class="info">Male</td>
+        <td>Skin Cancer Type 3</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="button-arrow">
+    <button type="button" class="btn btn-default" aria-label="arrow down" data-ng-click="down()">
+      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="panel panel-primary">
+    <table class="table" id="cluster-bottom">
+      <thead>
+      <tr class="bg-primary">
+        <th>Age</th>
+        <th>Status</th>
+        <th>Country</th>
+        <th>Gender</th>
+        <th>Disease</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th class="info" scope="row">[50 - 80]</th>
+        <td class="info">Private</td>
+        <td class="info">America</td>
+        <td class="info">Male</td>
+        <td>Skin Cancer Type 1</td>
+      </tr>
+      <tr>
+        <th class="info" scope="row">[50 - 80]</th>
+        <td class="info">Private</td>
+        <td class="info">America</td>
+        <td class="info">Male</td>
+        <td>Skin Cancer Type 2</td>
+      </tr>
+      <tr>
+        <th class="info" scope="row">[50 - 80]</th>
+        <td class="info">Private</td>
+        <td class="info">America</td>
+        <td class="info">Male</td>
+        <td>Skin Cancer Type 3</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>

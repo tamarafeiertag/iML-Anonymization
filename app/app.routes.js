@@ -3,7 +3,7 @@
  * Feiertag Tamara, Waltl Christine, Wolf Julian
  */
 
-angular.module('myApp.routes', ['ngRoute'])
+angular.module('iMLApp.routes', ['ngRoute'])
 
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {

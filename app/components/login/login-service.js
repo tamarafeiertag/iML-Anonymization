@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('myApp.login.login-service', [])
+angular.module('iMLApp.login.login-service', [])
