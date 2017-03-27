@@ -6,7 +6,7 @@ angular.module('myApp', [
   'ngResource',
   'myApp.routes',
   'myApp.login',
-  'myApp.view2',
+  'myApp.interactive-learning',
   'myApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
