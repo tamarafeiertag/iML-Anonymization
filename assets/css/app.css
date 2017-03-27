@@ -46,3 +46,14 @@
   width: 80%;
   margin: 1rem auto 1rem auto;
 }
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.register {
+  display: block;
+  margin-top: 10px;
+}
