@@ -24,3 +24,9 @@
   padding-right: 0.3em;
 }
 
+/* interactive-learning styles */
+
+#il .panel {
+  width: 80%;
+  margin: 10rem auto auto;
+}
