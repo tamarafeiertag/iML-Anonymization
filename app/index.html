@@ -15,20 +15,23 @@
   <script href="bower_components/bootstrap/dist/css/bootstrap.min.css.map"></script>
   <script href="bower_components/bootstrap/dist/css/bootstrap.css.map"></script>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <script type="application/javascript" src="../assets/js/jquery.min.js" > </script>
-  <script type="application/javascript" src="../assets/js/d3.min.js"> </script>
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
 
+  <script src="bower_components/jquery/dist/jquery.min.js" > </script>
+  <script src="bower_components/d3/d3.min.js"> </script>
   <script src="bower_components/tether/dist/js/tether.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 </head>
 <body data-ng-app="myApp">
 <div ng-include='"reusable_components/header/header.html"'></div>
   <ul class="menu">
-    <li><a href="#!/view1">view1</a></li>
-    <li><a href="#!/view2">view2</a></li>
+    <li><a href="#!/login">view1</a></li>
+    <li><a href="#!/interactive-learning">view2</a></li>
   </ul>
 
   <!--[if lt IE 7]>
@@ -36,25 +39,25 @@
   <![endif]-->
 
   <div ng-view></div>
-
-
   <div ng-include='"reusable_components/footer/footer.html"'></div>
+  <div>Angular seed app: v<span app-version></span></div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
   <script src="app.routes.js"></script>
   <script src="components/login/login.js"></script>
   <script src="components/login/login-controller.js"></script>
   <script src="components/login/login-service.js"></script>
-  <script src="components/view2/view2.js"></script>
-  <script src="components/view2/view2-controller.js"></script>
+  <script src="components/interactive-learning/interactive-learning.js"></script>
+  <script src="components/interactive-learning/interactive-learning-controller.js"></script>
+  <script src="components/interactive-learning/interactive-learning-service.js"></script>
   <script src="reusable_components/version/version.js"></script>
   <script src="reusable_components/version/version-directive.js"></script>
   <script src="reusable_components/version/interpolate-filter.js"></script>
+  <script src="../node_modules/anonymiationjs/index.js"></script>
+
 
 </body>
 </html>

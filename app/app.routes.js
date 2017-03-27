@@ -13,8 +13,8 @@ angular.module('myApp.routes', ['ngRoute'])
   }])
 
   .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/view2', {
-      templateUrl: 'components/view2/view2.html',
-      controller: 'View2Ctrl'
+    $routeProvider.when('/interactive-learning', {
+      templateUrl: 'components/interactive-learning/interactive-learning.html',
+      controller: 'ILCtrl'
     });
   }])
