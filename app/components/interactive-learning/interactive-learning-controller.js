@@ -18,6 +18,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.data = data;
     });
 
+      ILService.getTestdata(function(data) {
+          console.log(data);
+          $scope.data = data;
+      });
+
     $scope.up = function () {
       console.log("[ILCtrl] data record sent up");
     };
