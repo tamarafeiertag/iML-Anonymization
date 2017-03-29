@@ -7,35 +7,11 @@
     <table class="table" id="cluster-top">
       <thead>
       <tr class="bg-primary">
-        <th>Age</th>
-        <th>Status</th>
-        <th>Country</th>
-        <th>Gender</th>
-        <th>Disease</th>
+        <th ng-repeat="columnName in columnNames">{{columnName}}</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <th class="info" scope="row">[51 - 76]</th>
-        <td class="info">*</td>
-        <td class="info">US</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 1</td>
-      </tr>
-      <tr>
-        <th class="info" scope="row">[51 - 76]</th>
-        <td class="info">*</td>
-        <td class="info">US</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 2</td>
-      </tr>
-      <tr>
-        <th class="info" scope="row">[51 - 76]</th>
-        <td class="info">*</td>
-        <td class="info">US</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 1</td>
-      </tr>
+
       </tbody>
     </table>
   </div>

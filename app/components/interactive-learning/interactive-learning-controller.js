@@ -4,10 +4,18 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
   .controller('ILCtrl', function ($scope, ILService) {
 
-    console.log("ILCTrl");
+    $scope.columnNames = ["age", "education-num","hours-per-week", "workclass", "native-country", "sex", "race",
+      "relationship","occupation","income", "marital-status"];
 
-    ILService.getTestdata(function(testdata) {
-      console.log(testdata);
+    $scope.data = [];
+
+    console.log("ILCTrl " + $scope.columnNames);
+
+
+
+    ILService.getMaritalStatusK2(function(data) {
+      console.log(data);
+      $scope.data = data;
     });
 
     $scope.up = function () {
