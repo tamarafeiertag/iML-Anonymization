@@ -7,10 +7,10 @@ angular.module('iMLApp', [
   'iMLApp.routes',
   'iMLApp.login',
   'iMLApp.interactive-learning',
+  'iMLApp.survey-overview',
   'iMLApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
 
-  $routeProvider.otherwise({redirectTo: '/login'});
+
 }]);

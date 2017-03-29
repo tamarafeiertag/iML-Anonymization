@@ -1,4 +1,4 @@
-<div id="view1">
+<div id="loginView">
   <div class="container">
 
     <form class="form-signin">
@@ -8,10 +8,8 @@
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" ng-model="password" id="inputPassword" class="form-control" placeholder="Password" required="">
       <br/>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      <a href="#" class="text-center register">Register</a>
-      <br/><br/>
-      your password is '{{password}}' muhahahaha!
+      <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="userLogin()" >Sign in</button>
+      <a href="#" class="text-center register" ng-click="userRegister()" ng-href="/survey-overview">Register</a>
     </form>
 
   </div>
