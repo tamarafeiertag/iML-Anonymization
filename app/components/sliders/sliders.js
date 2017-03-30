@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('myApp.sliders', [
-    'myApp.login.sliders-controller',
-    'myApp.login.sliders-service',
-    'myApp.login.sliders-directive'
+    'myApp.sliders.sliders-controller',
+    'myApp.sliders.sliders-service',
+    'myApp.sliders.sliders-directive'
 ]);

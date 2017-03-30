@@ -1,3 +1,4 @@
 'use strict';
 
-angular.module('myApp.sliders.sliders-service', []);
+angular.module('myApp.sliders.sliders-service', [])
+    .service()

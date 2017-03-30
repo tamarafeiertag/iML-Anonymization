@@ -5,16 +5,23 @@
 
 angular.module('myApp.routes', ['ngRoute'])
 
-  .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {
       templateUrl: 'components/login/login.html',
       controller: 'LoginCtrl'
     });
-  }])
+    }])
 
-  .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/interactive-learning', {
       templateUrl: 'components/interactive-learning/interactive-learning.html',
       controller: 'ILCtrl'
     });
-  }])
+    }])
+
+    .config(['$routeProvider', function($routeProvider) {
+        $routeProvider.when('/sliders', {
+            templateUrl: 'components/sliders/sliders.html',
+            controller: 'SlidersCtrl'
+        });
+    }])

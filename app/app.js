@@ -6,6 +6,7 @@ angular.module('myApp', [
   'ngResource',
   'myApp.routes',
   'myApp.login',
+  'myApp.sliders',
   'myApp.interactive-learning',
   'myApp.version'
 ]).
