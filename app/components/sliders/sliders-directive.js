@@ -2,32 +2,48 @@
 
 angular.module('myApp.sliders.sliders-directive', [])
 
-.directive('sliders', function() {
+.directive('slider', function() {
 
     return {
-        templateURL: function (elem, attr) {
+        replace: true,
+        restrict: 'AE',
+        link: function($scope, elem, attr, ctrl) {
+            console.debug($scope);
+            console.debug(ctrl);
 
-            if (!attr.amount)
-                attr.amount = 2;
+            if(!attr.group)
+              attr.group = uuid();
 
-            if (!sliders)
-                sliders = [];
-
-            for (var i = 0; i < attr.amount; i++) {
-                sliders += [{
-                    id: guid(),
-                    min: 0,
-                    max: 1,
-                    value: 1.0 / attr.amount
-                }];
-            }
+            if(!$scope.sliderGroups[attr.group])
+                $scope.sliderGroups[attr.group] = {};
 
 
-            return 'sliders.html'
-        }
+            var i = 0;
+            var checkName = attr.name;
+            while($scope.sliderGroups[attr.group][checkName])
+              checkName = attr.name + (i++).toString();
+
+            attr.name = checkName;
+
+
+            $scope.slider = {
+              name: attr.name,
+              groupName: attr.group,
+              id: guid(),
+              max: 1,
+              min: 0,
+              value: (attr.value ? attr.value : 0)
+            };
+
+            $scope.sliderGroups[attr.group][attr.name] = slider;
+            $scope.sliders[$scope.slider.id] = $scope.slider;
+
+
+            $scope.$watch('myModel', function() {  }, true);
+        },
+        templateUrl: 'components/sliders/sliders.html'
     }
 });
-
 
 function guid() {
     function s4() {
