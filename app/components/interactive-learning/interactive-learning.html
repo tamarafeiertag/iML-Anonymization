@@ -1,4 +1,4 @@
-<div id="il">
+<div id="il" ng-keydown="keyDown($event)" tabindex="0">
 
   <h3>Where would you put the data record in the middle?</h3>
   <div class="panel panel-primary">
@@ -11,35 +11,29 @@
       </tr>
       </thead>
       <tbody>
-
+      <tr ng-repeat="record in dataTop">
+        <td ng-repeat="(key, value) in record" ng-if="key != 'id'">{{value}}</td>
+      </tr>
       </tbody>
     </table>
   </div>
 
   <div class="button-arrow">
-    <button type="button" class="btn btn-default" aria-label="arrow up" data-ng-click="up()">
+    <button type="button" id="buttonUp" class="btn btn-default" aria-label="arrow up" data-ng-click="up()">
       <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     </button>
   </div>
 
-  <div class="panel panel-primary">
+  <div class="panel panel-primary" id="panel-center">
     <table class="table" id="new-record">
       <thead>
       <tr class="bg-primary">
-        <th>Age</th>
-        <th>Status</th>
-        <th>Country</th>
-        <th>Gender</th>
-        <th>Disease</th>
+        <th ng-repeat="columnName in columnNames">{{columnName}}</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <th class="info" scope="row">52</th>
-        <td class="info">Private</td>
-        <td class="info">America</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 3</td>
+        <td class="info" ng-repeat="(key, value) in center" ng-if="key != 'id'">{{value}}</td>
       </tr>
       </tbody>
     </table>
@@ -55,34 +49,12 @@
     <table class="table" id="cluster-bottom">
       <thead>
       <tr class="bg-primary">
-        <th>Age</th>
-        <th>Status</th>
-        <th>Country</th>
-        <th>Gender</th>
-        <th>Disease</th>
+        <th ng-repeat="columnName in columnNames">{{columnName}}</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <th class="info" scope="row">[50 - 80]</th>
-        <td class="info">Private</td>
-        <td class="info">America</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 1</td>
-      </tr>
-      <tr>
-        <th class="info" scope="row">[50 - 80]</th>
-        <td class="info">Private</td>
-        <td class="info">America</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 2</td>
-      </tr>
-      <tr>
-        <th class="info" scope="row">[50 - 80]</th>
-        <td class="info">Private</td>
-        <td class="info">America</td>
-        <td class="info">Male</td>
-        <td>Skin Cancer Type 3</td>
+      <tr ng-repeat="record in dataBottom">
+        <td ng-repeat="(key, value) in record" ng-if="key != 'id'">{{value}}</td>
       </tr>
       </tbody>
     </table>
