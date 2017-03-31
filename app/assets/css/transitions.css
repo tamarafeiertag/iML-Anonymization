@@ -1,9 +1,9 @@
-#cluster-top thead > tr, #cluster-bottom thead > tr {
+#cluster-top tbody > tr, #cluster-bottom tbody > tr {
   -webkit-transition: background-color 1s; /* Safari */
   transition: background-color 1s;
 }
 
-#cluster-top thead > tr:hover, #cluster-bottom thead > tr:hover {
+#cluster-top tbody > tr:hover, #cluster-bottom tbody > tr:hover {
   background-color: #d9edf7;
 }
 
