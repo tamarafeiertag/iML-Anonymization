@@ -1,5 +1,12 @@
 
-<div class="slider">
-    <input id="{{id}}" class="{{groupName}}" type="range" min="{{min}}" max="{{max}}" value="{{value}}" step="0.01" ng-model="sliders[slider.id].value" />
-    <input id="text{{id}}" value="" />
+<div class="slider" ng-repeat="data in sliders" >
+    {{ data | json}}
+    <span ng-if="data.name == attributes.name" >
+        <input id="{{data.id}}" class="{{data.groupName}}" type="range" min="{{data.min}}" max="{{data.max}}" value="{{data.value}}" step="0.01" ng-model="data.value" />
+        <input id="text{{data.id}}" ng-bind="data.value" type="text" />
+
+    </span>
 </div>
+
+
+

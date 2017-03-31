@@ -20,8 +20,6 @@ angular.module('myApp.sliders', [])
             replace: true,
             restrict: 'AE',
             link: function($scope, elem, attr, ctrl) {
-                console.debug($scope);
-                console.debug(ctrl);
 
                 if(!attr.group)
                     attr.group = uuid();
@@ -36,20 +34,23 @@ angular.module('myApp.sliders', [])
                     checkName = attr.name + (i++).toString();
 
                 attr.name = checkName;
+                $scope.attributes = attr;
 
-
-                $scope.slider = {
+                var slider = {
                     name: attr.name,
                     groupName: attr.group,
                     id: guid(),
                     max: 1,
                     min: 0,
-                    value: (attr.value ? attr.value : 0)
+                    value: (attr.value ? attr.value : 0),
+                    drawn: 0
                 };
 
                 $scope.sliderGroups[attr.group][attr.name] = slider;
-                $scope.sliders[$scope.slider.id] = $scope.slider;
+                $scope.sliders[slider.id] = slider;
 
+                console.log($scope.sliders);
+                console.log($scope.sliderGroups);
 
                 $scope.$watch('myModel', function() {  }, true);
             },
