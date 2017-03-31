@@ -19,12 +19,13 @@
   </div>
 
   <div class="button-arrow">
-    <button type="button" id="buttonUp" class="btn btn-default" aria-label="arrow up" data-ng-click="up()">
+    <button type="button" id="buttonUp" class="btn btn-default" aria-label="arrow up" data-ng-click="up()"
+            ng-class="{'hover': movedUp}">
       <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     </button>
   </div>
 
-  <div class="panel panel-primary" id="panel-center">
+  <div class="panel panel-primary" id="panel-center" ng-class="{'movedUp': movedUp, 'movedDown': movedDown} ">
     <table class="table" id="new-record">
       <thead>
       <tr class="bg-primary">
@@ -40,7 +41,8 @@
   </div>
 
   <div class="button-arrow">
-    <button type="button" class="btn btn-default" aria-label="arrow down" data-ng-click="down()">
+    <button type="button" class="btn btn-default" aria-label="arrow down" data-ng-click="down()"
+            ng-class="{'hover': movedDown}">
       <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
     </button>
   </div>
