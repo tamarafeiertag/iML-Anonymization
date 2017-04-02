@@ -4,8 +4,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
   .controller('ILCtrl', function ($scope, ILService) {
 
+    $scope.show_tooltip = false;
+
     $scope.columnNames = ["age", "education-num","hours-per-week", "workclass", "native-country", "sex", "race",
       "relationship","occupation","income", "marital-status"];
+    $scope.weights = ["0.1", "0.1","0.1", "0.1","0.1", "0.1", "0.1", "0.1", "0.1","0.1","0.1"];
 
     $scope.allDataRecords = [];
     $scope.dataTop = [];
@@ -49,9 +52,14 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
     $scope.down = function () {
       console.log("[ILCtrl] data record sent down");
+
       $("#panel-center").toggleClass("movedDown");
       //currentRecordIdx += 6;
       //$scope.setRecords();
+    };
+
+    $scope.showTooltip = function (val) {
+      $scope.show_tooltip = val;
     };
 
     $scope.keyDown = function(value){

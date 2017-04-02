@@ -8,7 +8,8 @@ angular.module('iMLApp', [
   'iMLApp.login',
   'iMLApp.interactive-learning',
   'iMLApp.survey-overview',
-  'iMLApp.version'
+  'iMLApp.version',
+  'pageslide-directive'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
 
