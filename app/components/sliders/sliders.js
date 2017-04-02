@@ -30,6 +30,8 @@ angular.module('myApp.sliders', [])
             restrict: 'AE',
             link: function($scope, elem, attr, ctrl) {
 
+                //WARNING: Do not change the order of the function declaration, otherwise the implementation does not work anymore
+
                 /***
                  * Adjust all values of sliders including the oldValues in the given group. Does not check on to high or to low values.
                  * @param group The group object which contains the sliders
@@ -57,6 +59,43 @@ angular.module('myApp.sliders', [])
                     }
                 };
 
+
+                /***
+                 * Gets called, if a slider got moved. Does all the leveling stuff.
+                 * @param sliderId
+                 */
+                $scope.valueChanged = function (sliderId) {
+                    var slider = $scope.sliders[sliderId];
+                    var group = $scope.sliderGroups[slider.groupName];
+                    var difference = slider.value - slider.oldValue;
+
+                    $scope.changeValueOfAllSliders(group, - (difference / (group['_length'] - 1)), true, [slider]);
+
+                    //now check the values of some sliders got out of range
+                    var exceptionList = [slider];
+                    var newDiff = 0;
+                    for(var sliderName in group) {
+                        if(! group.hasOwnProperty(sliderName) || sliderName === "_length")
+                            continue;
+
+                        var currSlider = group[sliderName];
+                        //add to exception list, add his difference to diff and set to minimum
+                        if(! currSlider.isChangeAble()) {
+                            newDiff += currSlider.correctValue();
+                            if(exceptionList.indexOf(currSlider) === -1)
+                                exceptionList.push(currSlider);
+                        }
+
+                    }
+
+                    $scope.changeValueOfAllSliders(group, newDiff / (group['_length'] - exceptionList.length), true, exceptionList);
+
+
+                    //The slider changes the datatype to string, so we parse it back to float
+                    slider.value = slider.oldValue = parseFloat(slider.value);
+                };
+
+
                 if(!attr.group)
                     attr.group = uuid();
 
@@ -64,7 +103,6 @@ angular.module('myApp.sliders', [])
                     $scope.sliderGroups[attr.group] = {};
                     $scope.sliderGroups[attr.group]['_length'] = 0;
                 }
-
 
                 var i = 0;
                 var checkName = attr.name;
@@ -85,12 +123,24 @@ angular.module('myApp.sliders', [])
                     min: 0,
                     oldValue: value,
                     value: value,
+                    /**
+                     * Returns true, if the value of this slider is lower equal then its set minimum
+                     * @returns {boolean}
+                     */
                     isToLow: function() {
                         return this.value <= this.min;
                     },
+                    /**
+                     * Returns true, if the value of this slider is higher equal then its set maximum
+                     * @returns {boolean}
+                     */
                     isToHigh: function() {
                         return this.value >= this.max;
                     },
+                    /**
+                     * returns true, if the value is neither toHigh, nor toLow (see corresponding documentation)
+                     * @returns {boolean}
+                     */
                     isChangeAble: function() {
                         return ! (this.isToLow() || this.isToHigh());
                     },
@@ -117,43 +167,6 @@ angular.module('myApp.sliders', [])
 
                 $scope.changeValueOfAllSliders($scope.sliderGroups[attr.group], value);
 
-                $scope.valueChanged = function (sliderId) {
-                    var slider = $scope.sliders[sliderId];
-                    var group = $scope.sliderGroups[slider.groupName];
-                    var difference = slider.value - slider.oldValue;
-
-                    $scope.changeValueOfAllSliders(group, - (difference / (group['_length'] - 1)), true, [slider]);
-
-                    //now check the values of some sliders got out of range
-                    var exceptionList = [slider];
-                    var newDiff = 0;
-                    for(var sliderName in group) {
-                        if(! group.hasOwnProperty(sliderName) || sliderName === "_length")
-                            continue;
-
-                        var currSlider = group[sliderName];
-                        //add to exceptionlist, add his difference to diff and set to minimum
-                        if(! currSlider.isChangeAble()) {
-                            newDiff += currSlider.correctValue();
-                            if(exceptionList.indexOf(currSlider) === -1)
-                            exceptionList.push(currSlider);
-                        }
-
-                    }
-
-                    //now we need to catch mathematical corner cases (sliders get to infinity)
-                    $scope.changeValueOfAllSliders(group, newDiff / (group["_length"] - exceptionList.length), true, exceptionList);
-
-                    for(var sliderName in group) {
-                        if (!group.hasOwnProperty(sliderName) || sliderName === "_length")
-                            continue;
-
-                        currSlider.correctValue();
-                    }
-
-                    slider.value = slider.oldValue = parseFloat(slider.value);
-
-                }
             },
             templateUrl: 'components/sliders/sliders.html'
         }
