@@ -6,33 +6,7 @@
       <br/>
       <br/>
       <br/>
-      <h2>Weights</h2>
-      <div class="panel panel-primary">
-        <table class="table">
-          <thead>
-          <tr class="bg-primary">
-            <th>Age</th>
-            <th>Status</th>
-            <th>Country</th>
-            <th>Gender</th>
-            <th>Disease</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th class="info" scope="row">0,2</th>
-            <td class="info">0,2</td>
-            <td class="info">0,2</td>
-            <td class="info">0,2</td>
-            <td>0,2</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <br/>
-      <br/>
-      <br/>
-      <h1>diagram</h1>
+      <h1>Learning Algorithm Diagram</h1>
       <img src="../../assets/img/diagram_gradient_boosting.png" width="700px" height="700px" style="display: block;margin: auto;width: 40%;"/>
     </div>
   </div>
@@ -41,13 +15,16 @@
   <div class="panel panel-primary">
     <!-- option: could add panel header and content text here -->
 
-    <table class="table" id="cluster-top">
+    <table class="table" id="cluster-top" ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)">
       <thead>
       <tr class="bg-primary">
         <th ng-repeat="columnName in columnNames">{{columnName}}</th>
       </tr>
       </thead>
       <tbody>
+      <tr style="background-color: #CCFF99" ng-show="show_tooltip_first">
+        <td ng-repeat="weight in weights track by $index">{{weight}}</td>
+      </tr>
       <tr ng-repeat="record in dataTop">
         <td ng-repeat="(key, value) in record" ng-if="key != 'id'">{{value}}</td>
       </tr>
@@ -86,14 +63,14 @@
 
 
   <div class="panel panel-primary">
-    <table class="table" id="cluster-bottom" ng-mouseenter="showTooltip('true')" ng-mouseleave="showTooltip(false)">
+    <table class="table" id="cluster-bottom" ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)">
       <thead>
       <tr class="bg-primary">
         <th ng-repeat="columnName in columnNames">{{columnName}}</th>
       </tr>
       </thead>
       <tbody>
-      <tr style="background-color: #01ff70" ng-show="show_tooltip">
+      <tr style="background-color: #CCFF99" ng-show="show_tooltip_second">
         <td ng-repeat="weight in weights track by $index">{{weight}}</td>
       </tr>
       <tr ng-repeat="record in dataBottom">
