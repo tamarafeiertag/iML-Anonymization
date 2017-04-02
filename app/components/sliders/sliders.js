@@ -38,13 +38,12 @@ angular.module('myApp.sliders', [])
                  * @param exceptionList Which sliders should not be affected ( = [slider objects])
                  */
                 $scope.changeValueOfAllSliders = function(group, newValue, relative, exceptionList) {
-                    console.log(group);
+
                     for(var sldrName in group) {
                         if (!group.hasOwnProperty(sldrName) || sldrName === "_length")
                             continue;
 
                         var sldr = group[sldrName];
-                        console.log(sldr, newValue);
 
                         if(exceptionList && exceptionList.indexOf(sldr) !== -1)
                             continue;
@@ -86,7 +85,30 @@ angular.module('myApp.sliders', [])
                     min: 0,
                     oldValue: value,
                     value: value,
-                    drawn: 0
+                    isToLow: function() {
+                        return this.value <= this.min;
+                    },
+                    isToHigh: function() {
+                        return this.value >= this.max;
+                    },
+                    isChangeAble: function() {
+                        return ! (this.isToLow() || this.isToHigh());
+                    },
+                    /***
+                     * Sets the value back to min or max if it was too low/high and returns the difference of the change (e.g. min = 0.5, value = 0.2, returns -0.3)
+                     * @returns {number}
+                     */
+                    correctValue: function () {
+                        var diff = 0;
+                        if(this.isToLow()) {
+                            diff = this.value - this.min;
+                            this.oldValue = this.value = this.min;
+                        } else if (this.isToHigh()) {
+                            diff = this.value - this.max;
+                            this.oldValue = this.value = this.max;
+                        }
+                        return diff;
+                    }
                 };
 
                 $scope.sliderGroups[attr.group][attr.name] = slider;
@@ -96,45 +118,39 @@ angular.module('myApp.sliders', [])
                 $scope.changeValueOfAllSliders($scope.sliderGroups[attr.group], value);
 
                 $scope.valueChanged = function (sliderId) {
-                    console.log("Slider changed");
-
                     var slider = $scope.sliders[sliderId];
                     var group = $scope.sliderGroups[slider.groupName];
-
                     var difference = slider.value - slider.oldValue;
 
                     $scope.changeValueOfAllSliders(group, - (difference / (group['_length'] - 1)), true, [slider]);
 
+                    //now check the values of some sliders got out of range
+                    var exceptionList = [slider];
+                    var newDiff = 0;
+                    for(var sliderName in group) {
+                        if(! group.hasOwnProperty(sliderName) || sliderName === "_length")
+                            continue;
 
-                    //now check the values if one got out of range
-                    var doCheck = 1;
-                    while(doCheck) {
-                        doCheck = 0;
-                        for(var name in group){
-                            if(! group.hasOwnProperty(name) || name == "_length")
-                                continue;
-
-                            var sldr = group[name];
-
-                            if(sldr.value < sldr.min) {
-                                doCheck = 1; // we change something, so we need to check again
-                                //TODO: CHeck if grouplength  - 2 == 0 !
-                                $scope.changeValueOfAllSliders(group, -(sldr.min - sldr.value) / (group['_length'] - 2), true, [slider, sldr] );
-                                sldr.oldValue = sldr.value = sldr.min;
-                            } else if(sldr.value > sldr.max) {
-                                doCheck = 1; // we change something, so we need to check again
-                                //TODO: CHeck if grouplength  - 2 == 0 !
-                                $scope.changeValueOfAllSliders(group, (sldr.value - sldr.max ) / (group['_length'] - 2), true, [slider, sldr] );
-                                sldr.oldValue = sldr.value = sldr.max;
-                            }
+                        var currSlider = group[sliderName];
+                        //add to exceptionlist, add his difference to diff and set to minimum
+                        if(! currSlider.isChangeAble()) {
+                            newDiff += currSlider.correctValue();
+                            if(exceptionList.indexOf(currSlider) === -1)
+                            exceptionList.push(currSlider);
                         }
-
-
 
                     }
 
+                    //now we need to catch mathematical corner cases (sliders get to infinity)
+                    $scope.changeValueOfAllSliders(group, newDiff / (group["_length"] - exceptionList.length), true, exceptionList);
 
-                    slider.oldValue = slider.value;
+                    for(var sliderName in group) {
+                        if (!group.hasOwnProperty(sliderName) || sliderName === "_length")
+                            continue;
+
+                        currSlider.correctValue();
+                    }
+
                     slider.value = slider.oldValue = parseFloat(slider.value);
 
                 }
