@@ -1,22 +1,29 @@
-#cluster-top thead > tr, #cluster-bottom thead > tr {
+#cluster-top tbody > tr, #cluster-bottom tbody > tr {
   -webkit-transition: background-color 1s; /* Safari */
   transition: background-color 1s;
 }
 
-#cluster-top thead > tr:hover, #cluster-bottom thead > tr:hover {
+#cluster-top tbody > tr:hover, #cluster-bottom tbody > tr:hover {
   background-color: #d9edf7;
 }
 
 #panel-center {
-  -webkit-transition: opacity 1s, 1s ease-in-out;
-  -moz-transition: 1s ease-in-out;
-  -o-transition: 1s ease-in-out;
-  transition: opacity 1s, 1s ease-in-out;
+  position: relative;
+  z-index: 10;  /* otherwise button is above the panel */
+  -ms-transition: -ms-transform 1s ease-in-out;
+  -webkit-transition: opacity 0.5s 0.5s, -webkit-transform 1s ease-in-out;
+  -moz-transition: opacity 0.5s 0.5s, -moz-transform 1s ease-in-out;
+  transition: opacity 0.25s 0.75s, transform 1s ease-in-out;
+}
+
+button.hover{
+  background-color: #e6e6e6;
 }
 
 .movedUp {
   -ms-transform: translateY(-20rem); /* IE 9 */
   -webkit-transform: translateY(-20rem); /* Safari */
+  -moz-transform: translateY(-20rem); /* Firefox */
   transform: translateY(-20rem);
   opacity: 0;
 }

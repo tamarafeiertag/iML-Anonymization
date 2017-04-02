@@ -14,6 +14,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.dataTop = [];
     $scope.dataBottom = [];
     $scope.center;
+    $scope.movedUp = false;
+    $scope.movedDown = false;
 
     var currentRecordIdx = 0;
 
@@ -42,20 +44,32 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       console.log($scope.dataBottom);
     });
 
+    var centerRecordTag = $("#panel-center");
 
     $scope.up = function () {
       console.log("[ILCtrl] data record sent up");
-      $("#panel-center").toggleClass("movedUp");
-      //currentRecordIdx += 6;
-      //$scope.setRecords();
+      $scope.movedUp = true;
+      centerRecordTag.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+        function(e) {
+          // code to execute after transition ends
+          currentRecordIdx += 6;
+          $scope.setRecords();
+          $scope.movedUp = false;
+          $scope.$digest();
+      });
     };
 
     $scope.down = function () {
       console.log("[ILCtrl] data record sent down");
-
-      $("#panel-center").toggleClass("movedDown");
-      //currentRecordIdx += 6;
-      //$scope.setRecords();
+      $scope.movedDown = true;
+      centerRecordTag.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+      function(e) {
+        // code to execute after transition ends
+        currentRecordIdx += 6;
+        $scope.setRecords();
+        $scope.movedDown = false;
+        $scope.$digest();
+      });
     };
 
     $scope.showTooltip = function (val) {
