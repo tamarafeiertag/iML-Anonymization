@@ -4,8 +4,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
   .controller('ILCtrl', function ($scope, ILService) {
 
-    $scope.show_tooltip_first = false;
-    $scope.show_tooltip_second = false;
+    $scope.showDiagram = false;
+    $scope.showTooltipFirst = false;
+    $scope.showTooltipSecond = false;
 
     $scope.columnNames = ["age", "education-num","hours-per-week", "workclass", "native-country", "sex", "race",
       "relationship","occupation","income", "marital-status"];
@@ -74,15 +75,21 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     };
 
     $scope.showTooltip = function (val, element) {
+      $scope.showDiagram = false;
       if(element == 1)
       {
-        $scope.show_tooltip_first = val;
+        $scope.showTooltipFirst = val;
       }
       else if(element == 2)
       {
-        $scope.show_tooltip_second = val;
+        $scope.showTooltipSecond = val;
       }
 
+    };
+
+    $scope.openDiagram = function()
+    {
+      $scope.showDiagram = true;
     };
 
     $scope.keyDown = function(value){
