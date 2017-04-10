@@ -1,4 +1,4 @@
-/* browserify interactive-learning-service.js -o interactive-learning-service-bundle.js */
+/* in a second terminal window run: npm run-script watch */
 
 'use strict';
 
@@ -45,9 +45,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           'marital-status': 0.1
         };
 
-        var san = new anonymization.Algorithms.Sangreea("adults", adults, undefined, weights);
+        window.san = new anonymization.Algorithms.Sangreea("adults", adults, undefined, weights);
 
-        console.log('test:', san);
+        console.log('test:', anonymization);
 
       }
     }
