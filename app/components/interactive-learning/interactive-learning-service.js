@@ -1,4 +1,8 @@
+/* browserify interactive-learning-service.js -o interactive-learning-service-bundle.js */
+
 'use strict';
+
+var anonymization = require('anonymiationjs');
 
 angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 

@@ -21,6 +21,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
     var currentRecordIdx = 0;
 
+    anonymizeGraph()
+
     console.log("ILCTrl " + $scope.columnNames);
 
     $scope.setRecords = function() {
