@@ -1,4 +1,4 @@
-/* in a second terminal window run: npm run-script watch */
+/* browserify interactive-learning-service.js -o interactive-learning-service-bundle.js */
 
 'use strict';
 
@@ -22,32 +22,35 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       },
       getAnonymizationRecords: function () {
 
-        /*
-         var strgh = $GH.IStringGenHierarchy;
-         var contgh = $GH.IContGenHierarchy;
-         var hierarchy = $GH.IStringGenHierarchy | $GH.IContGenHierarchy;
-         var workclass_file = './assets/testdata/test_input/WorkClassGH.json';
-         var sex_file = './assets/testdata/test_input/SexGH.json';
-         var race_file = './assets/testdata/test_input/RaceGH.json';
-         var marital_file = './assets/testdata/test_input/MaritalStatusGH.json';
-         var nat_country_file = './assets/testdata/test_input/NativeCountryGH.json';
-         var adults = './assets/testdata/test_input/adult_data.csv';
-         */
+         let adults = './assets/testdata/test_input/adult_data.csv';
 
-        var adults = './assets/testdata/test_input/adult_data.csv';
 
-        var weights = {
-          'age': 0.95,
-          'workclass': 0.01,
-          'native-country': 0.01,
-          'sex': 0.01,
-          'race': 0.01,
-          'marital-status': 0.1
-        };
 
-        window.san = new anonymization.Algorithms.Sangreea("adults", adults, undefined, weights);
+          let weights = {
+              'age': 0.95,
+              'workclass': 0.01,
+              'native-country': 0.01,
+              'sex': 0.01,
+              'race': 0.01,
+              'marital-status': 0.1
+          };
 
-        console.log('test:', anonymization);
+
+          window.fs.readFileSync = function(filename) {
+            let xhr = new XMLHttpRequest();
+              return xhr.open("GET", filename, true);
+          };
+
+
+          let san = new anonymization.Algorithms.Sangreea("adults", adults, undefined, weights);
+
+          console.log('sa:', san);
+          san.instantiateGraph();
+          san.anonymizeGraph(10);
+
+          // let anonymizedOutfileRace = "race_weights_" + (+new Date()).toString();
+          // san.outputAnonymizedCSV(anonymizedOutfileRace);
+          // expect(san._graph.nrNodes()).to.equal(300);
 
       }
     }
