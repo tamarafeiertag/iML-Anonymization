@@ -4,6 +4,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
   .controller('ILCtrl', function ($scope, ILService) {
 
+    ILService.getAnonymizationRecords();
+
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
@@ -20,8 +22,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.movedDown = false;
 
     var currentRecordIdx = 0;
-
-    anonymizeGraph()
 
     console.log("ILCTrl " + $scope.columnNames);
 
