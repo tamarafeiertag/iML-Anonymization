@@ -16,14 +16,12 @@ angular.module('myApp.sliders', [])
     .controller('SlidersCtrl',  ['$scope', 'slidersDatabase',
         function ($scope, slidersDatabase) {
             // observe changes in attribute - could also be scope.$watch
-            $scope.sliderGroups = slidersDatabase.sliderGroups;
-            $scope.sliders = slidersDatabase.sliders;
 
         }
     ])
 
 
-    .directive('slider',  function() {
+    .directive('slider',  ['slidersDatabase', function(sliderDB) {
 
         return {
             replace: true,
@@ -31,7 +29,6 @@ angular.module('myApp.sliders', [])
             link: function($scope, elem, attr, ctrl) {
 
                 //WARNING: Do not change the order of the function declaration, otherwise the implementation does not work anymore
-
                 /***
                  * Adjust all values of sliders including the oldValues in the given group. Does not check on to high or to low values.
                  * @param group The group object which contains the sliders
@@ -65,8 +62,8 @@ angular.module('myApp.sliders', [])
                  * @param sliderId
                  */
                 $scope.valueChanged = function (sliderId) {
-                    var slider = $scope.sliders[sliderId];
-                    var group = $scope.sliderGroups[slider.groupName];
+                    var slider = sliderDB.sliders[sliderId];
+                    var group = sliderDB.sliderGroups[slider.groupName];
                     var difference = slider.value - slider.oldValue;
 
                     $scope.changeValueOfAllSliders(group, - (difference / (group['_length'] - 1)), true, [slider]);
@@ -99,20 +96,20 @@ angular.module('myApp.sliders', [])
                 if(!attr.group)
                     attr.group = uuid();
 
-                if(!$scope.sliderGroups[attr.group]) {
-                    $scope.sliderGroups[attr.group] = {};
-                    $scope.sliderGroups[attr.group]['_length'] = 0;
+                if(!sliderDB.sliderGroups[attr.group]) {
+                    sliderDB.sliderGroups[attr.group] = {};
+                    sliderDB.sliderGroups[attr.group]['_length'] = 0;
                 }
 
                 var i = 0;
                 var checkName = attr.name;
-                while($scope.sliderGroups[attr.group][checkName])
+                while(sliderDB.sliderGroups[attr.group][checkName])
                     checkName = attr.name + (i++).toString();
 
                 attr.name = checkName;
                 $scope.attributes = attr;
 
-                var lenGroup = $scope.sliderGroups[attr.group]['_length'];
+                var lenGroup = sliderDB.sliderGroups[attr.group]['_length'];
                 var value = 1 / (lenGroup + 1);
 
                 var slider = {
@@ -161,16 +158,19 @@ angular.module('myApp.sliders', [])
                     }
                 };
 
-                $scope.sliderGroups[attr.group][attr.name] = slider;
-                $scope.sliderGroups[attr.group]['_length']++;
-                $scope.sliders[slider.id] = slider;
+                sliderDB.sliderGroups[attr.group][attr.name] = slider;
+                sliderDB.sliderGroups[attr.group]['_length']++;
+                sliderDB.sliders[slider.id] = slider;
 
-                $scope.changeValueOfAllSliders($scope.sliderGroups[attr.group], value);
+                $scope.changeValueOfAllSliders(sliderDB.sliderGroups[attr.group], value);
+                $scope.sliders = sliderDB.sliders;
+                console.log('slider registered', sliderDB);
 
             },
             templateUrl: 'components/sliders/sliders.html'
+
         }
-    });
+    }]);
 
 function guid() {
     function s4() {
