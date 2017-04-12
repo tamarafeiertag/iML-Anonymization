@@ -37,6 +37,10 @@
     "tests"
   ],
   "resolutions": {
-    "angular": "1.5.11"
+    "angular": "1.6.3"
+  },
+  "devDependencies": {
+    "angular-cookies": "^1.6.4",
+    "jquery": "^3.2.1"
   }
 }

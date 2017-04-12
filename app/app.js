@@ -10,7 +10,8 @@ angular.module('iMLApp', [
   'iMLApp.interactive-learning',
   'iMLApp.survey-overview',
   'iMLApp.version',
-  'pageslide-directive'
+  'pageslide-directive',
+  'ngCookies'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
 

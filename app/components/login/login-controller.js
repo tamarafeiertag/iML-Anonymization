@@ -2,9 +2,10 @@
 
 angular.module('iMLApp.login.login-controller', [])
 
-  .controller('LoginCtrl', ['$scope', function ($scope, $location, $state) {
+  .controller('LoginCtrl', ['$scope', '$location', 'AuthenticationService', 'FlashService',
+    function ($scope, $location, AuthenticationService, FlashService) {
 
-    $scope.email = 'tami@pro.at';
+/*    $scope.email = 'tami@pro.at';
     $scope.password = 'nerd';
     document.getElementById("menu_options").style.visibility = 'hidden';
 
@@ -16,25 +17,30 @@ angular.module('iMLApp.login.login-controller', [])
 
     $scope.userRegister = function () {
       console.log("register");
-    };
+    };*/
 
-/*      page.setPage("Login","login-layout");
-      $scope.user = {};
-      $scope.loginUser=function()
-      {
-          var username=$scope.user.name;
-          var password=$scope.user.password;
-          if(username=="admin" && password=="admin123")
-          {
-              page.setUser($scope.user);
-              $location.path( "/home" );
-          }
-          else
-          {
-              $scope.message="Error";
-              $scope.messagecolor="alert alert-danger";
-          }
-      }*/
+      var vm = this;
 
+      vm.login = login;
+
+      (function initController() {
+        // reset login status
+        AuthenticationService.ClearCredentials();
+      })();
+
+      function userLogin() {
+        vm.dataLoading = true;
+        document.getElementById("menu_options").style.visibility = 'visible';
+
+        AuthenticationService.Login(vm.username, vm.password, function (response) {
+          if (response.success) {
+            AuthenticationService.SetCredentials(vm.username, vm.password);
+            $location.path('/');
+          } else {
+            FlashService.Error(response.message);
+            vm.dataLoading = false;
+          }
+        });
+      }
 
   }]);
