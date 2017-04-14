@@ -17,13 +17,10 @@
     "protractor": "^4.0.9"
   },
   "scripts": {
-    "watch-js": "watchify ./app/components/interactive-learning/interactive-learning-service.js -o ./app/components/interactive-learning/interactive-learning-service-bundle.js -dv",
-    "watch": "npm run-script watch-js",
-    "build-js": "browserify ./app/components/interactive-learning/interactive-learning-service.js > ./app/components/interactive-learning/interactive-learning-service-bundle.js",
     "postinstall": "bower install",
     "update-deps": "npm update",
     "postupdate-deps": "bower update",
-    "prestart": "npm install & npm run build-js",
+    "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ./app",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
