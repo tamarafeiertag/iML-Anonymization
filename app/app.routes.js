@@ -12,7 +12,8 @@ angular.module('iMLApp.routes', ['ngRoute'])
     $routeProvider.
     when('/login', {
       templateUrl: 'components/login/login.html',
-      controller: 'LoginCtrl'
+      controller: 'LoginCtrl',
+      controllerAs: 'viewm'
     })
       .when('/interactive-learning', {
       templateUrl: 'components/interactive-learning/interactive-learning.html',
@@ -24,7 +25,8 @@ angular.module('iMLApp.routes', ['ngRoute'])
     })
       .when('/register', {
         templateUrl: 'components/login/register.html',
-        controller: 'RegisterCtrl'
+        controller: 'RegisterCtrl',
+        controllerAs: 'viewm'
       })
       .otherwise({
         redirectTo: '/login'
@@ -46,8 +48,9 @@ function run($rootScope, $location, $cookies, $http) {
     // redirect to login page if not logged in and trying to access a restricted page
     var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
     var loggedIn = $rootScope.globals.currentUser;
+
     if (restrictedPage && !loggedIn) {
-      $location.path('/login');
+      $location.path('#!/login');
     }
   });
 }

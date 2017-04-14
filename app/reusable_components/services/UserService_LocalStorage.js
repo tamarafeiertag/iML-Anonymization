@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('iMLApp')
         .factory('UserService', UserService);
 
     UserService.$inject = ['$timeout', '$filter', '$q'];

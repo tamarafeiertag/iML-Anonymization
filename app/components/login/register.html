@@ -5,15 +5,15 @@
       <h2 class="form-signin-heading">Register</h2>
       <div class="form-group">
         <label for="usr">Name:</label>
-        <input type="text" class="form-control" id="usr" required="" autofocus="">
+        <input type="text" class="form-control" id="usr" required="" autofocus="" ng-model="viewm.user.name">
       </div>
       <div class="form-group">
         <label for="usr">E-Mail:</label>
-        <input type="text" class="form-control" id="email" required="">
+        <input type="text" class="form-control" id="email" required="" ng-model="viewm.user.username">
       </div>
       <div class="form-group">
         <label for="usr">Registration-Code:</label>
-        <input type="text" class="form-control" id="rcode" required="">
+        <input type="text" class="form-control" id="rcode" required="" ng-model="viewm.user.password">
       </div>
       <br/>
       <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="userRegister()" >Register</button>

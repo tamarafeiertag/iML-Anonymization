@@ -4,12 +4,12 @@
     <form class="form-signin">
       <h2 class="form-signin-heading">Please sign in</h2>
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" ng-model="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+      <input type="email" ng-model="viewm.username" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" ng-model="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+      <input type="password" ng-model="viewm.password" id="inputPassword" class="form-control" placeholder="Password" required="">
       <br/>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="userLogin()" >Sign in</button>
-      <a href="#" class="text-center register" ng-click="userRegister()" ng-href="#/register">Register</a>
+      <button class="btn btn-lg btn-primary btn-block" ng-click="userLogin()" >Sign in</button>
+      <a href="#" class="text-center register" ng-href="#!/register">Register</a>
     </form>
 
   </div>

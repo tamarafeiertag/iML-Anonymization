@@ -10,6 +10,7 @@ angular.module('iMLApp', [
   'iMLApp.interactive-learning',
   'iMLApp.survey-overview',
   'iMLApp.version',
+  'iMLApp.register',
   'pageslide-directive',
   'ngCookies'
 ]).

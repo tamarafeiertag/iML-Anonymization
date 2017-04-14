@@ -19,28 +19,31 @@ angular.module('iMLApp.login.login-controller', [])
       console.log("register");
     };*/
 
-      var vm = this;
+      document.getElementById("menu_options").style.visibility = 'hidden';
 
-      vm.login = login;
+      $scope.viewm = this;
+
+      $scope.viewm.userLogin = $scope.userLogin;
 
       (function initController() {
         // reset login status
         AuthenticationService.ClearCredentials();
       })();
 
-      function userLogin() {
-        vm.dataLoading = true;
-        document.getElementById("menu_options").style.visibility = 'visible';
-
-        AuthenticationService.Login(vm.username, vm.password, function (response) {
+      $scope.userLogin = function() {
+        $scope.viewm.dataLoading = true;
+        AuthenticationService.Login($scope.viewm.username, $scope.viewm.password, function (response) {
           if (response.success) {
-            AuthenticationService.SetCredentials(vm.username, vm.password);
-            $location.path('/');
+            document.getElementById("menu_options").style.visibility = 'visible';
+            console.log($scope.viewm.username)
+            console.log($scope.viewm.password)
+            AuthenticationService.SetCredentials($scope.viewm.username, $scope.viewm.password);
+            $location.path('#!/survery_overview');
           } else {
             FlashService.Error(response.message);
-            vm.dataLoading = false;
+            $scope.viewm.dataLoading = false;
           }
         });
-      }
+      };
 
   }]);

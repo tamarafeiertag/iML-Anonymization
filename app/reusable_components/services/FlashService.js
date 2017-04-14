@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('iMLApp')
         .factory('FlashService', FlashService);
 
     FlashService.$inject = ['$rootScope'];
@@ -35,14 +35,16 @@
         }
 
         function Success(message, keepAfterLocationChange) {
+            console.log("suc")
             $rootScope.flash = {
                 message: message,
-                type: 'success', 
+                type: 'success',
                 keepAfterLocationChange: keepAfterLocationChange
             };
         }
 
         function Error(message, keepAfterLocationChange) {
+            console.log("fail")
             $rootScope.flash = {
                 message: message,
                 type: 'error',
