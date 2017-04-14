@@ -78,7 +78,13 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         });
 
         // Load Generalization hierarchies
-
+        [workclass_file, nat_country_file, sex_file, race_file, marital_file,
+          relationship_file, occupation_file, income_file].forEach( function(file) {
+          var json = $.getJSON(file).responseText;
+          console.log(json);
+          let strgh = new $A.genHierarchy.Category(json);
+          san.setCatHierarchy(strgh._name, strgh);
+        });
 
 
         // Remotely read the original data and anonymize
@@ -99,6 +105,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           san.anonymizeGraph();
 
           // let's take a look at the clusters
+          console.log("Clusteres:");
           console.dir(san._clusters);
 
           sampleCostCalculation(san);
