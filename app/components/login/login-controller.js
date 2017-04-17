@@ -35,10 +35,8 @@ angular.module('iMLApp.login.login-controller', [])
         AuthenticationService.Login($scope.viewm.username, $scope.viewm.password, function (response) {
           if (response.success) {
             document.getElementById("menu_options").style.visibility = 'visible';
-            console.log($scope.viewm.username)
-            console.log($scope.viewm.password)
             AuthenticationService.SetCredentials($scope.viewm.username, $scope.viewm.password);
-            $location.path('#!/survery_overview');
+            $location.path('/survey-overview');
           } else {
             FlashService.Error(response.message);
             $scope.viewm.dataLoading = false;
