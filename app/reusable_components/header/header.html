@@ -8,15 +8,20 @@
                 <span class="icon-bar"></span>
             </button>
             <!-- You'll want to use a responsive image option so this logo looks good on devices - I recommend using something like retina.js (do a quick Google search for it and you'll find it) -->
-            <a class="navbar-brand" href="#/">iML-Anonymization</a>
+            <a class="navbar-brand" href="#!/">iML-Anonymization</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse" style="visibility: visible" id="menu_options">
             <ul class="nav navbar-nav navbar-right">
-                <li><a>{{globals.currentUser.username}}</a>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{globals.currentUser.username}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#!/user-overview">User Overview</a></li>
+                    </ul>
                 </li>
-                <li><a href="#/login">Logout</a>
+                <li><a href="#!/login">Logout</a>
                 </li>
             </ul>
         </div>

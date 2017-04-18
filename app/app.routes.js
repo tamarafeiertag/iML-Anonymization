@@ -9,13 +9,17 @@
 angular.module('iMLApp.routes', ['ngRoute'])
 
   .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.
-    when('/login', {
+    $routeProvider
+      .when('/', {
+        templateUrl: 'components/survey-overview/survey-overview.html',
+        controller: 'SurveyOverviewCtrl'
+      })
+      .when('/login', {
       templateUrl: 'components/login/login.html',
       controller: 'LoginCtrl',
       controllerAs: 'viewm'
     })
-      .when('/interactive-learning', {
+      .when('/interactive-learning/:sid', {
       templateUrl: 'components/interactive-learning/interactive-learning.html',
       controller: 'ILCtrl'
     })
@@ -28,6 +32,11 @@ angular.module('iMLApp.routes', ['ngRoute'])
         controller: 'RegisterCtrl',
         controllerAs: 'viewm'
       })
+      .when('/user-overview', {
+      templateUrl: 'components/user-overview/user-overview.html',
+      controller: 'UserOverviewCtrl',
+      controllerAs: 'vm'
+    })
       .otherwise({
         redirectTo: '/login'
       });

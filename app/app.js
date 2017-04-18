@@ -12,7 +12,8 @@ angular.module('iMLApp', [
   'iMLApp.version',
   'iMLApp.register',
   'pageslide-directive',
-  'ngCookies'
+  'ngCookies',
+  'iMLApp.user-overview'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
 

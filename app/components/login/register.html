@@ -11,9 +11,15 @@
         <label for="usr">E-Mail:</label>
         <input type="text" class="form-control" id="email" required="" ng-model="viewm.user.username">
       </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="form-control" ng-model="viewm.user.password" required />
+      </div>
+
       <div class="form-group">
         <label for="usr">Registration-Code:</label>
-        <input type="text" class="form-control" id="rcode" required="" ng-model="viewm.user.password">
+        <input type="text" class="form-control" id="rcode" required="" ng-model="viewm.user.rcode">
       </div>
       <br/>
       <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="userRegister()" >Register</button>
