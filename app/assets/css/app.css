@@ -108,3 +108,7 @@ body.ng-pageslide-body-closed::before {
     font-size: 0.5rem!important;
   }
 }
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #d9edf7;
+}

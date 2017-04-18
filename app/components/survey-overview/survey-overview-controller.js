@@ -2,11 +2,23 @@
 
 angular.module('iMLApp.survey-overview.survey-overview-controller', [])
 
-  .controller('SurveyOverviewCtrl', function ($scope, $location) {
+  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope) {
 
-  $scope.surveys = [{sid:1, description:"Tami is a pro schubidubi. And she is also very hungry :)"},
-    {sid:2, description:"Julian is a pro dadudidelei. He eats tamaras food"},
-    {sid:3, description:"Christine is present in this group."}];
+    $scope.vm = this;
+    $scope.vm.allSurveys = [];
+
+    initController();
+
+    function initController() {
+      loadAllSurveys();
+    }
+
+    function loadAllSurveys() {
+      SurveyService.GetAll()
+        .then(function (surveys) {
+          $scope.vm.allSurveys = surveys;
+        });
+    }
 
   $scope.redirectToSurvey = function(sid) {
     $location.path('/interactive-learning/'+ sid);

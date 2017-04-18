@@ -24,8 +24,9 @@ angular.module('iMLApp.routes', ['ngRoute'])
       controller: 'ILCtrl'
     })
       .when('/survey-overview', {
-      templateUrl: 'components/survey-overview/survey-overview.html',
-      controller: 'SurveyOverviewCtrl'
+        templateUrl: 'components/survey-overview/survey-overview.html',
+        controller: 'SurveyOverviewCtrl',
+        controllerAs: 'vm'
     })
       .when('/register', {
         templateUrl: 'components/login/register.html',

@@ -13,7 +13,7 @@
           <th>Survey Title</th>
         </tr>
         </thead>
-        <tbody ng-repeat="survey in surveys">
+        <tbody ng-repeat="survey in vm.allSurveys">
         <tr ng-click="redirectToSurvey(survey.sid)">
           <th scope="row">{{survey.sid}}</th>
           <td>{{survey.description}}</td>
