@@ -24,10 +24,20 @@
       </thead>
       <tbody>
       <tr style="background-color: #CCFF99" ng-show="showTooltipFirst">
-        <td ng-repeat="weight in weights track by $index">{{weight}}</td>
+        <td ng-repeat="weight in weightVecTop track by $index">{{formatNumber(weight)}}</td>
       </tr>
-      <tr ng-repeat="record in dataTop">
-        <td ng-repeat="(key, value) in record" ng-if="key != 'id'">{{value}}</td>
+      <tr ng-repeat="record in dataTop track by $index">
+        <td>{{record.gen_ranges.age == "all" ? "*" : record.gen_ranges.age}}</td>
+        <td></td>
+        <td>{{record.gen_ranges["hours-per-week"] == "all" ? "*" : record.gen_ranges["hours-per-week"]}}</td>
+        <td>{{record.gen_feat.workclass == "all" ? "*" : record.gen_feat.workclass}}</td>
+        <td>{{record.gen_feat["native-country"] == "all" ? "*" : record.gen_feat["native-country"]}}</td>
+        <td>{{record.gen_feat.sex == "all" ? "*" : record.gen_feat.sex}}</td>
+        <td>{{record.gen_feat.race == "all" ? "*" : record.gen_feat.race}}</td>
+        <td>{{record.gen_feat.relationship == "all" ? "*" : record.gen_feat.relationship}}</td>
+        <td>{{record.gen_feat.occupation == "all" ? "*" : record.gen_feat.occupation}}</td>
+        <td>{{record.gen_feat.income == "all" ? "*" : record.gen_feat.income}}</td>
+        <td>{{record.gen_feat["marital-status"] == "all" ? "*" : record.gen_feat["marital-status"]}}</td>
       </tr>
       </tbody>
     </table>
@@ -49,7 +59,17 @@
       </thead>
       <tbody>
       <tr>
-        <td class="info" ng-repeat="(key, value) in center" ng-if="key != 'id'">{{value}}</td>
+        <td>{{center['age']}}</td>
+        <td>{{center['education-num']}}</td>
+        <td>{{center['hours-per-week']}}</td>
+        <td>{{center['workclass']}}</td>
+        <td>{{center['native-country']}}</td>
+        <td>{{center['sex']}}</td>
+        <td>{{center['race']}}</td>
+        <td>{{center['relationship']}}</td>
+        <td>{{center['occupation']}}</td>
+        <td>{{center['income']}}</td>
+        <td>{{center['marital-status']}}</td>
       </tr>
       </tbody>
     </table>
@@ -72,10 +92,20 @@
       </thead>
       <tbody>
       <tr style="background-color: #CCFF99" ng-show="showTooltipSecond">
-        <td ng-repeat="weight in weights track by $index">{{weight}}</td>
+        <td ng-repeat="weight in weightVecBottom track by $index">{{formatNumber(weight)}}</td>
       </tr>
-      <tr ng-repeat="record in dataBottom">
-        <td ng-repeat="(key, value) in record" ng-if="key != 'id'">{{value}}</td>
+      <tr ng-repeat="record in dataBottom track by $index">
+        <td>{{record.gen_ranges.age == "all" ? "*" : record.gen_ranges.age}}</td>
+        <td></td>
+        <td>{{record.gen_ranges["hours-per-week"] == "all" ? "*" : record.gen_ranges["hours-per-week"]}}</td>
+        <td>{{record.gen_feat.workclass == "all" ? "*" : record.gen_feat.workclass}}</td>
+        <td>{{record.gen_feat["native-country"] == "all" ? "*" : record.gen_feat["native-country"]}}</td>
+        <td>{{record.gen_feat.sex == "all" ? "*" : record.gen_feat.sex}}</td>
+        <td>{{record.gen_feat.race == "all" ? "*" : record.gen_feat.race}}</td>
+        <td>{{record.gen_feat.relationship == "all" ? "*" : record.gen_feat.relationship}}</td>
+        <td>{{record.gen_feat.occupation == "all" ? "*" : record.gen_feat.occupation}}</td>
+        <td>{{record.gen_feat.income == "all" ? "*" : record.gen_feat.income}}</td>
+        <td>{{record.gen_feat["marital-status"] == "all" ? "*" : record.gen_feat["marital-status"]}}</td>
       </tr>
       </tbody>
     </table>
