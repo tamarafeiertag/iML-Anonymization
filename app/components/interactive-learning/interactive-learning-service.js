@@ -159,56 +159,13 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
        *
        */
       calculateRandomClusters: function(nrOfAdditionalDraws, fixedIndex, k) {
-        let config = anonymizationConfig;
 
-        config.NR_DRAWS = nrOfAdditionalDraws;
+        // get global config data of config.js
+        let config = anonymizationConfig;
+        config.NR_DRAWS = nrOfAdditionalDraws + 1;
         config.K_FACTOR = k;
 
-        let randWeights = Util.generateRandomNumbers(1, 10);
-
-        /*
-        let random_weights = {
-          'categorical': {
-            'workclass': randWeights[0],
-            'native-country': randWeights[1],
-            'sex': randWeights[2],
-            'race': randWeights[3],
-            'relationship': randWeights[4],
-            'occupation': randWeights[5],
-            'income': randWeights[6],
-            'marital-status': randWeights[7]
-          },
-          'range': {
-            'age': randWeights[8],
-            'hours-per-week': randWeights[9]
-          }
-        };
-        */
-         let equal_weights = {
-            'categorical': {
-                'workclass': 1/10.0,
-                'native-country': 1/10.0,
-                'sex': 1/10.0,
-                'race': 1/10.0,
-                'relationship': 1/10.0,
-                'occupation': 1/10.0,
-                'income': 1/10.0,
-                'marital-status': 1/10.0
-            },
-            'range': {
-                'age': 1/10.0,
-                'hours-per-week': 1/10.0
-            }
-          };
-
-        config.GEN_WEIGHT_VECTORS['custom_weights'] = equal_weights;
-        config.VECTOR = 'custom_weights';
-
-        //console.log("random weights:");
-        //console.dir(random_weights);
-
         let san = this.createSan(config, gen_base);
-
         let deferred = $q.defer();
 
         // Remotely read the original data and anonymize
@@ -224,9 +181,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let shortCSV = [];
 
           shortCSV.push(csv[0]);
+          shortCSV.push(csv[fixedIndex]);
           for(let a in randNrs)
             shortCSV.push(csv[randNrs[a]]);
-          shortCSV.push(csv[fixedIndex]);
 
           console.log("shortCSV", shortCSV);
           san.instantiateGraph(shortCSV, false );
@@ -241,7 +198,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           //console.log("Clusteres:");
           //console.dir(san._clusters);
 
-          deferred.resolve([san._clusters, equal_weights]);
+          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS.equal_weights]);
         });
 
         return deferred.promise;
@@ -251,9 +208,55 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
         let deferred = $q.defer();
 
+        /*
+            generate two random clusters
+            cluster1[0] and cluster2[0] is the header.. age, ...
+            cluster1[1] and cluster2[1]is the fixed element (element in the middle)
+            cluster1[2-20] and cluster2[2-20] are random elements of the 500element csv file
+         */
+        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws - 1, 1, k);
+        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws - 1, 1, k);
 
-        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws, 1, k);
-        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws, 1, k);
+        function findEqualDataPoints(clusters1, clusters2) {
+          let ret_vals = [];
+
+          let combined_cluster_string = []
+
+          //build map of cluster1 index and both node values as string for comparison
+          for(let cl1_idx in clusters1)
+          {
+            combined_cluster_string[cl1_idx] = []
+            for(let cli1_node_idx in clusters1[cl1_idx].nodes)
+            {
+              combined_cluster_string[cl1_idx].push(JSON.stringify(clusters1[cl1_idx].nodes[cli1_node_idx]));
+            }
+          }
+
+          //search for the duplicate element in clusters1 and clusters2
+          // TODO seems to be in both in the first cluster the first element!!!
+          for(let cl2_idx in clusters2)
+          {
+            for(let cli2_node_idx in clusters2[cl2_idx].nodes)
+            {
+              for(let cl1_idx in combined_cluster_string)
+              {
+                for(let cli1_node_idx in combined_cluster_string[cl1_idx])
+                {
+                  if(combined_cluster_string[cl1_idx][cli1_node_idx] === JSON.stringify(clusters2[cl2_idx].nodes[cli2_node_idx]))
+                  {
+                    console.log("found")
+                    ret_vals.dataPoint = JSON.parse(combined_cluster_string[cl1_idx][cli1_node_idx])
+                    ret_vals.cluster1 = clusters1[cl1_idx]
+                    ret_vals.cluster2 = clusters2[cl2_idx]
+                    return ret_vals;
+                  }
+                }
+              }
+            }
+          }
+
+          console.log("NOTHING FOUND???")
+        }
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
@@ -262,40 +265,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let clusters2 = values[1][0];
           let weights2 = values[1][1];
 
-          let randomIdx = Math.floor(Util.randomBetween(0, nrOfDraws/k));
+          var ret_vals = findEqualDataPoints(clusters1, clusters2)
 
-          let dataPoint = Object.values(clusters1[randomIdx].nodes)[0];
-          let cluster1 = clusters1[randomIdx];
-          let cluster2 = {};
+          ret_vals.cluster1.weights = weights1;
+          ret_vals.cluster2.weights = weights2;
 
-          console.log("data point: ", dataPoint);
-          console.log("cluster1 key: ", randomIdx);
-
-          for (let key in clusters2) {
-            let found = false;
-            if(! clusters2.hasOwnProperty(key))
-              continue;
-
-            for(let node in clusters2[key].nodes) {
-              if (node == dataPoint._id) {
-                cluster2 = clusters2[key];
-                found = true;
-                console.log("cluster2 key: ", key);
-                break;
-              }
-            }
-
-            if(found)
-              break;
-          }
-
-          // console.dir(clusters1);
-          // console.dir(clusters2);
-
-          cluster1.weights = weights1;
-          cluster2.weights = weights2;
-
-          deferred.resolve([dataPoint, cluster1, cluster2]);
+          deferred.resolve([ret_vals.dataPoint, ret_vals.cluster1, ret_vals.cluster2]);
 
         }, function(reason) {              //error
           console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);

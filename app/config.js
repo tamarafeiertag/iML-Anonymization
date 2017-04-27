@@ -25,25 +25,22 @@ angular.module('iMLApp.config', [])
       'ALPHA': 1,
       'BETA': 0,
       'GEN_WEIGHT_VECTORS': {
-        'equal': {
+        'equal_weights': {
           'categorical': {
-            'workclass': 1.0 / 13.0,
-            'native-country': 1.0 / 13.0,
-            'sex': 1.0 / 13.0,
-            'race': 1.0 / 13.0,
-            'marital-status': 1.0 / 13.0,
-            'relationship': 1.0 / 13.0,
-            'occupation': 1.0 / 13.0,
-            'income': 1.0 / 13.0
+            'workclass': 1/10.0,
+            'native-country': 1/10.0,
+            'sex': 1/10.0,
+            'race': 1/10.0,
+            'relationship': 1/10.0,
+            'occupation': 1/10.0,
+            'income': 1/10.0,
+            'marital-status': 1/10.0
           },
           'range': {
-            'age': 1.0 / 13.0,
-            'fnlwgt': 1.0 / 13.0,
-            'capital-gain': 1.0 / 13.0,
-            'capital-loss': 1.0 / 13.0,
-            'hours-per-week': 1.0 / 13.0
+            'age': 1/10.0,
+            'hours-per-week': 1/10.0
           }
         }
       },
-      'VECTOR': 'equal'
+      'VECTOR': 'equal_weights'
     });
