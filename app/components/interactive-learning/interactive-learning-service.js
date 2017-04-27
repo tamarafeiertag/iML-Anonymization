@@ -83,8 +83,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
       createSan: function(config, gen_base) {
         let san = new $A.algorithms.Sangreea("testus", config);
-        console.log("SaNGreeA Algorithm:");
-        console.log(san);
 
 
         // Inspect the internal graph => should be empty
@@ -164,27 +162,29 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         config.NR_DRAWS = nrOfDraws;
         config.K_FACTOR = k;
 
-        let randWeights = Util.generateRandomNumbers(1, 10);
+          /*
+          let randWeights = Util.generateRandomNumbers(1, 10);
 
-        let random_weights = {
-          'categorical': {
-            'workclass': randWeights[0],
-            'native-country': randWeights[1],
-            'sex': randWeights[2],
-            'race': randWeights[3],
-            'relationship': randWeights[4],
-            'occupation': randWeights[5],
-            'income': randWeights[6],
-            'marital-status': randWeights[7]
-          },
-          'range': {
-            'age': randWeights[8],
-            'hours-per-week': randWeights[9]
-          }
-        };
+          let random_weights = {
+            'categorical': {
+              'workclass': randWeights[0],
+              'native-country': randWeights[1],
+              'sex': randWeights[2],
+              'race': randWeights[3],
+              'relationship': randWeights[4],
+              'occupation': randWeights[5],
+              'income': randWeights[6],
+              'marital-status': randWeights[7]
+            },
+            'range': {
+              'age': randWeights[8],
+              'hours-per-week': randWeights[9]
+            }
+          };
+           config.GEN_WEIGHT_VECTORS['custom_weights'] = random_weights;
+        */
 
-        config.GEN_WEIGHT_VECTORS['custom_weights'] = random_weights;
-        config.VECTOR = 'custom_weights';
+          config.VECTOR = 'equal';
 
         //console.log("random weights:");
         //console.dir(random_weights);
@@ -214,51 +214,37 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       },
 
       getCase: function(nrOfDraws, k) {
+        console.log("In case");
 
         let deferred = $q.defer();
 
         let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws, k);
-        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws, k);
 
-        $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
+        promise_randomWeightClusters1.then(function (values) {
 
+          console.log("IN promose r")
           let clusters1 = values[0][0];
           let weights1 = values[0][1];
           let clusters2 = values[1][0];
           let weights2 = values[1][1];
 
-          let randomIdx = Math.floor(Util.randomBetween(0, nrOfDraws/k));
+          let rIdx1 = Math.floor(Util.randomBetween(0, nrOfDraws/k));
+          let rand, rIdx2;
 
-          let dataPoint = Object.values(clusters1[randomIdx].nodes)[0];
-          let cluster1 = clusters1[randomIdx];
-          let cluster2 = {};
+          let cluster1 = clusters1[rIdx1];
 
-          console.log("data point: ", dataPoint);
-          console.log("cluster1 key: ", randomIdx);
+          while((rand = Math.floor(Util.randomBetween(0, nrOfDraws/k))) === rIdx10);
+          let cluster2 = clusters1[rand];
+          rIdx2 = rand;
 
-          for (let key in clusters2) {
-            let found = false;
-            if(! clusters2.hasOwnProperty(key))
-              continue;
-
-            for(let node in clusters2[key].nodes) {
-              if (node == dataPoint._id) {
-                cluster2 = clusters2[key];
-                found = true;
-                console.log("cluster2 key: ", key);
-                break;
-              }
-            }
-
-            if(found)
-              break;
-          }
+          while((rand = Math.floor(Util.randomBetween(0, nrOfDraws/k))) === rIdx1 || rIdx2 === rand);
+          let dataPoint = Object.values(clusters1[rand].nodes)[0];
 
           console.dir(clusters1);
           console.dir(clusters2);
 
           cluster1.weights = weights1;
-          cluster2.weights = weights2;
+          cluster2.weights = weights1;
 
           deferred.resolve([dataPoint, cluster1, cluster2]);
 
@@ -273,14 +259,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let deferred = $q.defer();
 
         let cases;
-        let promises = [];
+        let promise = this.getCase(nrOfDraws, k);
 
-        for (let i = 0; i < nrOfCases; i++) {
-          let promise = this.getCase(nrOfDraws, k);
-          promises.push(promise);
-        }
 
-        $q.all(promises).then(function(data) {
+        promise.then(function(data) {
+          console.log("Promise cases", data);
+
           cases = data;
           deferred.resolve(cases);
           console.log("cases ", cases);
