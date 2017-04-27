@@ -167,6 +167,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         config.K_FACTOR = k;
 
         let san = this.createSan(config, gen_base);
+        console.log("before print")
         let deferred = $q.defer();
 
         // Remotely read the original data and anonymize
@@ -190,6 +191,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           for(let a in randNrs)
             shortCSV.push(csv[randNrs[a]]);
 
+
           console.log("shortCSV", shortCSV);
           san.instantiateGraph(shortCSV, false );
           // Inspect the internal graph again => should be populated now
@@ -199,11 +201,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           // let's run the whole anonymization inside the browser
           san.anonymizeGraph();
 
-          // let's take a look at the clusters
-          //console.log("Clusteres:");
-          //console.dir(san._clusters);
-
-          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS.equal_weights]);
+          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS.equal_weights, san]);
         });
 
         return deferred.promise;
@@ -223,10 +221,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         // generate the random data point sample index (used for both clusters)
         Util.fixedIndex = -1;
         let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws - 1, k);
-        console.log(Util.fixedIndex)
         let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws - 1, k);
         Util.fixedIndex = -1;
-
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
@@ -234,17 +230,63 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let weights1 = values[0][1];
           let clusters2 = values[1][0];
           let weights2 = values[1][1];
+          let san1 = values[0][2];
+          let san2 = values[1][2];
 
-          //
+          // since we have our fixed same data point element at the first index, it can be found
+          // in both cluster arrays in the first cluster in the first node (due to anonymization implementation)
           let cluster_obj ={};
           cluster_obj.cluster1 = clusters1[0];
           cluster_obj.cluster2 = clusters2[0];
           cluster_obj.dataPoint = clusters1[0].nodes[0];
+
           if(JSON.stringify(cluster_obj.cluster1.nodes[0]) !== JSON.stringify(cluster_obj.cluster2.nodes[0]))
             alert("fail");
 
           cluster_obj.cluster1.weights = weights1;
           cluster_obj.cluster2.weights = weights2;
+
+          // calculate the level of the features
+          function getLevelOfCategoryNodeCluster(san, Cl) {
+            let cl_entry_levels = [];
+            for (var feat in san._cat_hierarchies) {
+              var cat_gh = san.getCatHierarchy(feat);
+              var Cl_feat;
+              if(Cl.gen_feat)
+                Cl_feat = Cl.gen_feat[feat];
+              else if(Cl._features)
+                Cl_feat = Cl._features[feat];
+              else
+                alert("fail")
+
+              var Cl_level = cat_gh.getLevelEntry(Cl_feat);
+              cl_entry_levels[feat] = Cl_level;
+            }
+            return cl_entry_levels;
+          }
+          // calculate the extended ranges of the features
+          function getRangesOfNodeCluster(san, Cl) {
+            let cl_entry_levels = [];
+            for (var feat in san._cont_hierarchies) {
+              var Cl_feat;
+              if(Cl.gen_ranges)
+                cl_entry_levels[feat] = Cl.gen_ranges[feat][1] - Cl.gen_ranges[feat][0];
+              else if(Cl._features)
+                cl_entry_levels[feat] = Cl._features[feat][1] - Cl._features[feat][0];
+              else
+                alert("fail")
+            }
+            return cl_entry_levels;
+          }
+
+          //get levels of anonymization cluster1 and cluster2 and original datapoint
+          cluster_obj.cluster1_cat_level = getLevelOfCategoryNodeCluster(san1, cluster_obj.cluster1);
+          cluster_obj.cluster2_cat_level = getLevelOfCategoryNodeCluster(san2, cluster_obj.cluster2);
+          cluster_obj.datapoint_cat_level = getLevelOfCategoryNodeCluster(san1, cluster_obj.dataPoint);
+
+          //get range of modified value
+          cluster_obj.cluster1_cont_range = getRangesOfNodeCluster(san1, cluster_obj.cluster1);
+          cluster_obj.cluster2_cont_range = getRangesOfNodeCluster(san2, cluster_obj.cluster2);
 
           deferred.resolve([cluster_obj.dataPoint, cluster_obj.cluster1, cluster_obj.cluster2]);
 
