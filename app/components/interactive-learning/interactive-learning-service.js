@@ -4,6 +4,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
   .factory('Util', function() {
     return {
+      fixedIndex: -1,
       randomBetween: function(min, max) {
         var ret = Math.random() * max;
         while(ret + min > max)
@@ -158,7 +159,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       /**
        *
        */
-      calculateRandomClusters: function(nrOfAdditionalDraws, fixedIndex, k) {
+      calculateRandomClusters: function(nrOfAdditionalDraws, k) {
 
         // get global config data of config.js
         let config = anonymizationConfig;
@@ -171,17 +172,21 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         // Remotely read the original data and anonymize
         csvIn.readCSVFromURL(url, function(csv) {
 
+          // generate a random fixed index
+          if(Util.fixedIndex === -1)
+            Util.fixedIndex = Math.ceil(Math.random()*csv.length);
+
           let randNrs = [];
           while(randNrs.length < nrOfAdditionalDraws){
               let randomnumber = Math.ceil(Math.random()*csv.length);
-              if(randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0) continue;
+              if(randNrs.indexOf(randomnumber) > -1 || randomnumber === Util.fixedIndex || randomnumber === 0) continue;
               randNrs[randNrs.length] = randomnumber;
           }
 
           let shortCSV = [];
 
           shortCSV.push(csv[0]);
-          shortCSV.push(csv[fixedIndex]);
+          shortCSV.push(csv[Util.fixedIndex]);
           for(let a in randNrs)
             shortCSV.push(csv[randNrs[a]]);
 
@@ -214,8 +219,14 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             cluster1[1] and cluster2[1]is the fixed element (element in the middle)
             cluster1[2-20] and cluster2[2-20] are random elements of the 500element csv file
          */
-        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws - 1, 1, k);
-        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws - 1, 1, k);
+
+        // generate the random data point sample index (used for both clusters)
+        Util.fixedIndex = -1;
+        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws - 1, k);
+        console.log(Util.fixedIndex)
+        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws - 1, k);
+        Util.fixedIndex = -1;
+
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
@@ -225,7 +236,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let weights2 = values[1][1];
 
           //
-          var cluster_obj ={};
+          let cluster_obj ={};
           cluster_obj.cluster1 = clusters1[0];
           cluster_obj.cluster2 = clusters2[0];
           cluster_obj.dataPoint = clusters1[0].nodes[0];
