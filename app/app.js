@@ -6,6 +6,7 @@ angular.module('iMLApp', [
   'ngResource',
   'ngAnimate',
   'iMLApp.routes',
+  'iMLApp.config',
   'iMLApp.login',
   'iMLApp.interactive-learning',
   'iMLApp.survey-overview',
