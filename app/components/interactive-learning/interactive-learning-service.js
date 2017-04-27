@@ -22,12 +22,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         var m = max;
         for(let i = 0; i < nrOfNumbers-1; i++) {
           r[i] = this.randomBetween(0, m);
-          m -= r[i]
+          m -= r[i];
         }
         r[nrOfNumbers-1] = m;
         return this.shuffle(r);
       }
-    }
+    };
   })
 
   .factory('ILService', function (Util, $resource, $q, anonymizationConfig) {
@@ -158,14 +158,15 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       /**
        *
        */
-      calculateRandomClusters: function(nrOfDraws, k) {
+      calculateRandomClusters: function(nrOfAdditionalDraws, fixedIndex, k) {
         let config = anonymizationConfig;
 
-        config.NR_DRAWS = nrOfDraws;
+        config.NR_DRAWS = nrOfAdditionalDraws;
         config.K_FACTOR = k;
 
         let randWeights = Util.generateRandomNumbers(1, 10);
 
+        /*
         let random_weights = {
           'categorical': {
             'workclass': randWeights[0],
@@ -182,8 +183,25 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             'hours-per-week': randWeights[9]
           }
         };
+        */
+         let equal_weights = {
+            'categorical': {
+                'workclass': 1/10.0,
+                'native-country': 1/10.0,
+                'sex': 1/10.0,
+                'race': 1/10.0,
+                'relationship': 1/10.0,
+                'occupation': 1/10.0,
+                'income': 1/10.0,
+                'marital-status': 1/10.0
+            },
+            'range': {
+                'age': 1/10.0,
+                'hours-per-week': 1/10.0
+            }
+          };
 
-        config.GEN_WEIGHT_VECTORS['custom_weights'] = random_weights;
+        config.GEN_WEIGHT_VECTORS['custom_weights'] = equal_weights;
         config.VECTOR = 'custom_weights';
 
         //console.log("random weights:");
@@ -195,7 +213,23 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
         // Remotely read the original data and anonymize
         csvIn.readCSVFromURL(url, function(csv) {
-          san.instantiateGraph(csv, false );
+
+          let randNrs = [];
+          while(randNrs.length < nrOfAdditionalDraws){
+              let randomnumber = Math.ceil(Math.random()*csv.length);
+              if(randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex) continue;
+              randNrs[randNrs.length] = randomnumber;
+          }
+
+          let shortCSV = [];
+
+          for(let a in randNrs)
+            shortCSV.push(csv[randNrs[a]]);
+
+          shortCSV.push(csv[fixedIndex]);
+
+          console.log("shortCSV", shortCSV);
+          san.instantiateGraph(shortCSV, false );
           // Inspect the internal graph again => should be populated now
           //console.log("Graph Stats AFTER Instantiation:");
           //console.log(san._graph.getStats());
@@ -207,7 +241,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           //console.log("Clusteres:");
           //console.dir(san._clusters);
 
-          deferred.resolve([san._clusters, random_weights]);
+          deferred.resolve([san._clusters, equal_weights]);
         });
 
         return deferred.promise;
@@ -217,8 +251,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
         let deferred = $q.defer();
 
-        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws, k);
-        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws, k);
+
+        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws, 0, k);
+        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws, 0, k);
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
@@ -254,8 +289,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
               break;
           }
 
-          console.dir(clusters1);
-          console.dir(clusters2);
+          // console.dir(clusters1);
+          // console.dir(clusters2);
 
           cluster1.weights = weights1;
           cluster2.weights = weights2;
