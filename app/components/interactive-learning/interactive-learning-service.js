@@ -217,47 +217,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws - 1, 1, k);
         let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws - 1, 1, k);
 
-        function findEqualDataPoints(clusters1, clusters2) {
-          let ret_vals = [];
-
-          let combined_cluster_string = []
-
-          //build map of cluster1 index and both node values as string for comparison
-          for(let cl1_idx in clusters1)
-          {
-            combined_cluster_string[cl1_idx] = []
-            for(let cli1_node_idx in clusters1[cl1_idx].nodes)
-            {
-              combined_cluster_string[cl1_idx].push(JSON.stringify(clusters1[cl1_idx].nodes[cli1_node_idx]));
-            }
-          }
-
-          //search for the duplicate element in clusters1 and clusters2
-          // TODO seems to be in both in the first cluster the first element!!!
-          for(let cl2_idx in clusters2)
-          {
-            for(let cli2_node_idx in clusters2[cl2_idx].nodes)
-            {
-              for(let cl1_idx in combined_cluster_string)
-              {
-                for(let cli1_node_idx in combined_cluster_string[cl1_idx])
-                {
-                  if(combined_cluster_string[cl1_idx][cli1_node_idx] === JSON.stringify(clusters2[cl2_idx].nodes[cli2_node_idx]))
-                  {
-                    console.log("found")
-                    ret_vals.dataPoint = JSON.parse(combined_cluster_string[cl1_idx][cli1_node_idx])
-                    ret_vals.cluster1 = clusters1[cl1_idx]
-                    ret_vals.cluster2 = clusters2[cl2_idx]
-                    return ret_vals;
-                  }
-                }
-              }
-            }
-          }
-
-          console.log("NOTHING FOUND???")
-        }
-
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
           let clusters1 = values[0][0];
@@ -265,12 +224,18 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let clusters2 = values[1][0];
           let weights2 = values[1][1];
 
-          var ret_vals = findEqualDataPoints(clusters1, clusters2)
+          //
+          var cluster_obj ={};
+          cluster_obj.cluster1 = clusters1[0];
+          cluster_obj.cluster2 = clusters2[0];
+          cluster_obj.dataPoint = clusters1[0].nodes[0];
+          if(JSON.stringify(cluster_obj.cluster1.nodes[0]) !== JSON.stringify(cluster_obj.cluster2.nodes[0]))
+            alert("fail");
 
-          ret_vals.cluster1.weights = weights1;
-          ret_vals.cluster2.weights = weights2;
+          cluster_obj.cluster1.weights = weights1;
+          cluster_obj.cluster2.weights = weights2;
 
-          deferred.resolve([ret_vals.dataPoint, ret_vals.cluster1, ret_vals.cluster2]);
+          deferred.resolve([cluster_obj.dataPoint, cluster_obj.cluster1, cluster_obj.cluster2]);
 
         }, function(reason) {              //error
           console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
