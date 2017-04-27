@@ -217,15 +217,15 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let randNrs = [];
           while(randNrs.length < nrOfAdditionalDraws){
               let randomnumber = Math.ceil(Math.random()*csv.length);
-              if(randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex) continue;
+              if(randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0) continue;
               randNrs[randNrs.length] = randomnumber;
           }
 
           let shortCSV = [];
 
+          shortCSV.push(csv[0]);
           for(let a in randNrs)
             shortCSV.push(csv[randNrs[a]]);
-
           shortCSV.push(csv[fixedIndex]);
 
           console.log("shortCSV", shortCSV);
@@ -252,8 +252,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let deferred = $q.defer();
 
 
-        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws, 0, k);
-        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws, 0, k);
+        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws, 1, k);
+        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws, 1, k);
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
