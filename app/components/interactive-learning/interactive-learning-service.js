@@ -186,7 +186,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           let clusters1 = values[0][0]; //randomWeightClusters1 clusters
           let weights1 = values[0][1];  //randomWeightClusters1 weights
           let clusters2 = values[1][0]; //randomWeightClusters2 clusters
-          let weights2 = values[1][1];  //randomWeightClusters2 weights
+          let weights2 = values[1][1];  //randomWeightClusters2 weights, same as cluster1's
           let san1 = values[0][2];      //randomWeightClusters1 san
           let san2 = values[1][2];      //randomWeightClusters2 san
 
@@ -200,8 +200,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           if(JSON.stringify(cluster_obj.cluster1.nodes[0]) !== JSON.stringify(cluster_obj.cluster2.nodes[0]))
             alert("fail");
 
-          cluster_obj.cluster1.weights = weights1;
-          cluster_obj.cluster2.weights = weights2;
+          cluster_obj.weights = weights1;
           cluster_obj.cluster1.cost = san1.calculateGIL(cluster_obj.cluster1, cluster_obj.dataPoint);
           cluster_obj.cluster2.cost = san2.calculateGIL(cluster_obj.cluster2, cluster_obj.dataPoint);
 
@@ -247,7 +246,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           cluster_obj.cluster1_cont_range = getRangesOfNodeCluster(san1, cluster_obj.cluster1);
           cluster_obj.cluster2_cont_range = getRangesOfNodeCluster(san2, cluster_obj.cluster2);
 
-          deferred.resolve([cluster_obj.dataPoint, cluster_obj.cluster1, cluster_obj.cluster2]);
+          //before: [cluster_obj.dataPoint, cluster_obj.cluster1, cluster_obj.cluster2]
+          deferred.resolve(cluster_obj);
 
         }, function(reason) {              //error
           console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
@@ -286,7 +286,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           shortCSV.push(csv[fixedIndex]);
           for(let a in randNrs)
             shortCSV.push(csv[randNrs[a]]);
-          console.log("shortCSV", shortCSV);
+          //console.log("shortCSV", shortCSV);
 
           san.instantiateGraph(shortCSV, false );
 
@@ -297,10 +297,91 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           // let's run the whole anonymization inside the browser
           san.anonymizeGraph();
 
-          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS.equal_weights, san]);
+          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR], san]);
         });
 
         return deferred.promise;
+      },
+
+      saveUserDecisionsAndCalculateNewWeights: function (userDecisions) {
+        //console.log("calculating new weights for: ", userDecisions);
+
+        let sum_of_levels = {};
+        let sum_of_ranges = {};
+
+        for (let i = 0; i < userDecisions.length; i++) {
+          for (let level in userDecisions[i].cat_level) {
+            if (!userDecisions[i].cat_level.hasOwnProperty(level))
+              continue;
+            if (sum_of_levels[level] === undefined)
+              sum_of_levels[level] = 0;
+            sum_of_levels[level] += userDecisions[i].cat_level[level];
+          }
+          for (let range in userDecisions[i].cont_range) {
+            if (!userDecisions[i].cont_range.hasOwnProperty(range))
+              continue;
+            if (sum_of_ranges[range] === undefined)
+              sum_of_ranges[range] = 0;
+            sum_of_ranges[range] += (userDecisions[i].dataPoint._features[range] - userDecisions[i].cont_range[range])
+              / userDecisions[i].dataPoint._features[range];
+          }
+        }
+        //console.log("sum selected: ", sum_of_levels, sum_of_ranges);
+
+        let total_sum = 0;
+
+        // calculate means of selected
+        for (let level in sum_of_levels) {
+          if (!sum_of_levels.hasOwnProperty(level))
+            continue;
+          sum_of_levels[level] /= algoConfig.nrOfCases;
+          sum_of_levels[level] /= userDecisions[0].datapoint_cat_level[level];
+          total_sum += sum_of_levels[level];
+        }
+        for (let range in sum_of_ranges) {
+          if (!sum_of_ranges.hasOwnProperty(range))
+            continue;
+          sum_of_ranges[range] /= algoConfig.nrOfCases;
+          total_sum += sum_of_ranges[range];
+        }
+        //console.log("mean selected: ", sum_of_levels, sum_of_ranges);
+
+        //normalize to a sum of 1 (for weight vectors)
+        for (let level in sum_of_levels) {
+          if (!sum_of_levels.hasOwnProperty(level))
+            continue;
+          sum_of_levels[level] /= total_sum;
+        }
+        for (let range in sum_of_ranges) {
+          if (!sum_of_ranges.hasOwnProperty(range))
+            continue;
+          sum_of_ranges[range] /= total_sum;
+        }
+        //console.log("norm1: ", sum_of_levels, sum_of_ranges);
+
+        let new_weights = {categorical:{}, range:{}};
+        let old_weights = anonymizationConfig['GEN_WEIGHT_VECTORS'][anonymizationConfig.VECTOR];
+
+        // calculate differences to old weights
+        for (let weight in old_weights['categorical']) {
+          if (!old_weights['categorical'].hasOwnProperty(weight))
+            continue;
+          sum_of_levels[weight] -= old_weights['categorical'][weight];
+          new_weights['categorical'][weight] = old_weights['categorical'][weight]
+            + (sum_of_levels[weight]/(algoConfig.maxKFactor - algoConfig.startKFactor));
+        }
+        for (let weight in old_weights['range']) {
+          if (!old_weights['range'].hasOwnProperty(weight))
+            continue;
+          sum_of_ranges[weight] -= old_weights['range'][weight];
+          new_weights['range'][weight] = old_weights['range'][weight]
+            + (sum_of_ranges[weight]/(algoConfig.maxKFactor - algoConfig.startKFactor));
+        }
+
+        anonymizationConfig['GEN_WEIGHT_VECTORS']['weights'] = new_weights;
+        anonymizationConfig['VECTOR'] = 'weights';
+
+        console.log("our new weights are: ", new_weights);
       },
 
       //deprecated

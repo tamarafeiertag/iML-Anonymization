@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService) {
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig) {
 
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
@@ -18,6 +18,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       "relationship","occupation","income", "marital-status"];
 
     $scope.allCases = [];
+    $scope.userDecisions = [];
     $scope.dataTop = [];
     $scope.dataBottom = [];
     $scope.weightVecTop = [];
@@ -25,6 +26,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.center = {};
     $scope.movedUp = false;
     $scope.movedDown = false;
+    $scope.currentRound = 0;
+    $scope.currentKFactor = algoConfig.startKFactor;
 
     let currentRecordIdx = 0;
 
@@ -33,35 +36,49 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.dataBottom = [];
       $scope.center = {};
       if ($scope.allCases.length > currentRecordIdx) {
-        //console.log("current case idx: ", currentRecordIdx);
-        $scope.center = $scope.allCases[currentRecordIdx][0]._features;
-        $scope.dataTop.push($scope.allCases[currentRecordIdx][1]);
-        $scope.dataTop.push($scope.allCases[currentRecordIdx][1]);
-        $scope.dataBottom.push($scope.allCases[currentRecordIdx][2]);
-        $scope.dataBottom.push($scope.allCases[currentRecordIdx][2]);
-        $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[currentRecordIdx][1].weights);
-        $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx][2].weights);
+        $scope.center = $scope.allCases[currentRecordIdx].dataPoint._features;
+        $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
+        $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
+        $scope.dataBottom.push($scope.allCases[currentRecordIdx].cluster2);
+        $scope.dataBottom.push($scope.allCases[currentRecordIdx].cluster2);
+        $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
+        $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
+      } else if ($scope.currentRound < (algoConfig.maxKFactor - algoConfig.startKFactor)) {
+        $scope.currentRound += 1;
+        $scope.currentKFactor += 1;
+        currentRecordIdx = 0;
+        ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
+        $scope.retrieveNewCases();
       } else {
         $scope.learningContainerVisible = false;
         $scope.showDoneMessage = true;
       }
     };
 
-    var promise_case = ILService.getCases(2);
+    $scope.retrieveNewCases = function () {
+      var promise_case = ILService.getCases($scope.currentKFactor);
 
-    promise_case.then(function (data) {
-      console.log("received data: ", data);
-      $scope.allCases = data;
-      $scope.setRecords();
-    }, function(reason) {              //error
-      console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
-    });
+      promise_case.then(function (data) {
+        $scope.allCases = data;
+        $scope.setRecords();
+      }, function(reason) {              //error
+        console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
+      });
+    };
 
-
+    $scope.retrieveNewCases();
     var centerRecordTag = $("#panel-center");
 
     $scope.up = function () {
       console.log("[ILCtrl] data record sent up");
+
+      let userDecision = {};
+      userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster1_cat_level;
+      userDecision.cont_range = $scope.allCases[currentRecordIdx].cluster1_cont_range;
+      userDecision.dataPoint = $scope.allCases[currentRecordIdx].dataPoint;
+      userDecision.datapoint_cat_level = $scope.allCases[currentRecordIdx].datapoint_cat_level;
+      $scope.userDecisions.push(userDecision);
+
       $scope.movedUp = true;
       centerRecordTag.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd',
         function(e) {
@@ -75,6 +92,14 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
     $scope.down = function () {
       console.log("[ILCtrl] data record sent down");
+
+      let userDecision = {};
+      userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster2_cat_level;
+      userDecision.cont_range = $scope.allCases[currentRecordIdx].cluster2_cont_range;
+      userDecision.dataPoint = $scope.allCases[currentRecordIdx].dataPoint;
+      userDecision.datapoint_cat_level = $scope.allCases[currentRecordIdx].datapoint_cat_level;
+      $scope.userDecisions.push(userDecision);
+
       $scope.movedDown = true;
       centerRecordTag.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd',
       function(e) {
@@ -105,7 +130,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     };
 
     $scope.keyDown = function(value){
-      console.log(value.keyCode);
+      //console.log(value.keyCode);
       if(value.keyCode == 38) { //arrow up key pressed
         $scope.up();
       } else if(value.keyCode == 40) { //arrow down key pressed
