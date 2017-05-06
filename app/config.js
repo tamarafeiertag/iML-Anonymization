@@ -7,6 +7,23 @@ angular.module('iMLApp.config', [])
     })
 
   .constant(
+    'algoConfig', {
+      nrOfDrawsMultiplier: 10,  //nrOfDraws needs to be in relation to k in order to result in good random clusters
+      originalData: "original_data_500_rows.csv",
+      originalDataCSVLength: 501,
+      basename: "assets/00_sample_data_UI_prototype",
+      targets: [
+        "target_education-num",
+        "target_marital-status",
+        "target_income"
+      ],
+      gen_base: 'assets/genHierarchies/',
+      nrOfCases: 5  //number of triples per k factor
+
+    }
+  )
+
+  .constant(
     'anonymizationConfig', {
       'REMOTE_URL': 'http://berndmalle.com/anonymization/adults',
       'REMOTE_TARGET': 'education', //TODO: how to handle that?

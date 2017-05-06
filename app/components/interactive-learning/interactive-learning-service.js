@@ -4,7 +4,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
   .factory('Util', function() {
     return {
-      fixedIndex: -1,
       randomBetween: function(min, max) {
         var ret = Math.random() * max;
         while(ret + min > max)
@@ -31,11 +30,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     };
   })
 
-  .factory('ILService', function (Util, $resource, $q, anonymizationConfig) {
+  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, algoConfig) {
     //use $resource later for retrieval from webservice
-
-    let dataResource = $resource('assets/testdata/marital-status-k2.json');
-    let data = dataResource.query();
+    //let dataResource = $resource('assets/testdata/marital-status-k2.json');
+    //let data = dataResource.query();
 
     console.log("AnonymizationJS:");
     console.dir($A);
@@ -43,14 +41,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     console.log("GraphiniusJS:");
     console.dir($G);
 
-    let basename = "assets/00_sample_data_UI_prototype";
-    let filename_originalData = "original_data_500_rows.csv";
-
-    let TARGETS = [
-      "target_education-num",
-      "target_marital-status",
-      "target_income"
-    ];
+    let basename = algoConfig.basename;
+    let filename_originalData = algoConfig.originalData;
 
     let csvIn = new $A.IO.CSVIN($A.config.adults);
     //console.log("CSV Reader: ");
@@ -63,7 +55,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     //console.dir(config);
 
     // Specify Generalization hierarchy files
-    let gen_base = 'assets/genHierarchies/',
+    let gen_base = algoConfig.gen_base,
       workclass_file = gen_base + 'workclassGH.json',
       sex_file = gen_base + 'sexGH.json',
       race_file = gen_base + 'raceGH.json',
@@ -74,23 +66,14 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       income_file = gen_base + 'incomeGH.json';
 
     return {
-      getTestdata: function (callback) {
-        let TestdataResource = $resource('assets/testdata/testdatarecords.json');
-        TestdataResource.get(callback);
-      },
-      getMaritalStatusK2: function () {
-        return data.$promise;
-      },
-
-      createSan: function(config, gen_base) {
-        let san = new $A.algorithms.Sangreea("testus", config);
-        console.log("SaNGreeA Algorithm:");
-        console.log(san);
-
+      createSan: function(config) {
+        let san = new $A.algorithms.Sangreea("sangreea", config);
+        //console.log("SaNGreeA Algorithm:");
+        //console.log(san);
 
         // Inspect the internal graph => should be empty
-        console.log("Graph Stats BEFORE Instantiation:");
-        console.log(san._graph.getStats());
+        //console.log("Graph Stats BEFORE Instantiation:");
+        //console.log(san._graph.getStats());
 
         // Uff, this feels like 2012 at the latest....
         $.ajaxSetup({
@@ -129,6 +112,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
       /**
        * Retrieves the data records from original csv that have not been anonymized
+       * deprecated
        */
       getNotAnonymizedRecords: function () {
         let deferred = $q.defer();
@@ -157,57 +141,30 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       },
 
       /**
-       *
+       * One case is a triple of cluster1 (top), center datapoint and cluster2 (bottom)
+       * @param k factor
        */
-      calculateRandomClusters: function(nrOfAdditionalDraws, k) {
-
-        // get global config data of config.js
-        let config = anonymizationConfig;
-        config.NR_DRAWS = nrOfAdditionalDraws + 1;
-        config.K_FACTOR = k;
-
-        let san = this.createSan(config, gen_base);
-        console.log("before print")
+      getCases: function(k) {
         let deferred = $q.defer();
 
-        // Remotely read the original data and anonymize
-        csvIn.readCSVFromURL(url, function(csv) {
+        let cases;
+        let promises = [];
 
-          // generate a random fixed index
-          if(Util.fixedIndex === -1)
-            Util.fixedIndex = Math.ceil(Math.random()*csv.length);
+        for (let i = 0; i < algoConfig.nrOfCases; i++) {
+          let promise = this.getCase(k);
+          promises.push(promise);
+        }
 
-          let randNrs = [];
-          while(randNrs.length < nrOfAdditionalDraws){
-              let randomnumber = Math.ceil(Math.random()*csv.length);
-              if(randNrs.indexOf(randomnumber) > -1 || randomnumber === Util.fixedIndex || randomnumber === 0) continue;
-              randNrs[randNrs.length] = randomnumber;
-          }
-
-          let shortCSV = [];
-
-          shortCSV.push(csv[0]);
-          shortCSV.push(csv[Util.fixedIndex]);
-          for(let a in randNrs)
-            shortCSV.push(csv[randNrs[a]]);
-
-
-          console.log("shortCSV", shortCSV);
-          san.instantiateGraph(shortCSV, false );
-          // Inspect the internal graph again => should be populated now
-          //console.log("Graph Stats AFTER Instantiation:");
-          //console.log(san._graph.getStats());
-
-          // let's run the whole anonymization inside the browser
-          san.anonymizeGraph();
-
-          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS.equal_weights, san]);
+        $q.all(promises).then(function(data) {
+          cases = data;
+          deferred.resolve(cases);
+          console.log("cases ", cases);
         });
 
         return deferred.promise;
       },
 
-      getCase: function(nrOfDraws, k) {
+      getCase: function(k) {
 
         let deferred = $q.defer();
 
@@ -219,26 +176,26 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
          */
 
         // generate the random data point sample index (used for both clusters)
-        Util.fixedIndex = -1;
-        let promise_randomWeightClusters1 = this.calculateRandomClusters(nrOfDraws - 1, k);
-        let promise_randomWeightClusters2 = this.calculateRandomClusters(nrOfDraws - 1, k);
-        Util.fixedIndex = -1;
+        let fixedIndex = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
+        console.log("our fixed datapoint is: ", fixedIndex);
+        let promise_randomWeightClusters1 = this.calculateRandomClusters(k, fixedIndex);
+        let promise_randomWeightClusters2 = this.calculateRandomClusters(k, fixedIndex);
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
 
-          let clusters1 = values[0][0];
-          let weights1 = values[0][1];
-          let clusters2 = values[1][0];
-          let weights2 = values[1][1];
-          let san1 = values[0][2];
-          let san2 = values[1][2];
+          let clusters1 = values[0][0]; //randomWeightClusters1 clusters
+          let weights1 = values[0][1];  //randomWeightClusters1 weights
+          let clusters2 = values[1][0]; //randomWeightClusters2 clusters
+          let weights2 = values[1][1];  //randomWeightClusters2 weights
+          let san1 = values[0][2];      //randomWeightClusters1 san
+          let san2 = values[1][2];      //randomWeightClusters2 san
 
           // since we have our fixed same data point element at the first index, it can be found
           // in both cluster arrays in the first cluster in the first node (due to anonymization implementation)
           let cluster_obj ={};
-          cluster_obj.cluster1 = clusters1[0];
-          cluster_obj.cluster2 = clusters2[0];
-          cluster_obj.dataPoint = clusters1[0].nodes[0];
+          cluster_obj.cluster1 = clusters1[0];  //we only need one/first cluster
+          cluster_obj.cluster2 = clusters2[0];  //we only need one/first cluster
+          cluster_obj.dataPoint = clusters1[0].nodes[0]; //our fixed node is always the first
 
           if(JSON.stringify(cluster_obj.cluster1.nodes[0]) !== JSON.stringify(cluster_obj.cluster2.nodes[0]))
             alert("fail");
@@ -299,28 +256,56 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         return deferred.promise;
       },
 
-      getCases: function(nrOfCases, nrOfDraws, k) {
+      /**
+       *  Draws nrOfAdditonalDraws + one fixed datarow from csv and calculates the SAN Graph with this small dataset
+       *  The first node of the first cluster will be the one with fixedIndex
+       */
+      calculateRandomClusters: function(k, fixedIndex) {
         let deferred = $q.defer();
 
-        let cases;
-        let promises = [];
+        // get global config data of config.js
+        let config = anonymizationConfig;
+        config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
+        config.K_FACTOR = k;
 
-        for (let i = 0; i < nrOfCases; i++) {
-          let promise = this.getCase(nrOfDraws, k);
-          promises.push(promise);
-        }
+        let san = this.createSan(config);
 
-        $q.all(promises).then(function(data) {
-          cases = data;
-          deferred.resolve(cases);
-          console.log("cases ", cases);
+        // Remotely read the original data and anonymize
+        csvIn.readCSVFromURL(url, function(csv) {
+          let randNrs = [];
+          while(randNrs.length < config.NR_DRAWS - 1){
+            let randomnumber = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
+            if(randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0)
+              continue;
+            randNrs[randNrs.length] = randomnumber;
+          }
+
+          let shortCSV = [];
+
+          shortCSV.push(csv[0]);      // header
+          shortCSV.push(csv[fixedIndex]);
+          for(let a in randNrs)
+            shortCSV.push(csv[randNrs[a]]);
+          console.log("shortCSV", shortCSV);
+
+          san.instantiateGraph(shortCSV, false );
+
+          // Inspect the internal graph again => should be populated now
+          //console.log("Graph Stats AFTER Instantiation:");
+          //console.log(san._graph.getStats());
+
+          // let's run the whole anonymization inside the browser
+          san.anonymizeGraph();
+
+          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS.equal_weights, san]);
         });
 
         return deferred.promise;
       },
 
+      //deprecated
       getAnonymizedRecords: function () {
-        let san = this.createSan(config, gen_base);
+        let san = this.createSan(config);
 
         let deferred = $q.defer();
 

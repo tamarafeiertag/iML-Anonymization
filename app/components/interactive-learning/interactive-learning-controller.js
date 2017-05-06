@@ -4,11 +4,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
   .controller('ILCtrl', function ($scope, $q, ILService) {
 
-
-
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
+    $scope.learningContainerVisible = true;
+    $scope.showDoneMessage = false;
 
     $scope.formatNumber = function(i) {
       return Math.round(i * 10000)/10000;
@@ -16,7 +16,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
     $scope.columnNames = ["age", "education-num","hours-per-week", "workclass", "native-country", "sex", "race",
       "relationship","occupation","income", "marital-status"];
-    //$scope.weights = ILService.getWeightsArray();
 
     $scope.allCases = [];
     $scope.dataTop = [];
@@ -28,11 +27,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.movedDown = false;
 
     let currentRecordIdx = 0;
-    let currentCenterIdx = 0;
 
     $scope.setRecords = function() {
       $scope.dataTop = [];
       $scope.dataBottom = [];
+      $scope.center = {};
       if ($scope.allCases.length > currentRecordIdx) {
         //console.log("current case idx: ", currentRecordIdx);
         $scope.center = $scope.allCases[currentRecordIdx][0]._features;
@@ -42,29 +41,13 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.dataBottom.push($scope.allCases[currentRecordIdx][2]);
         $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[currentRecordIdx][1].weights);
         $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx][2].weights);
+      } else {
+        $scope.learningContainerVisible = false;
+        $scope.showDoneMessage = true;
       }
     };
 
-/*
-    var promise_anonymizedRecords = ILService.getAnonymizedRecords();
-    var promise_notAnonymizedRecords = ILService.getNotAnonymizedRecords();
-
-
-    $q.all([promise_anonymizedRecords, promise_notAnonymizedRecords]).then(function (values) {
-      let clusters = values[0];
-      let centers = values[1];
-
-      console.log("clusters", clusters);
-      console.log("centers", centers);
-      $scope.allDataRecords = clusters;
-      $scope.allCenters = centers;
-      $scope.setRecords();
-
-    }, function(reason) {              //error
-      console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
-    });*/
-
-    var promise_case = ILService.getCases(5, 20, 2);
+    var promise_case = ILService.getCases(2);
 
     promise_case.then(function (data) {
       console.log("received data: ", data);
@@ -84,7 +67,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         function(e) {
           // code to execute after transition ends
           currentRecordIdx += 1;
-          currentCenterIdx += 1;
           $scope.setRecords();
           $scope.movedUp = false;
           $scope.$digest();
@@ -98,7 +80,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       function(e) {
         // code to execute after transition ends
         currentRecordIdx += 1;
-        currentCenterIdx += 1;
         $scope.setRecords();
         $scope.movedDown = false;
         $scope.$digest();

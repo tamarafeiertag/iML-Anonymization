@@ -12,103 +12,109 @@
     </div>
   </div>
 
-  <h3>Where would you put the data record in the middle?</h3>
-  <div class="panel panel-primary">
-    <!-- option: could add panel header and content text here -->
-
-    <table class="table" id="cluster-top" >
-      <thead ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)" ng-click="openDiagram()" >
-      <tr class="bg-primary">
-        <th ng-repeat="columnName in columnNames">{{columnName}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr style="background-color: #CCFF99" ng-show="showTooltipFirst">
-        <td ng-repeat="weight in weightVecTop track by $index">{{formatNumber(weight)}}</td>
-      </tr>
-      <tr ng-repeat="record in dataTop track by $index">
-        <td>{{record.gen_ranges.age == "all" ? "*" : record.gen_ranges.age}}</td>
-        <td></td>
-        <td>{{record.gen_ranges["hours-per-week"] == "all" ? "*" : record.gen_ranges["hours-per-week"]}}</td>
-        <td>{{record.gen_feat.workclass == "all" ? "*" : record.gen_feat.workclass}}</td>
-        <td>{{record.gen_feat["native-country"] == "all" ? "*" : record.gen_feat["native-country"]}}</td>
-        <td>{{record.gen_feat.sex == "all" ? "*" : record.gen_feat.sex}}</td>
-        <td>{{record.gen_feat.race == "all" ? "*" : record.gen_feat.race}}</td>
-        <td>{{record.gen_feat.relationship == "all" ? "*" : record.gen_feat.relationship}}</td>
-        <td>{{record.gen_feat.occupation == "all" ? "*" : record.gen_feat.occupation}}</td>
-        <td>{{record.gen_feat.income == "all" ? "*" : record.gen_feat.income}}</td>
-        <td>{{record.gen_feat["marital-status"] == "all" ? "*" : record.gen_feat["marital-status"]}}</td>
-      </tr>
-      </tbody>
-    </table>
+  <div id="done-container" ng-hide="!showDoneMessage">
+    <h3>You are done. Thank you for your help!</h3>
+    <a href="#" class="text-center register" ng-href="#!/survey-overview">Back</a>
   </div>
 
-  <div class="button-arrow">
-    <button type="button" id="buttonUp" class="btn btn-default" aria-label="arrow up" data-ng-click="up()"
-            ng-class="{'hover': movedUp}">
-      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-    </button>
-  </div>
+  <div id="learning-container" ng-hide="!learningContainerVisible">
+    <h3>Where would you put the data record in the middle?</h3>
+    <div class="panel panel-primary">
+      <!-- option: could add panel header and content text here -->
+      <table class="table" id="cluster-top" >
+        <thead ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)" ng-click="openDiagram()" >
+        <tr class="bg-primary">
+          <th ng-repeat="columnName in columnNames">{{columnName}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="background-color: #CCFF99" ng-show="showTooltipFirst">
+          <td ng-repeat="weight in weightVecTop track by $index">{{formatNumber(weight)}}</td>
+        </tr>
+        <tr ng-repeat="record in dataTop track by $index">
+          <td>{{record.gen_ranges.age == "all" ? "*" : record.gen_ranges.age}}</td>
+          <td></td>
+          <td>{{record.gen_ranges["hours-per-week"] == "all" ? "*" : record.gen_ranges["hours-per-week"]}}</td>
+          <td>{{record.gen_feat.workclass == "all" ? "*" : record.gen_feat.workclass}}</td>
+          <td>{{record.gen_feat["native-country"] == "all" ? "*" : record.gen_feat["native-country"]}}</td>
+          <td>{{record.gen_feat.sex == "all" ? "*" : record.gen_feat.sex}}</td>
+          <td>{{record.gen_feat.race == "all" ? "*" : record.gen_feat.race}}</td>
+          <td>{{record.gen_feat.relationship == "all" ? "*" : record.gen_feat.relationship}}</td>
+          <td>{{record.gen_feat.occupation == "all" ? "*" : record.gen_feat.occupation}}</td>
+          <td>{{record.gen_feat.income == "all" ? "*" : record.gen_feat.income}}</td>
+          <td>{{record.gen_feat["marital-status"] == "all" ? "*" : record.gen_feat["marital-status"]}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="panel panel-primary" id="panel-center" ng-class="{'movedUp': movedUp, 'movedDown': movedDown} ">
-    <table class="table" id="new-record">
-      <thead>
-      <tr class="bg-primary">
-        <th ng-repeat="columnName in columnNames">{{columnName}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>{{center['age']}}</td>
-        <td>{{center['education-num']}}</td>
-        <td>{{center['hours-per-week']}}</td>
-        <td>{{center['workclass']}}</td>
-        <td>{{center['native-country']}}</td>
-        <td>{{center['sex']}}</td>
-        <td>{{center['race']}}</td>
-        <td>{{center['relationship']}}</td>
-        <td>{{center['occupation']}}</td>
-        <td>{{center['income']}}</td>
-        <td>{{center['marital-status']}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="button-arrow">
+      <button type="button" id="buttonUp" class="btn btn-default" aria-label="arrow up" data-ng-click="up()"
+              ng-class="{'hover': movedUp}">
+        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+      </button>
+    </div>
 
-  <div class="button-arrow">
-    <button type="button" class="btn btn-default" aria-label="arrow down" data-ng-click="down()"
-            ng-class="{'hover': movedDown}">
-      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-    </button>
-  </div>
+    <div class="panel panel-primary" id="panel-center" ng-class="{'movedUp': movedUp, 'movedDown': movedDown} ">
+      <table class="table" id="new-record">
+        <thead>
+        <tr class="bg-primary">
+          <th ng-repeat="columnName in columnNames">{{columnName}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{center['age']}}</td>
+          <td>{{center['education-num']}}</td>
+          <td>{{center['hours-per-week']}}</td>
+          <td>{{center['workclass']}}</td>
+          <td>{{center['native-country']}}</td>
+          <td>{{center['sex']}}</td>
+          <td>{{center['race']}}</td>
+          <td>{{center['relationship']}}</td>
+          <td>{{center['occupation']}}</td>
+          <td>{{center['income']}}</td>
+          <td>{{center['marital-status']}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="button-arrow">
+      <button type="button" class="btn btn-default" aria-label="arrow down" data-ng-click="down()"
+              ng-class="{'hover': movedDown}">
+        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+      </button>
+    </div>
 
 
-  <div class="panel panel-primary">
-    <table class="table" id="cluster-bottom" >
-      <thead ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)" ng-click="openDiagram()">
-      <tr class="bg-primary">
-        <th ng-repeat="columnName in columnNames">{{columnName}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr style="background-color: #CCFF99" ng-show="showTooltipSecond">
-        <td ng-repeat="weight in weightVecBottom track by $index">{{formatNumber(weight)}}</td>
-      </tr>
-      <tr ng-repeat="record in dataBottom track by $index">
-        <td>{{record.gen_ranges.age == "all" ? "*" : record.gen_ranges.age}}</td>
-        <td></td>
-        <td>{{record.gen_ranges["hours-per-week"] == "all" ? "*" : record.gen_ranges["hours-per-week"]}}</td>
-        <td>{{record.gen_feat.workclass == "all" ? "*" : record.gen_feat.workclass}}</td>
-        <td>{{record.gen_feat["native-country"] == "all" ? "*" : record.gen_feat["native-country"]}}</td>
-        <td>{{record.gen_feat.sex == "all" ? "*" : record.gen_feat.sex}}</td>
-        <td>{{record.gen_feat.race == "all" ? "*" : record.gen_feat.race}}</td>
-        <td>{{record.gen_feat.relationship == "all" ? "*" : record.gen_feat.relationship}}</td>
-        <td>{{record.gen_feat.occupation == "all" ? "*" : record.gen_feat.occupation}}</td>
-        <td>{{record.gen_feat.income == "all" ? "*" : record.gen_feat.income}}</td>
-        <td>{{record.gen_feat["marital-status"] == "all" ? "*" : record.gen_feat["marital-status"]}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="panel panel-primary">
+      <table class="table" id="cluster-bottom" >
+        <thead ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)" ng-click="openDiagram()">
+        <tr class="bg-primary">
+          <th ng-repeat="columnName in columnNames">{{columnName}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="background-color: #CCFF99" ng-show="showTooltipSecond">
+          <td ng-repeat="weight in weightVecBottom track by $index">{{formatNumber(weight)}}</td>
+        </tr>
+        <tr ng-repeat="record in dataBottom track by $index">
+          <td>{{record.gen_ranges.age == "all" ? "*" : record.gen_ranges.age}}</td>
+          <td></td>
+          <td>{{record.gen_ranges["hours-per-week"] == "all" ? "*" : record.gen_ranges["hours-per-week"]}}</td>
+          <td>{{record.gen_feat.workclass == "all" ? "*" : record.gen_feat.workclass}}</td>
+          <td>{{record.gen_feat["native-country"] == "all" ? "*" : record.gen_feat["native-country"]}}</td>
+          <td>{{record.gen_feat.sex == "all" ? "*" : record.gen_feat.sex}}</td>
+          <td>{{record.gen_feat.race == "all" ? "*" : record.gen_feat.race}}</td>
+          <td>{{record.gen_feat.relationship == "all" ? "*" : record.gen_feat.relationship}}</td>
+          <td>{{record.gen_feat.occupation == "all" ? "*" : record.gen_feat.occupation}}</td>
+          <td>{{record.gen_feat.income == "all" ? "*" : record.gen_feat.income}}</td>
+          <td>{{record.gen_feat["marital-status"] == "all" ? "*" : record.gen_feat["marital-status"]}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </div>
