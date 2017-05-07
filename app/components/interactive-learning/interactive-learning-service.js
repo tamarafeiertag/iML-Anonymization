@@ -177,7 +177,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
         // generate the random data point sample index (used for both clusters)
         let fixedIndex = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
-        console.log("our fixed datapoint is: ", fixedIndex);
         let promise_randomWeightClusters1 = this.calculateRandomClusters(k, fixedIndex);
         let promise_randomWeightClusters2 = this.calculateRandomClusters(k, fixedIndex);
 

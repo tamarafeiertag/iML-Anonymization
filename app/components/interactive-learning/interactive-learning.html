@@ -18,7 +18,7 @@
   </div>
 
   <div id="learning-container" ng-hide="!learningContainerVisible">
-    <h3>Where would you put the data record in the middle?</h3>
+    <h3>Please move the data record to one cluster (up or down) with the more relevant data</h3>
     <div class="panel panel-primary">
       <!-- option: could add panel header and content text here -->
       <table class="table" id="cluster-top" >
@@ -55,29 +55,36 @@
       </button>
     </div>
 
-    <div class="panel panel-primary" id="panel-center" ng-class="{'movedUp': movedUp, 'movedDown': movedDown} ">
-      <table class="table" id="new-record">
-        <thead>
-        <tr class="bg-primary">
-          <th ng-repeat="columnName in columnNames">{{columnName}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>{{center['age']}}</td>
-          <td>{{center['education-num']}}</td>
-          <td>{{center['hours-per-week']}}</td>
-          <td>{{center['workclass']}}</td>
-          <td>{{center['native-country']}}</td>
-          <td>{{center['sex']}}</td>
-          <td>{{center['race']}}</td>
-          <td>{{center['relationship']}}</td>
-          <td>{{center['occupation']}}</td>
-          <td>{{center['income']}}</td>
-          <td>{{center['marital-status']}}</td>
-        </tr>
-        </tbody>
-      </table>
+    <div id="center">
+      <div class="panel panel-primary" id="panel-center" ng-class="{'movedUp': movedUp, 'movedDown': movedDown} ">
+        <table class="table" id="new-record">
+          <thead>
+          <tr class="bg-primary">
+            <th ng-repeat="columnName in columnNames">{{columnName}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{center['age']}}</td>
+            <td>{{center['education-num']}}</td>
+            <td>{{center['hours-per-week']}}</td>
+            <td>{{center['workclass']}}</td>
+            <td>{{center['native-country']}}</td>
+            <td>{{center['sex']}}</td>
+            <td>{{center['race']}}</td>
+            <td>{{center['relationship']}}</td>
+            <td>{{center['occupation']}}</td>
+            <td>{{center['income']}}</td>
+            <td>{{center['marital-status']}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="button-skip">
+        <button type="button" class="btn btn-danger" data-ng-click="trash()">
+          <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"> skip</span>
+        </button>
+      </div>
     </div>
 
     <div class="button-arrow">

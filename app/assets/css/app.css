@@ -41,6 +41,14 @@
   font-size: 5rem;
   border: none;
 }
+div#center {
+  position: absolute;
+}
+div#button-skip {
+  position: absolute;
+  top:0px;
+  right: 0px;
+}
 
 #il .panel {
   width: 80%;
