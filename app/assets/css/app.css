@@ -41,13 +41,15 @@
   font-size: 5rem;
   border: none;
 }
-div#center {
-  position: absolute;
+
+.button-arrow {
+  clear: both;
 }
-div#button-skip {
-  position: absolute;
-  top:0px;
-  right: 0px;
+
+#center #button-skip {
+  width: 100%;
+  text-align: right;
+  margin-bottom: -2em;
 }
 
 #il .panel {
@@ -112,10 +114,15 @@ body.ng-pageslide-body-closed::before {
   height: 20rem;
   border: 1px solid lightGrey;
 
-  p {
-    font-size: 0.5rem!important;
-  }
 }
+p {
+  font-size: 0.5rem!important;
+}
+
+.panel {
+  min-width: 1085px;
+}
+
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #d9edf7;
