@@ -321,7 +321,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
               continue;
             if (sum_of_ranges[range] === undefined)
               sum_of_ranges[range] = 0;
-            sum_of_ranges[range] += (userDecisions[i].dataPoint._features[range] - userDecisions[i].cont_range[range])
+            sum_of_ranges[range] += Math.max(userDecisions[i].dataPoint._features[range] - userDecisions[i].cont_range[range], 0)
               / userDecisions[i].dataPoint._features[range];
           }
         }
@@ -340,6 +340,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         for (let range in sum_of_ranges) {
           if (!sum_of_ranges.hasOwnProperty(range))
             continue;
+          sum_of_ranges[range] = (1 - sum_of_ranges[range]);
           sum_of_ranges[range] /= algoConfig.nrOfCases;
           total_sum += sum_of_ranges[range];
         }
