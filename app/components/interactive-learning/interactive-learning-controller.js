@@ -80,7 +80,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.userDecisions.push(userDecision);
 
       $scope.movedUp = true;
-      centerRecordTag.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd',
+      centerRecordTag.one('webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd',
         function(e) {
           // code to execute after transition ends
           currentRecordIdx += 1;
@@ -101,7 +101,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.userDecisions.push(userDecision);
 
       $scope.movedDown = true;
-      centerRecordTag.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd',
+      centerRecordTag.one('webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd',
       function(e) {
         // code to execute after transition ends
         currentRecordIdx += 1;
