@@ -52,9 +52,14 @@
   margin-bottom: -2em;
 }
 
+
 #il .panel {
   width: 80%;
   margin: 1rem auto 1rem auto;
+}
+
+#center .panel {
+  width: 100%;
 }
 
 .form-signin {
