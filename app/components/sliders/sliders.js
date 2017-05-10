@@ -94,7 +94,7 @@ angular.module('myApp.sliders', [])
 
 
                 if(!attr.group)
-                    attr.group = uuid();
+                    attr.group = guid();
 
                 if(!sliderDB.sliderGroups[attr.group]) {
                     sliderDB.sliderGroups[attr.group] = {};
@@ -166,10 +166,11 @@ angular.module('myApp.sliders', [])
                 $scope.sliders = sliderDB.sliders;
                 console.log('slider registered', sliderDB);
 
+
             },
             templateUrl: 'components/sliders/sliders.html'
 
-        }
+        };
     }]);
 
 function guid() {
