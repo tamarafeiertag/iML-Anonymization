@@ -1,16 +1,16 @@
-<div id="view1">
-  First name:<input ng-model="firstName" type="text"/>
-  <br/>
-  Last name:<input ng-model="lastName" type="text"/>
-  <br/><br/>
-  Hello {{firstName}} {{lastName}}!
+<div id="loginView">
+  <div class="container">
+
+    <form class="form-signin">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" ng-model="viewm.username" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" ng-model="viewm.password" id="inputPassword" class="form-control" placeholder="Password" required="">
+      <br/>
+      <button class="btn btn-lg btn-primary btn-block" ng-click="userLogin()" >Sign in</button>
+      <a href="#" class="text-center register" ng-href="#!/register">Register</a>
+    </form>
+
+  </div>
 </div>
-
-
-  <slider name="test0" group="mySliders" ></slider>
-  <slider name="test1" group="mySliders" ></slider>
-  <slider name="test2" group="mySliders" ></slider>
-  <slider name="test3" group="mySliders" ></slider>
-<slider name="test3" group="mySliders" ></slider>
-<slider name="test3" group="mySliders" ></slider>
-
