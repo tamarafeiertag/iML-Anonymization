@@ -14,16 +14,33 @@ const http = require('http');
 const port = 3000;
 
 const requestHandler = (request, response) => {
-    response.header('Access-Control-Allow-Origin', '*');
-    response.header('Access-Control-Allow-Methods', 'GET,POST');
-    response.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    console.log(request.headers);
+    if(request && request.headers && request.headers.origin)
+        response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
+    response.setHeader('Access-Control-Allow-Methods', 'GET,POST');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     console.log(request.method, ': ', request.url);
 
-    request.on('data', function(data) {
-        console.log(data);
-        response.end("Got data");
-    });
-    response.end("Got request");
+    if (request.method === 'POST') {
+        request.on('data', function(data) {
+            console.log(JSON.parse(data.toString()));
+
+        });
+    }
+
+    response.end(JSON.stringify({
+        data: {
+
+            0: 223.2,
+            0.5: 125,
+            1: 98.7,
+            1.5: 86.3,
+            2: 76.4,
+            2.5: 46.7,
+            3: 33.7
+        }
+    }));
 };
 
 const server = http.createServer(requestHandler);
