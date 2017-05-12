@@ -1,0 +1,9 @@
+
+<div class="slider" ng-repeat="data in sliders" >
+    <input id="{{data.id}}" ng-change="valueChanged(data.id)"  class="{{data.groupName}}" type="range" min="{{data.min}}" max="{{data.max}}" value="{{data.value}}" step="0.01" ng-model="data.value" />
+    <input id="text{{data.id}}" value="{{data.value.toFixed(2)  }}" type="text" />
+
+</div>
+
+
+

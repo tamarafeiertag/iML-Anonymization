@@ -9,9 +9,11 @@ angular.module('iMLApp', [
   'iMLApp.config',
   'iMLApp.login',
   'iMLApp.interactive-learning',
+  'iMLApp.slider-learning',
   'iMLApp.survey-overview',
   'iMLApp.version',
   'iMLApp.register',
+  'iMLApp.sliders',
   'pageslide-directive',
   'ngCookies',
   'iMLApp.user-overview'

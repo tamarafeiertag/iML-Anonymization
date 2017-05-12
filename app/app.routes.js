@@ -10,30 +10,34 @@ angular.module('iMLApp.routes', ['ngRoute'])
 
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-      .when('/', {
+  .when('/', {
         templateUrl: 'components/survey-overview/survey-overview.html',
         controller: 'SurveyOverviewCtrl'
       })
-      .when('/login', {
+  .when('/login', {
       templateUrl: 'components/login/login.html',
       controller: 'LoginCtrl',
       controllerAs: 'viewm'
     })
-      .when('/interactive-learning/:sid', {
+  .when('/interactive-learning/:sid', {
       templateUrl: 'components/interactive-learning/interactive-learning.html',
       controller: 'ILCtrl'
     })
-      .when('/survey-overview', {
+  .when('/sliders/:sid', {
+            templateUrl: 'components/slider-learning/slider-learning.html',
+            controller: 'SlidersCtrl'
+        })
+  .when('/survey-overview', {
         templateUrl: 'components/survey-overview/survey-overview.html',
         controller: 'SurveyOverviewCtrl',
         controllerAs: 'vm'
     })
-      .when('/register', {
+  .when('/register', {
         templateUrl: 'components/login/register.html',
         controller: 'RegisterCtrl',
         controllerAs: 'viewm'
       })
-      .when('/user-overview', {
+  .when('/user-overview', {
       templateUrl: 'components/user-overview/user-overview.html',
       controller: 'UserOverviewCtrl',
       controllerAs: 'vm'

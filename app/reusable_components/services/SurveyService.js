@@ -32,7 +32,7 @@
     // private functions
 
     function getSurveys() {
-      var surveys = [{sid:1, description:"Study regarding cancer development in the age group > 20"},
+      var surveys = [{sid:1, description:"Study regarding cancer development in the age groupname > 20"},
         {sid:2, description:"Hair loss study in consideration of all continents"},
         {sid:3, description:"Debility of sight in more evolved countries in europe"}];
 
