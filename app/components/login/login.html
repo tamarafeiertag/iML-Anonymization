@@ -15,14 +15,3 @@
   </div>
 </div>
 
-
-<button ng-controller="ServerCtrl" ng-click="send({test: 'cool'}, onSucc, onErr)">Test server</button>
-
-<script>
-  function onSucc(data) {
-      console.log("On Success: ", data);
-  }
-  function onErr(data) {
-    console.log("On Error: ", data);
-  }
-</script>
