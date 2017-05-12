@@ -1,6 +1,6 @@
-<div id="il" ng-keydown="keyDown($event)" tabindex="0">
+<div id="il" ng-keydown="keyDown($event)" >
 
-  <div pageslide ps-open="showDiagram" ps-size="80rem" ps-auto-close="true">
+  <div pageslide ps-open="showDiagram" ps-size="80rem" ps-auto-close="true" style="display: none">
     <div style="padding:20px" id="demo-right">
       <br/>
       <br/>
@@ -12,12 +12,18 @@
     </div>
   </div>
 
-  <div id="done-container" ng-hide="!showDoneMessage">
+  <div id="done-container" ng-hide="!showDoneMessage" >
     <h3>You are done. Thank you for your help!</h3>
     <a href="#" class="text-center register" ng-href="#!/survey-overview">Back</a>
   </div>
 
-  <div id="learning-container" ng-hide="!learningContainerVisible">
+  <div id="loading" ng-hide="learningContainerVisible" style="text-align: center; width: 200px; margin: 0 auto; ">
+    <h3>Loading</h3>
+    <img src="../../assets/img/loading.gif" alt="Loading..."  />
+  </div>
+
+
+  <div id="learning-container" ng-hide="!learningContainerVisible" >
     <h3>Please move the data record to one cluster (up or down) with the more relevant data</h3>
     <div class="panel panel-primary">
       <!-- option: could add panel header and content text here -->

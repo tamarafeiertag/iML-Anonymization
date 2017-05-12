@@ -35,12 +35,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     //let dataResource = $resource('assets/testdata/marital-status-k2.json');
     //let data = dataResource.query();
 
-    console.log("AnonymizationJS:");
-    console.dir($A);
-
-    console.log("GraphiniusJS:");
-    console.dir($G);
-
     let basename = algoConfig.basename;
     let filename_originalData = algoConfig.originalData;
 
@@ -67,29 +61,35 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
     return {
       createSan: function(config) {
-        let san = new $A.algorithms.Sangreea("sangreea", config);
-        //console.log("SaNGreeA Algorithm:");
-        //console.log(san);
+        let defer = $q.defer();
 
-        // Inspect the internal graph => should be empty
-        //console.log("Graph Stats BEFORE Instantiation:");
-        //console.log(san._graph.getStats());
+        setTimeout(function() {
+            let san = new $A.algorithms.Sangreea("sangreea", config);
+            //console.log("SaNGreeA Algorithm:");
+            //console.log(san);
 
-        // Uff, this feels like 2012 at the latest....
-        $.ajaxSetup({
-          async: false
-        });
+            // Inspect the internal graph => should be empty
+            //console.log("Graph Stats BEFORE Instantiation:");
+            //console.log(san._graph.getStats());
 
-        // Load Generalization hierarchies
-        [workclass_file, nat_country_file, sex_file, race_file, marital_file,
-          relationship_file, occupation_file, income_file].forEach( function(file) {
-          var json = $.getJSON(file).responseText;
-          //console.log(json);
-          let strgh = new $A.genHierarchy.Category(json);
-          san.setCatHierarchy(strgh._name, strgh);
-        });
+            $.ajaxSetup({
+                async: false
+            });
 
-        return san;
+            // Load Generalization hierarchies
+            [workclass_file, nat_country_file, sex_file, race_file, marital_file,
+                relationship_file, occupation_file, income_file].forEach(function (file) {
+                var json = $.getJSON(file).responseText;
+                //console.log(json);
+                let strgh = new $A.genHierarchy.Category(json);
+                san.setCatHierarchy(strgh._name, strgh);
+            });
+
+            defer.resolve(san);
+        }, 0);
+
+        return defer.promise;
+
       },
 
       getWeightsArray: function(custom_weights) {
@@ -181,7 +181,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let promise_randomWeightClusters2 = this.calculateRandomClusters(k, fixedIndex);
 
         $q.all([promise_randomWeightClusters1, promise_randomWeightClusters2]).then(function (values) {
-
           let clusters1 = values[0][0]; //randomWeightClusters1 clusters
           let weights1 = values[0][1];  //randomWeightClusters1 weights
           let clusters2 = values[1][0]; //randomWeightClusters2 clusters
@@ -260,46 +259,50 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
        *  The first node of the first cluster will be the one with fixedIndex
        */
       calculateRandomClusters: function(k, fixedIndex) {
-        let deferred = $q.defer();
 
         // get global config data of config.js
         let config = anonymizationConfig;
         config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
         config.K_FACTOR = k;
 
-        let san = this.createSan(config);
+        let defer = $q.defer();
+        //this returns a promise, as we call a return in then block
+        this.createSan(config).then(function(san) {
 
-        // Remotely read the original data and anonymize
-        csvIn.readCSVFromURL(url, function(csv) {
-          let randNrs = [];
-          while(randNrs.length < config.NR_DRAWS - 1){
-            let randomnumber = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
-            if(randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0)
-              continue;
-            randNrs[randNrs.length] = randomnumber;
-          }
+            // Remotely read the original data and anonymize
+          csvIn.readCSVFromURL(url, function (csv) {
+              let randNrs = [];
+              while (randNrs.length < config.NR_DRAWS - 1) {
+                  let randomnumber = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
+                  if (randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0)
+                      continue;
+                  randNrs[randNrs.length] = randomnumber;
+              }
 
-          let shortCSV = [];
+              let shortCSV = [];
 
-          shortCSV.push(csv[0]);      // header
-          shortCSV.push(csv[fixedIndex]);
-          for(let a in randNrs)
-            shortCSV.push(csv[randNrs[a]]);
-          //console.log("shortCSV", shortCSV);
+              shortCSV.push(csv[0]);      // header
+              shortCSV.push(csv[fixedIndex]);
+              for (let a in randNrs)
+                  shortCSV.push(csv[randNrs[a]]);
+              //console.log("shortCSV", shortCSV);
 
-          san.instantiateGraph(shortCSV, false );
+              san.instantiateGraph(shortCSV, false);
 
-          // Inspect the internal graph again => should be populated now
-          //console.log("Graph Stats AFTER Instantiation:");
-          //console.log(san._graph.getStats());
+              // Inspect the internal graph again => should be populated now
+              //console.log("Graph Stats AFTER Instantiation:");
+              //console.log(san._graph.getStats());
 
-          // let's run the whole anonymization inside the browser
-          san.anonymizeGraph();
+              // let's run the whole anonymization inside the browser
+              san.anonymizeGraph();
 
-          deferred.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR], san]);
+              defer.resolve( [san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR], san]);
+          });
+
         });
 
-        return deferred.promise;
+        return defer.promise;
+
       },
 
       saveUserDecisionsAndCalculateNewWeights: function (userDecisions) {

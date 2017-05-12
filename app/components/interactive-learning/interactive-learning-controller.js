@@ -7,7 +7,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
-    $scope.learningContainerVisible = true;
+    $scope.learningContainerVisible = false;
     $scope.showDoneMessage = false;
 
     $scope.formatNumber = function(i) {
@@ -17,6 +17,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.columnNames = ["age", "education-num","hours-per-week", "workclass", "native-country", "sex", "race",
       "relationship","occupation","income", "marital-status"];
 
+    $scope.loading = true;
     $scope.allCases = [];
     $scope.userDecisions = [];
     $scope.dataTop = [];
@@ -36,6 +37,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.dataBottom = [];
       $scope.center = {};
       if ($scope.allCases.length > currentRecordIdx) {
+        $scope.learningContainerVisible = false;
         $scope.center = $scope.allCases[currentRecordIdx].dataPoint._features;
         $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
         $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
@@ -43,7 +45,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.dataBottom.push($scope.allCases[currentRecordIdx].cluster2);
         $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
         $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
+        $scope.learningContainerVisible = true;
       } else if ($scope.currentRound < (algoConfig.maxKFactor - algoConfig.startKFactor)) {
+        $scope.learningContainerVisible = false;
         $scope.currentRound += 1;
         $scope.currentKFactor += 1;
         currentRecordIdx = 0;
@@ -53,6 +57,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.learningContainerVisible = false;
         $scope.showDoneMessage = true;
       }
+
     };
 
     $scope.retrieveNewCases = function () {
