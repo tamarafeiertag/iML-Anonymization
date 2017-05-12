@@ -7,6 +7,7 @@ angular.module('myApp', [
   'myApp.routes',
   'myApp.login',
   'myApp.sliders',
+  'myApp.servercom',
   'myApp.interactive-learning',
   'myApp.version'
 ]).
