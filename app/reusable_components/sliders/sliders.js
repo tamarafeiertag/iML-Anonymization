@@ -21,7 +21,7 @@ angular.module('iMLApp.sliders', [])
     ])
 
 
-    .directive('slidergroup',  ['slidersDatabase', function(sliderDB) {
+    .directive('slidergroup',  ['slidersDatabase',  function(sliderDB) {
 
         return {
             replace: true,
@@ -31,24 +31,44 @@ angular.module('iMLApp.sliders', [])
                 //WARNING: Do not change the order of the function declaration, otherwise the implementation does not work anymore
                 /***
                  * Adjust all values of sliders including the oldValues in the given groupname. Does not check on to high or to low values.
-                 * @param group The groupname object which contains the sliders
-                 * @param newValue the value to be assigned
-                 * @param relative if true, += is used
-                 * @param exceptionList Which sliders should not be affected ( = [slider objects])
+                 * @param group The group object which contains the sliders
+                 * @param changeDifference the negative value of the change of the one slider which got changed
+                 * @param userInput sets all userInput values, to show them correctly on the HTML. Does no calculation
                  */
-                $scope.changeValueOfAllSliders = function(group, initPoolValue, exceptionList) {
-                    let lclGroup = $.extend(true, {}, group);
-                    let pool = initPoolValue;
+                $scope.changeValueOfAllSliders = function(group, changeDifference, userInput) {
 
-                    while(pool != 0){
-                        let singleVal = pool / (len(group) - len(exceptionList));
+                    //avoid watch reaction to our changes
 
-                        for()
+                    if(userInput) { //initial set
+                        if(!changeDifference)
+                            return;
+
+                        for(let name in group) {
+                            if(name.startsWith("_"))
+                                continue;
+
+                            group[name].userInput = parseFloat(changeDifference) / parseFloat(group._length);
+                        }
+
+                        return;
+                    }
+
+                    let sum = 0;
+                    for(let name in group) {
+                        if(name.startsWith("_"))
+                            continue;
+
+                        sum += group[name].userInput;
+                    }
+
+                    for(let name in group) {
+                        if(name.startsWith("_"))
+                            continue;
+
+                        group[name].value = group[name].userInput / sum;
                     }
 
 
-
-                    group = lclGroup;
                 };
 
 
@@ -57,18 +77,15 @@ angular.module('iMLApp.sliders', [])
                  * @param sliderId
                  */
                 $scope.valueChanged = function (sliderId) {
-
                     var slider = sliderDB.sliders[sliderId];
                     var group = sliderDB.sliderGroups[slider.groupName];
-                    var difference = slider.value - slider.oldValue;
-
-                    $scope.changeValueOfAllSliders(group, -difference,  [slider]);
-
-                    slider.value = slider.oldValue = parseFloat(slider.value);
-
+                    $('#' + sliderId).
+                    $scope.changeValueOfAllSliders(group);
                 };
 
-
+                /**************************************************************************************
+                 * CREATE THE SLIDERS
+                 */
                 if(!attr.groupname)
                     attr.groupname = guid();
 
@@ -77,9 +94,8 @@ angular.module('iMLApp.sliders', [])
                     sliderDB.sliderGroups[attr.groupname]['_length'] = 0;
                 }
 
-                console.log(attr.slidernames, attr.slidernames.split(","));
 
-                for(name in attr.slidernames.split(",")) {
+                for(name of attr.slidernames.split(",")) {
                     attr.name = name.trim();
                     var i = 0;
                     var checkName = attr.name;
@@ -91,15 +107,16 @@ angular.module('iMLApp.sliders', [])
 
                     var lenGroup = sliderDB.sliderGroups[attr.groupname]['_length'];
                     var value = 1 / (lenGroup + 1);
-
                     var slider = {
                         name: attr.name,
+                        noTextBox: parseInt(attr.notextbox),
                         groupName: attr.groupname,
                         id: guid(),
-                        max: 1,
-                        min: 0,
+                        max: 1.0,
+                        min: 0.0,
                         oldValue: value,
                         value: value,
+                        userInput: value,
                         /**
                          * Returns true, if the value of this slider is lower equal then its set minimum
                          * @returns {boolean}
@@ -142,9 +159,8 @@ angular.module('iMLApp.sliders', [])
                     sliderDB.sliderGroups[attr.groupname]['_length']++;
                     sliderDB.sliders[slider.id] = slider;
 
-                    $scope.changeValueOfAllSliders(sliderDB.sliderGroups[attr.groupname], value);
+                    $scope.changeValueOfAllSliders(sliderDB.sliderGroups[attr.groupname], 1.0, true);
                     $scope.sliders = sliderDB.sliders;
-                    console.log('slider registered', sliderDB);
                 }
 
             },

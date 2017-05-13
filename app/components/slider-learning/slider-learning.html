@@ -7,7 +7,7 @@
     </div>
 
 
-    <div id="learning-container" ng-hide="!learningContainerVisible" >
+    <div id="sliderlearning-container" ng-hide="!learningContainerVisible" >
             <!-- thanks to angular js it is not possible to iteratively create this list as in this case all generate sliders would have some kind of
             same internal id. we need to do it by hand... Who the fuck thought that this is just marginally a good idea? -->
             <!-- age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status
@@ -24,6 +24,9 @@
             marital-status: <slider ng-controller="SlidersCtrl" group="learning" name="marital-status" min="0" max="1"></slider>
             -->
 
-            <slidergroup ng-controller="SlidersCtrl" groupname="learning" slidernames="age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status"></slidergroup>
+            <slidergroup ng-controller="SlidersCtrl"
+                         groupname="learning"
+                         slidernames="age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status"
+                        noTextbox="1"></slidergroup>
     </div>
 </div>
