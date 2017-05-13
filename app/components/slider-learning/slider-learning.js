@@ -1,21 +1,23 @@
 angular.module('iMLApp.slider-learning', [])
 
-.service('sliderLearningService', function() {
-    return {
-        fieldNames: ['age', 'education-num', 'hours-per-week', 'workclass', 'native-country', 'sex', 'race', 'relationship', 'occupation', 'income', 'marital-status'],
-        
-    };
-})
-.controller('SLCtrl',  ['$scope', 'sliderLearningService',
-    function ($scope, sliderLearningService) {
-        // observe changes in attribute - could also be scope.$watch
+
+.controller('SLCtrl',  ['$scope', '$location',
+    function ($scope, $location) {
 
         $scope.learningContainerVisible = true;
 
-        $scope.sliderNames = sliderLearningService.fieldNames;
-        $scope.slidergroup = "learning";
+        let pathParts = $location.$$path.split("/");
+        $scope.currentSID = pathParts[pathParts.length - 1];
+
+        console.log($scope.currentSID);
 
 
+        $scope.redirectToSurvey = function(sid) {
+
+            $location.path('/interactive-learning/'+ sid);
+        };
 
     }
+
+
 ]);

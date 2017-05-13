@@ -23,7 +23,7 @@ angular.module('iMLApp.routes', ['ngRoute'])
       templateUrl: 'components/interactive-learning/interactive-learning.html',
       controller: 'ILCtrl'
     })
-  .when('/sliders/:sid', {
+  .when('/slider-learning/:sid', {
             templateUrl: 'components/slider-learning/slider-learning.html',
             controller: 'SlidersCtrl'
         })

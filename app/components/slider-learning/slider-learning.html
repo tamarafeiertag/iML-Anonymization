@@ -1,5 +1,6 @@
 <div id="sliderlearner" ng-controller="SLCtrl">
 
+        <h3 > Please set the importance of the single features for this study</h3>
 
     <div id="loading" ng-hide="learningContainerVisible" style="text-align: center; width: 105px; margin: 0 auto; ">
         <h3>Loading</h3>
@@ -8,25 +9,17 @@
 
 
     <div id="sliderlearning-container" ng-hide="!learningContainerVisible" >
-            <!-- thanks to angular js it is not possible to iteratively create this list as in this case all generate sliders would have some kind of
-            same internal id. we need to do it by hand... Who the fuck thought that this is just marginally a good idea? -->
-            <!-- age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status
-            age: <slider ng-controller="SlidersCtrl" group="learning" name="age" min="0" max="1"></slider>
-            education-num: <slider ng-controller="SlidersCtrl" group="learning" name="age" min="0" max="1"></slider>
-            hours-per-week: <slider ng-controller="SlidersCtrl" group="learning" name="hours-per-week" min="0" max="1"></slider>
-            workclass: <slider ng-controller="SlidersCtrl" group="learning" name="workclass" min="0" max="1"></slider>
-            native-country: <slider ng-controller="SlidersCtrl" group="learning" name="native-country" min="0" max="1"></slider>
-            sex: <slider ng-controller="SlidersCtrl" group="learning" name="sex" min="0" max="1"></slider>
-            race: <slider ng-controller="SlidersCtrl" group="learning" name="race" min="0" max="1"></slider>
-            relationship: <slider ng-controller="SlidersCtrl" group="learning" name="relationship" min="0" max="1"></slider>
-            occupation: <slider ng-controller="SlidersCtrl" group="learning" name="occupation" min="0" max="1"></slider>
-            income: <slider ng-controller="SlidersCtrl" group="learning" name="income" min="0" max="1"></slider>
-            marital-status: <slider ng-controller="SlidersCtrl" group="learning" name="marital-status" min="0" max="1"></slider>
-            -->
 
-            <slidergroup ng-controller="SlidersCtrl"
-                         groupname="learning"
-                         slidernames="age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status"
-                        noTextbox="1"></slidergroup>
+        <slidergroup ng-controller="SlidersCtrl"
+                     groupname="learning"
+                     slidernames="age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status"
+                     noTextbox="1">
+
+        </slidergroup>
+    </div>
+
+
+    <div class="col-xs-11" id="SL-next-container">
+        <button ng-click="redirectToSurvey(currentSID)" class="btn btn-primary">Next &gt;</button>
     </div>
 </div>

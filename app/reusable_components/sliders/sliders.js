@@ -5,23 +5,16 @@
 'use strict';
 
 angular.module('iMLApp.sliders', [])
-
-    .service('slidersDatabase', function() {
-
-        return {
-            sliderGroups: {},
-            sliders: {}
-        };
-    })
-    .controller('SlidersCtrl',  ['$scope', 'slidersDatabase',
-        function ($scope, slidersDatabase) {
+    .controller('SlidersCtrl',  ['$scope',
+        function ($scope) {
             // observe changes in attribute - could also be scope.$watch
-
+            $scope.sliderGroups = {};
+            $scope.sliders = {};
         }
     ])
 
 
-    .directive('slidergroup',  ['slidersDatabase',  function(sliderDB) {
+    .directive('slidergroup',  [  function($scope) {
 
         return {
             replace: true,
@@ -77,9 +70,8 @@ angular.module('iMLApp.sliders', [])
                  * @param sliderId
                  */
                 $scope.valueChanged = function (sliderId) {
-                    var slider = sliderDB.sliders[sliderId];
-                    var group = sliderDB.sliderGroups[slider.groupName];
-                    $('#' + sliderId).
+                    var slider = $scope.sliders[sliderId];
+                    var group = $scope.sliderGroups[slider.groupName];
                     $scope.changeValueOfAllSliders(group);
                 };
 
@@ -89,9 +81,9 @@ angular.module('iMLApp.sliders', [])
                 if(!attr.groupname)
                     attr.groupname = guid();
 
-                if(!sliderDB.sliderGroups[attr.groupname]) {
-                    sliderDB.sliderGroups[attr.groupname] = {};
-                    sliderDB.sliderGroups[attr.groupname]['_length'] = 0;
+                if(!$scope.sliderGroups[attr.groupname]) {
+                    $scope.sliderGroups[attr.groupname] = {};
+                    $scope.sliderGroups[attr.groupname]['_length'] = 0;
                 }
 
 
@@ -99,13 +91,13 @@ angular.module('iMLApp.sliders', [])
                     attr.name = name.trim();
                     var i = 0;
                     var checkName = attr.name;
-                    while (sliderDB.sliderGroups[attr.groupname][checkName])
+                    while ($scope.sliderGroups[attr.groupname][checkName])
                         checkName = attr.name + (i++).toString();
 
                     attr.name = checkName;
                     $scope.attributes = attr;
 
-                    var lenGroup = sliderDB.sliderGroups[attr.groupname]['_length'];
+                    var lenGroup = $scope.sliderGroups[attr.groupname]['_length'];
                     var value = 1 / (lenGroup + 1);
                     var slider = {
                         name: attr.name,
@@ -155,12 +147,11 @@ angular.module('iMLApp.sliders', [])
                         }
                     };
 
-                    sliderDB.sliderGroups[attr.groupname][attr.name] = slider;
-                    sliderDB.sliderGroups[attr.groupname]['_length']++;
-                    sliderDB.sliders[slider.id] = slider;
+                    $scope.sliderGroups[attr.groupname][attr.name] = slider;
+                    $scope.sliderGroups[attr.groupname]['_length']++;
+                    $scope.sliders[slider.id] = slider;
 
-                    $scope.changeValueOfAllSliders(sliderDB.sliderGroups[attr.groupname], 1.0, true);
-                    $scope.sliders = sliderDB.sliders;
+                    $scope.changeValueOfAllSliders($scope.sliderGroups[attr.groupname], 1.0, true);
                 }
 
             },
