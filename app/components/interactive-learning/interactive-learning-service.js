@@ -143,14 +143,15 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       /**
        * One case is a triple of cluster1 (top), center datapoint and cluster2 (bottom)
        * @param k factor
+       * @param nrOfCases number of cases to be retrieved
        */
-      getCases: function(k) {
+      getCases: function(k, nrOfCases) {
         let deferred = $q.defer();
 
         let cases;
         let promises = [];
 
-        for (let i = 0; i < algoConfig.nrOfCases; i++) {
+        for (let i = 0; i < nrOfCases; i++) {
           let promise = this.getCase(k);
           promises.push(promise);
         }
@@ -158,7 +159,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         $q.all(promises).then(function(data) {
           cases = data;
           deferred.resolve(cases);
-          console.log("cases ", cases);
         });
 
         return deferred.promise;

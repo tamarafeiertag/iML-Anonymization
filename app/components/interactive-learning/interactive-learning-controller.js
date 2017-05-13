@@ -47,6 +47,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
         $scope.learningContainerVisible = true;
       } else if ($scope.currentRound < (algoConfig.maxKFactor - algoConfig.startKFactor)) {
+        console.log("user decisions for this round: ", $scope.userDecisions);
         $scope.learningContainerVisible = false;
         $scope.currentRound += 1;
         $scope.currentKFactor += 1;
@@ -61,9 +62,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     };
 
     $scope.retrieveNewCases = function () {
-      var promise_case = ILService.getCases($scope.currentKFactor);
+      var promise_case = ILService.getCases($scope.currentKFactor, algoConfig.nrOfCases);
 
       promise_case.then(function (data) {
+        console.log(algoConfig.nrOfCases, " new cases: ", data);
         $scope.allCases = data;
         $scope.setRecords();
       }, function(reason) {              //error
@@ -113,6 +115,21 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.setRecords();
         $scope.movedDown = false;
         $scope.$digest();
+      });
+    };
+
+    $scope.trash = function () {
+      console.log("[ILCtrl] data record trashed");
+
+      var promise_case = ILService.getCases($scope.currentKFactor, 1);
+
+      promise_case.then(function (data) {
+        currentRecordIdx += 1;      // skips the current case => no user decision
+        $scope.allCases.push(data[0]); //therefore, adds new case
+        $scope.setRecords();
+        console.log("case ", data[0]);
+      }, function(reason) {              //error
+        console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
       });
     };
 
