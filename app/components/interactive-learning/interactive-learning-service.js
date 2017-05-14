@@ -311,43 +311,47 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let sum_of_levels = {};
         let sum_of_ranges = {};
 
-        for (let i = 0; i < userDecisions.length; i++) {
-          for (let level in userDecisions[i].cat_level) {
-            if (!userDecisions[i].cat_level.hasOwnProperty(level))
-              continue;
-            if (sum_of_levels[level] === undefined)
-              sum_of_levels[level] = 0;
-            sum_of_levels[level] += userDecisions[i].cat_level[level];
+        //Calculate mean of range and cat
+        userDecisions.forEach((dec) => {
+          console.log(dec);
+          for (let level in dec.cat_level) {
+              if (!dec.cat_level.hasOwnProperty(level))
+                  continue;
+              if(sum_of_levels[level] === undefined)
+                  sum_of_levels[level] = 0;
+              //                                                mean                normalize (always the same number)
+              sum_of_levels[level] += dec.cat_level[level] / algoConfig.nrOfCases / dec.datapoint_cat_level[level];
+
           }
-          for (let range in userDecisions[i].cont_range) {
-            if (!userDecisions[i].cont_range.hasOwnProperty(range))
-              continue;
-            if (sum_of_ranges[range] === undefined)
-              sum_of_ranges[range] = 0;
-            sum_of_ranges[range] += Math.max(userDecisions[i].dataPoint._features[range] - userDecisions[i].cont_range[range], 0)
-              / userDecisions[i].dataPoint._features[range];
+
+          for (let range in dec.cont_range) {
+              if (!dec.cont_range.hasOwnProperty(range))
+                  continue;
+
+              if(sum_of_ranges[range] === undefined)
+                  sum_of_ranges[range] = 0;
+
+              //max is used to avoid to go beneath 0
+              //we calculate the amount of anonymization, but we need the importance, thus 1 -
+              sum_of_ranges[range] += (1 - Math.min(dec.cont_range[range] / dec.dataPoint._features[range], 1)) / algoConfig.nrOfCases ;
+
           }
-        }
-        //console.log("sum selected: ", sum_of_levels, sum_of_ranges);
+        });
 
         let total_sum = 0;
+        for(let l in sum_of_levels) {
+          if(!sum_of_levels.hasOwnProperty(l))
+            continue;
 
-        // calculate means of selected
-        for (let level in sum_of_levels) {
-          if (!sum_of_levels.hasOwnProperty(level))
-            continue;
-          sum_of_levels[level] /= algoConfig.nrOfCases;
-          sum_of_levels[level] /= userDecisions[0].datapoint_cat_level[level];
-          total_sum += sum_of_levels[level];
+          total_sum += sum_of_levels[l];
         }
-        for (let range in sum_of_ranges) {
-          if (!sum_of_ranges.hasOwnProperty(range))
-            continue;
-          sum_of_ranges[range] = (1 - sum_of_ranges[range]);
-          sum_of_ranges[range] /= algoConfig.nrOfCases;
-          total_sum += sum_of_ranges[range];
-        }
-        //console.log("mean selected: ", sum_of_levels, sum_of_ranges);
+
+          for(let l in sum_of_ranges) {
+              if(!sum_of_ranges.hasOwnProperty(l))
+                  continue;
+
+              total_sum += sum_of_ranges[l];
+          }
 
         //normalize to a sum of 1 (for weight vectors)
         for (let level in sum_of_levels) {
