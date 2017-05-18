@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.survey-overview.survey-overview-controller', [])
 
-  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope) {
+  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope, FlashService) {
 
     $scope.vm = this;
     $scope.vm.allSurveys = [];
@@ -17,6 +17,7 @@ angular.module('iMLApp.survey-overview.survey-overview-controller', [])
       SurveyService.GetAll()
         .then(function (surveys) {
           $scope.vm.allSurveys = surveys;
+          //FlashService.Success('Please click survey for participation!');
         });
     }
 

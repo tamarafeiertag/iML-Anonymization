@@ -3,13 +3,15 @@
 
     <form class="form-signin">
       <h2 class="form-signin-heading">Please sign in</h2>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" ng-model="viewm.username" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" ng-model="viewm.password" id="inputPassword" class="form-control" placeholder="Password" required="">
+      <label for="inputAge" >Age</label>
+      <input type="number" ng-model="viewm.age" id="inputAge" class="form-control" placeholder="Age" required="required" autofocus="">
       <br/>
-      <button class="btn btn-lg btn-primary btn-block" ng-click="userLogin()" >Sign in</button>
-      <a href="#" class="text-center register" ng-href="#!/register">Register</a>
+      <label for="inputEducation">Highest School Graduation</label>
+      <select id="inputEducation" class="form-control"
+        ng-options="d.description for d in degree"
+        ng-model="viewm.selectedEducation"></select>
+      <br/>
+      <button type="submit" ng-disabled="viewm.age === undefined || viewm.age < 0 || viewm.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
     </form>
 
   </div>
