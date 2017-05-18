@@ -2,7 +2,11 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig) {
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $location) {
+
+    initJSONObject();
+    //TODO example of round add to json
+    addRoundToJSONObject(1, "blabla");
 
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
@@ -58,7 +62,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.learningContainerVisible = false;
         $scope.showDoneMessage = true;
       }
-
     };
 
     $scope.retrieveNewCases = function () {
@@ -159,5 +162,33 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.down();
       }
     };
+
+    function initJSONObject()
+    {
+      $scope.json_object = {};
+      $scope.json_object.user = {};
+      $scope.json_object.user.token = $rootScope.globals.currentUser.token;
+      $scope.json_object.user.education = $rootScope.globals.currentUser.education;
+      $scope.json_object.user.age = $rootScope.globals.currentUser.age;
+      $scope.json_object.user.username = $rootScope.globals.currentUser.username;
+
+      let pathParts = $location.$$path.split("/");
+      $scope.json_object.survey_id = pathParts[pathParts.length - 1];
+
+
+      $scope.json_object.rounds = new Array();
+
+    }
+
+    function addRoundToJSONObject(number, furtherinfos)
+    {
+      $scope.round = {}
+      $scope.round.number = number
+      $scope.round.info = furtherinfos
+
+      $scope.json_object.rounds.push($scope.round)
+
+      console.log(JSON.stringify($scope.json_object, null, 2));
+    }
 
   });

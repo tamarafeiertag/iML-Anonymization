@@ -25,7 +25,7 @@ angular.module('iMLApp.login.login-controller', [])
       })();
 
       $scope.takeSurvey = function () {
-        AuthenticationService.SetInfos($scope.viewm.age, $scope.viewm.degree, (new Date()).getTime());
+        AuthenticationService.SetInfos($scope.viewm.age, $scope.viewm.selectedEducation.description, (new Date()).getTime());
         document.getElementById("menu_options").style.visibility = 'visible';
         $location.path('/survey-overview');
       };
