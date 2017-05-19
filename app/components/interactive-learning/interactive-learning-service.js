@@ -2,29 +2,29 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
-  .factory('Util', function() {
+  .factory('Util', function () {
     return {
-      randomBetween: function(min, max) {
+      randomBetween: function (min, max) {
         var ret = Math.random() * max;
-        while(ret + min > max)
+        while (ret + min > max)
           ret = Math.random() * max;
         return ret + min;
       },
-      shuffle: function(a) {
+      shuffle: function (a) {
         for (let i = a.length; i; i--) {
           let j = Math.floor(Math.random() * i);
           [a[i - 1], a[j]] = [a[j], a[i - 1]];
         }
         return a;
       },
-      generateRandomNumbers: function(max, nrOfNumbers) {
+      generateRandomNumbers: function (max, nrOfNumbers) {
         var r = [];
         var m = max;
-        for(let i = 0; i < nrOfNumbers-1; i++) {
+        for (let i = 0; i < nrOfNumbers - 1; i++) {
           r[i] = this.randomBetween(0, m);
           m -= r[i];
         }
-        r[nrOfNumbers-1] = m;
+        r[nrOfNumbers - 1] = m;
         return this.shuffle(r);
       }
     };
@@ -60,39 +60,39 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       income_file = gen_base + 'incomeGH.json';
 
     return {
-      createSan: function(config) {
+      createSan: function (config) {
         let defer = $q.defer();
 
-        setTimeout(function() {
-            let san = new $A.algorithms.Sangreea("sangreea", config);
-            //console.log("SaNGreeA Algorithm:");
-            //console.log(san);
+        setTimeout(function () {
+          let san = new $A.algorithms.Sangreea("sangreea", config);
+          //console.log("SaNGreeA Algorithm:");
+          //console.log(san);
 
-            // Inspect the internal graph => should be empty
-            //console.log("Graph Stats BEFORE Instantiation:");
-            //console.log(san._graph.getStats());
+          // Inspect the internal graph => should be empty
+          //console.log("Graph Stats BEFORE Instantiation:");
+          //console.log(san._graph.getStats());
 
-            $.ajaxSetup({
-                async: false
-            });
+          $.ajaxSetup({
+            async: false
+          });
 
-            // Load Generalization hierarchies
-            [workclass_file, nat_country_file, sex_file, race_file, marital_file,
-                relationship_file, occupation_file, income_file].forEach(function (file) {
-                var json = $.getJSON(file).responseText;
-                //console.log(json);
-                let strgh = new $A.genHierarchy.Category(json);
-                san.setCatHierarchy(strgh._name, strgh);
-            });
+          // Load Generalization hierarchies
+          [workclass_file, nat_country_file, sex_file, race_file, marital_file,
+            relationship_file, occupation_file, income_file].forEach(function (file) {
+            var json = $.getJSON(file).responseText;
+            //console.log(json);
+            let strgh = new $A.genHierarchy.Category(json);
+            san.setCatHierarchy(strgh._name, strgh);
+          });
 
-            defer.resolve(san);
+          defer.resolve(san);
         }, 0);
 
         return defer.promise;
 
       },
 
-      getWeightsArray: function(custom_weights) {
+      getWeightsArray: function (custom_weights) {
 
         let weights = [];
         weights.push(custom_weights.range['age']);
@@ -117,16 +117,16 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       getNotAnonymizedRecords: function () {
         let deferred = $q.defer();
 
-        csvIn.readCSVFromURL(url, function(csv) {
+        csvIn.readCSVFromURL(url, function (csv) {
           let records = [];
           let headers = csv[0].split(", ");
           let anonymizedRecordsCount = config.NR_DRAWS;
 
-          for (let recordIdx = 1; recordIdx <= (500-anonymizedRecordsCount); recordIdx++) {
+          for (let recordIdx = 1; recordIdx <= (500 - anonymizedRecordsCount); recordIdx++) {
             let record = csv[anonymizedRecordsCount + recordIdx].split(", ");
-            records[recordIdx-1] = {};
+            records[recordIdx - 1] = {};
             for (let i = 0; i < headers.length; i++) {
-              records[recordIdx-1][headers[i]] = record[i];
+              records[recordIdx - 1][headers[i]] = record[i];
             }
           }
 
@@ -145,7 +145,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
        * @param k factor
        * @param nrOfCases number of cases to be retrieved
        */
-      getCases: function(k, nrOfCases) {
+      getCases: function (k, nrOfCases) {
         let deferred = $q.defer();
 
         let cases;
@@ -156,7 +156,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           promises.push(promise);
         }
 
-        $q.all(promises).then(function(data) {
+        $q.all(promises).then(function (data) {
           cases = data;
           deferred.resolve(cases);
         });
@@ -164,15 +164,15 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         return deferred.promise;
       },
 
-      getCase: function(k) {
+      getCase: function (k) {
 
         let deferred = $q.defer();
 
         /*
-            generate two random clusters
-            cluster1[0] and cluster2[0] is the header.. age, ...
-            cluster1[1] and cluster2[1]is the fixed element (element in the middle)
-            cluster1[2-20] and cluster2[2-20] are random elements of the 500element csv file
+         generate two random clusters
+         cluster1[0] and cluster2[0] is the header.. age, ...
+         cluster1[1] and cluster2[1]is the fixed element (element in the middle)
+         cluster1[2-20] and cluster2[2-20] are random elements of the 500element csv file
          */
 
         // generate the random data point sample index (used for both clusters)
@@ -190,12 +190,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
           // since we have our fixed same data point element at the first index, it can be found
           // in both cluster arrays in the first cluster in the first node (due to anonymization implementation)
-          let cluster_obj ={};
+          let cluster_obj = {};
           cluster_obj.cluster1 = clusters1[0];  //we only need one/first cluster
           cluster_obj.cluster2 = clusters2[0];  //we only need one/first cluster
           cluster_obj.dataPoint = clusters1[0].nodes[0]; //our fixed node is always the first
 
-          if(JSON.stringify(cluster_obj.cluster1.nodes[0]) !== JSON.stringify(cluster_obj.cluster2.nodes[0]))
+          if (JSON.stringify(cluster_obj.cluster1.nodes[0]) !== JSON.stringify(cluster_obj.cluster2.nodes[0]))
             alert("fail");
 
           cluster_obj.weights = weights1;
@@ -208,9 +208,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             for (var feat in san._cat_hierarchies) {
               var cat_gh = san.getCatHierarchy(feat);
               var Cl_feat;
-              if(Cl.gen_feat)
+              if (Cl.gen_feat)
                 Cl_feat = Cl.gen_feat[feat];
-              else if(Cl._features)
+              else if (Cl._features)
                 Cl_feat = Cl._features[feat];
               else
                 alert("fail")
@@ -220,14 +220,15 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             }
             return cl_entry_levels;
           }
+
           // calculate the extended ranges of the features
           function getRangesOfNodeCluster(san, Cl) {
             let cl_entry_levels = [];
             for (var feat in san._cont_hierarchies) {
               var Cl_feat;
-              if(Cl.gen_ranges)
+              if (Cl.gen_ranges)
                 cl_entry_levels[feat] = Cl.gen_ranges[feat][1] - Cl.gen_ranges[feat][0];
-              else if(Cl._features)
+              else if (Cl._features)
                 cl_entry_levels[feat] = Cl._features[feat][1] - Cl._features[feat][0];
               else
                 alert("fail")
@@ -247,7 +248,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           //before: [cluster_obj.dataPoint, cluster_obj.cluster1, cluster_obj.cluster2]
           deferred.resolve(cluster_obj);
 
-        }, function(reason) {              //error
+        }, function (reason) {              //error
           console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
         });
 
@@ -258,48 +259,47 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
        *  Draws nrOfAdditonalDraws + one fixed datarow from csv and calculates the SAN Graph with this small dataset
        *  The first node of the first cluster will be the one with fixedIndex
        */
-      calculateRandomClusters: function(k, fixedIndex) {
+      calculateRandomClusters: function (k, fixedIndex) {
 
         // get global config data of config.js
         let config = anonymizationConfig;
         config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
         config.K_FACTOR = k;
         config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
-        config.REMOTE_TARGET= SurveyService.GetCurrent().remote_target;
+        config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
 
-        console.log(config);
         let defer = $q.defer();
         //this returns a promise, as we call a return in then block
-        this.createSan(config).then(function(san) {
+        this.createSan(config).then(function (san) {
 
-            // Remotely read the original data and anonymize
+          // Remotely read the original data and anonymize
           csvIn.readCSVFromURL(url, function (csv) {
-              let randNrs = [];
-              while (randNrs.length < config.NR_DRAWS - 1) {
-                  let randomnumber = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
-                  if (randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0)
-                      continue;
-                  randNrs[randNrs.length] = randomnumber;
-              }
+            let randNrs = [];
+            while (randNrs.length < config.NR_DRAWS - 1) {
+              let randomnumber = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
+              if (randNrs.indexOf(randomnumber) > -1 || randomnumber === fixedIndex || randomnumber === 0)
+                continue;
+              randNrs[randNrs.length] = randomnumber;
+            }
 
-              let shortCSV = [];
+            let shortCSV = [];
 
-              shortCSV.push(csv[0]);      // header
-              shortCSV.push(csv[fixedIndex]);
-              for (let a in randNrs)
-                  shortCSV.push(csv[randNrs[a]]);
-              //console.log("shortCSV", shortCSV);
+            shortCSV.push(csv[0]);      // header
+            shortCSV.push(csv[fixedIndex]);
+            for (let a in randNrs)
+              shortCSV.push(csv[randNrs[a]]);
+            //console.log("shortCSV", shortCSV);
 
-              san.instantiateGraph(shortCSV, false);
+            san.instantiateGraph(shortCSV, false);
 
-              // Inspect the internal graph again => should be populated now
-              //console.log("Graph Stats AFTER Instantiation:");
-              //console.log(san._graph.getStats());
+            // Inspect the internal graph again => should be populated now
+            //console.log("Graph Stats AFTER Instantiation:");
+            //console.log(san._graph.getStats());
 
-              // let's run the whole anonymization inside the browser
-              san.anonymizeGraph();
+            // let's run the whole anonymization inside the browser
+            san.anonymizeGraph();
 
-              defer.resolve( [san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR], san]);
+            defer.resolve([san._clusters, anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR], san]);
           });
 
         });
@@ -315,45 +315,45 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let sum_of_ranges = {};
 
         //Calculate mean of range and cat
-        userDecisions.forEach((dec) => {
+        userDecisions.forEach((dec) = > {
           console.log(dec);
           for (let level in dec.cat_level) {
-              if (!dec.cat_level.hasOwnProperty(level))
-                  continue;
-              if(sum_of_levels[level] === undefined)
-                  sum_of_levels[level] = 0;
-              //                                                mean                normalize (always the same number)
-              sum_of_levels[level] += dec.cat_level[level] / algoConfig.nrOfCases / dec.datapoint_cat_level[level];
+            if (!dec.cat_level.hasOwnProperty(level))
+              continue;
+            if (sum_of_levels[level] === undefined)
+              sum_of_levels[level] = 0;
+            //                                                mean                normalize (always the same number)
+            sum_of_levels[level] += dec.cat_level[level] / algoConfig.nrOfCases / dec.datapoint_cat_level[level];
 
           }
 
           for (let range in dec.cont_range) {
-              if (!dec.cont_range.hasOwnProperty(range))
-                  continue;
+            if (!dec.cont_range.hasOwnProperty(range))
+              continue;
 
-              if(sum_of_ranges[range] === undefined)
-                  sum_of_ranges[range] = 0;
+            if (sum_of_ranges[range] === undefined)
+              sum_of_ranges[range] = 0;
 
-              //max is used to avoid to go beneath 0
-              //we calculate the amount of anonymization, but we need the importance, thus 1 -
-              sum_of_ranges[range] += (1 - Math.min(dec.cont_range[range] / dec.dataPoint._features[range], 1)) / algoConfig.nrOfCases ;
+            //max is used to avoid to go beneath 0
+            //we calculate the amount of anonymization, but we need the importance, thus 1 -
+            sum_of_ranges[range] += (1 - Math.min(dec.cont_range[range] / dec.dataPoint._features[range], 1)) / algoConfig.nrOfCases;
 
           }
         });
 
         let total_sum = 0;
-        for(let l in sum_of_levels) {
-          if(!sum_of_levels.hasOwnProperty(l))
+        for (let l in sum_of_levels) {
+          if (!sum_of_levels.hasOwnProperty(l))
             continue;
 
           total_sum += sum_of_levels[l];
         }
 
-        for(let l in sum_of_ranges) {
-            if(!sum_of_ranges.hasOwnProperty(l))
-                continue;
+        for (let l in sum_of_ranges) {
+          if (!sum_of_ranges.hasOwnProperty(l))
+            continue;
 
-            total_sum += sum_of_ranges[l];
+          total_sum += sum_of_ranges[l];
         }
 
         //normalize to a sum of 1 (for weight vectors)
@@ -369,7 +369,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         }
         //console.log("norm1: ", sum_of_levels, sum_of_ranges);
 
-        let new_weights = {categorical:{}, range:{}};
+        let new_weights = {categorical: {}, range: {}};
         let old_weights = anonymizationConfig['GEN_WEIGHT_VECTORS'][anonymizationConfig.VECTOR];
 
         // calculate differences to old weights
@@ -378,21 +378,20 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             continue;
           sum_of_levels[weight] -= old_weights['categorical'][weight];
           new_weights['categorical'][weight] = old_weights['categorical'][weight]
-            + (sum_of_levels[weight]/(algoConfig.maxKFactor - algoConfig.startKFactor));
+            + (sum_of_levels[weight] / (algoConfig.maxKFactor - algoConfig.startKFactor));
         }
         for (let weight in old_weights['range']) {
           if (!old_weights['range'].hasOwnProperty(weight))
             continue;
           sum_of_ranges[weight] -= old_weights['range'][weight];
           new_weights['range'][weight] = old_weights['range'][weight]
-            + (sum_of_ranges[weight]/(algoConfig.maxKFactor - algoConfig.startKFactor));
+            + (sum_of_ranges[weight] / (algoConfig.maxKFactor - algoConfig.startKFactor));
         }
 
         anonymizationConfig['GEN_WEIGHT_VECTORS']['weights'] = new_weights;
         anonymizationConfig['VECTOR'] = 'weights';
 
         console.log("our new weights are: ", new_weights);
-      },
-
+      }
     }
   });

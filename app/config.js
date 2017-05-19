@@ -19,7 +19,7 @@ angular.module('iMLApp.config', [])
       ],
       gen_base: 'assets/genHierarchies/',
       nrOfCases: 1,  //number of triples per k factor
-      startKFactor: 7,
+      startKFactor: 2,
       maxKFactor: 7
     }
   )

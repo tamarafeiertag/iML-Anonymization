@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $location) {
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state) {
 
     initJSONObject();
     //TODO example of round add to json
@@ -13,7 +13,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.showTooltipSecond = false;
     $scope.learningContainerVisible = false;
     $scope.showLoading = true;
-    $scope.showDoneMessage = false;
 
     $scope.formatNumber = function(i) {
       return Math.round(i * 10000)/10000;
@@ -64,8 +63,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.retrieveNewCases();
       } else {
         $scope.learningContainerVisible = false;
-        $scope.showDoneMessage = true;
         $scope.showLoading = false;
+        $state.go('summary');
       }
     };
 
@@ -168,6 +167,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       }
     };
 
+
+    //TODO Christine: name differently (what is JSON supposed to mean?)
     function initJSONObject()
     {
       $scope.json_object = {};
@@ -177,14 +178,15 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.json_object.user.age = $rootScope.globals.currentUser.age;
       $scope.json_object.user.username = $rootScope.globals.currentUser.username;
 
-      let pathParts = $location.$$path.split("/");
-      $scope.json_object.survey_id = pathParts[pathParts.length - 1];
+      //let pathParts = $location.$$path.split("/");
+     // $scope.json_object.survey_id = pathParts[pathParts.length - 1];
 
 
       $scope.json_object.rounds = new Array();
 
     }
 
+    //TODO Christine: name differently (what is JSON supposed to mean?)
     function addRoundToJSONObject(number, furtherinfos)
     {
       $scope.round = {}
