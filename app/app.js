@@ -11,6 +11,8 @@ angular.module('iMLApp', [
   'iMLApp.interactive-learning',
   'iMLApp.slider-learning',
   'iMLApp.survey-overview',
+  'iMLApp.services.survey-service',
+  'iMLApp.summary',
   'iMLApp.version',
   'iMLApp.register',
   'iMLApp.sliders',

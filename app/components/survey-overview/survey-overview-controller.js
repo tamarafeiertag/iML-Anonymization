@@ -22,6 +22,10 @@ angular.module('iMLApp.survey-overview.survey-overview-controller', [])
     }
 
   $scope.redirectToSurvey = function(sid) {
+
+    if(! SurveyService.SetId(sid))
+      return;
+
     $location.path('/slider-learning/' + sid);
   };
-  });
+});

@@ -30,7 +30,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     };
   })
 
-  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, algoConfig) {
+  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, SurveyService, algoConfig) {
     //use $resource later for retrieval from webservice
     //let dataResource = $resource('assets/testdata/marital-status-k2.json');
     //let data = dataResource.query();
@@ -96,7 +96,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
         let weights = [];
         weights.push(custom_weights.range['age']);
-        weights.push(0.0); //space for education-num
+        weights.push((custom_weights.range['education-num']) ? custom_weights.range['education-num'] : 0.0);
         weights.push(custom_weights.range['hours-per-week']);
         weights.push(custom_weights.categorical['workclass']);
         weights.push(custom_weights.categorical['native-country']);
@@ -104,8 +104,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         weights.push(custom_weights.categorical['race']);
         weights.push(custom_weights.categorical['relationship']);
         weights.push(custom_weights.categorical['occupation']);
-        weights.push(custom_weights.categorical['income']);
-        weights.push(custom_weights.categorical['marital-status']);
+        weights.push((custom_weights.categorical['income']) ? custom_weights.categorical['income'] : 0.0);
+        weights.push((custom_weights.categorical['marital-status']) ? custom_weights.categorical['marital-status'] : 0.0);
 
         return weights;
       },
@@ -264,7 +264,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         let config = anonymizationConfig;
         config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
         config.K_FACTOR = k;
+        config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
+        config.REMOTE_TARGET= SurveyService.GetCurrent().remote_target;
 
+        console.log(config);
         let defer = $q.defer();
         //this returns a promise, as we call a return in then block
         this.createSan(config).then(function(san) {
@@ -346,12 +349,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           total_sum += sum_of_levels[l];
         }
 
-          for(let l in sum_of_ranges) {
-              if(!sum_of_ranges.hasOwnProperty(l))
-                  continue;
+        for(let l in sum_of_ranges) {
+            if(!sum_of_ranges.hasOwnProperty(l))
+                continue;
 
-              total_sum += sum_of_ranges[l];
-          }
+            total_sum += sum_of_ranges[l];
+        }
 
         //normalize to a sum of 1 (for weight vectors)
         for (let level in sum_of_levels) {
@@ -391,56 +394,5 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         console.log("our new weights are: ", new_weights);
       },
 
-      //deprecated
-      getAnonymizedRecords: function () {
-        let san = this.createSan(config);
-
-        let deferred = $q.defer();
-
-        // Remotely read the original data and anonymize
-        csvIn.readCSVFromURL(url, function(csv) {
-          //console.log("File URL ANON: " + url);
-          //console.log("File length ANON in total rows:");
-          //console.log(csv.length);
-          //console.log("Headers:");
-          //console.log(csv[0]);
-          //console.log(csv[1]);
-
-          san.instantiateGraph(csv, false );
-          // Inspect the internal graph again => should be populated now
-          console.log("Graph Stats AFTER Instantiation:");
-          console.log(san._graph.getStats());
-
-          // let's run the whole anonymization inside the browser
-          san.anonymizeGraph();
-
-          // let's take a look at the clusters
-          console.log("Clusteres:");
-          console.dir(san._clusters);
-
-          sampleCostCalculation(san);
-          deferred.resolve(san._clusters);
-        });
-
-        //san.outputAnonymizedCSV(output);
-
-
-        function sampleCostCalculation(san) {
-          // Compute costs between some Cluster and some node
-          let cluster = selectRandomCluster(san._clusters);
-          let node = san._graph.getRandomNode();
-
-          function selectRandomCluster(clusters) {
-            return clusters[Math.floor(Math.random()*clusters.length)];
-          }
-
-          console.log("\n Computing cost of generalization between cluster and node:");
-          console.log(cluster);
-          console.log(node);
-          console.log("Cost: " + san.calculateGIL(cluster, node));
-        }
-
-        return deferred.promise;
-      }
     }
   });

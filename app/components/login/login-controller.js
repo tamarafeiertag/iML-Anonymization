@@ -12,10 +12,10 @@ angular.module('iMLApp.login.login-controller', [])
         { id: 4, description: 'Master degree' },
         { id: 5, description: 'Doctoral degree' }];
 
-      document.getElementById("menu_options").style.visibility = 'hidden';
+      //document.getElementById("menu_options").style.visibility = 'hidden';
 
       $scope.viewm = this;
-      $scope.viewm.selectedEducation = $scope.degree[0]
+      $scope.viewm.selectedEducation = $scope.degree[0];
 
       $scope.viewm.userLogin = $scope.userLogin;
 

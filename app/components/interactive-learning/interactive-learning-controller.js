@@ -12,6 +12,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
     $scope.learningContainerVisible = false;
+    $scope.showLoading = true;
     $scope.showDoneMessage = false;
 
     $scope.formatNumber = function(i) {
@@ -42,6 +43,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.center = {};
       if ($scope.allCases.length > currentRecordIdx) {
         $scope.learningContainerVisible = false;
+        $scope.showLoading = true;
         $scope.center = $scope.allCases[currentRecordIdx].dataPoint._features;
         $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
         $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
@@ -49,10 +51,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.dataBottom.push($scope.allCases[currentRecordIdx].cluster2);
         $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
         $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
+        $scope.showLoading = false;
         $scope.learningContainerVisible = true;
       } else if ($scope.currentRound < (algoConfig.maxKFactor - algoConfig.startKFactor)) {
         console.log("user decisions for this round: ", $scope.userDecisions);
         $scope.learningContainerVisible = false;
+        $scope.showLoading = true;
         $scope.currentRound += 1;
         $scope.currentKFactor += 1;
         currentRecordIdx = 0;
@@ -61,6 +65,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       } else {
         $scope.learningContainerVisible = false;
         $scope.showDoneMessage = true;
+        $scope.showLoading = false;
       }
     };
 

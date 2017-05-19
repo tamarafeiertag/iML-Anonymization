@@ -8,8 +8,10 @@
       <br/>
       <label for="inputEducation">Highest School Graduation</label>
       <select id="inputEducation" class="form-control"
-        ng-options="d.description for d in degree"
-        ng-model="viewm.selectedEducation"></select>
+
+        ng-model="viewm.selectedEducation"> <!-- ng-options="d.description for d in degree" -->
+        <option ng-repeat="data in degree" value="{{data.id}}">{{data.description}}</option>
+      </select>
       <br/>
       <button type="submit" ng-disabled="viewm.age === undefined || viewm.age < 0 || viewm.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
     </form>

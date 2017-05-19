@@ -1,40 +1,50 @@
-(function () {
-  'use strict';
+'use strict';
 
-  angular
-    .module('iMLApp')
-    .factory('SurveyService', SurveyService);
+angular.module('iMLApp.services.survey-service',[])
 
-  SurveyService.$inject = ['$timeout', '$filter', '$q'];
-  function SurveyService($timeout, $filter, $q) {
+  .factory('SurveyService', function($timeout, $filter, $q) {
 
-    var service = {};
+    return {
 
-    service.GetAll = GetAll;
-    service.GetById = GetById;
+      currentID: 0,
 
-    return service;
+      surveys: {
+        1: {sid:1, description:"Marital Status", target_column: "marital-status", remote_target: "marital-status"},
+        2: {sid:2, description:"Income", target_column: "income", remote_target: "income"},
+        3: {sid:3, description:"Education", target_column: "education-num", remote_target: "education"}
+      },
 
-    function GetAll() {
-      var deferred = $q.defer();
-      deferred.resolve(getSurveys());
-      return deferred.promise;
-    }
+      GetAll: function(){
+        var deferred = $q.defer();
+        deferred.resolve(this.GetSurveys());
+        return deferred.promise;
+      },
 
-    function GetById(id) {
-      var deferred = $q.defer();
-      var filtered = $filter('filter')(getSurveys(), { id: id });
-      var user = filtered.length ? filtered[0] : null;
-      deferred.resolve(user);
-      return deferred.promise;
-    }
+      GetSurveys: function() {
+        return this.surveys;
+      },
 
-    // private functions
+      GetById: function(id) {
+        if(this.surveys.hasOwnProperty(id))
+          return this.surveys[id];
+        else
+          return undefined;
 
-    function getSurveys() {
-      var surveys = [{sid:1, description:"Study regarding cancer development in the age groupname > 20"}];
+      },
 
-      return surveys;
-    }
-  }
-})();
+      GetCurrent: function (){
+        return this.surveys[this.currentID];
+      },
+
+
+      SetId: function(id) {
+        if(this.surveys.hasOwnProperty(id)) {
+          this.currentID = id;
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+    };
+  });

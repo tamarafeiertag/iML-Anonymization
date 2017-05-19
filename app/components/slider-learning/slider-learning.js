@@ -1,7 +1,7 @@
 angular.module('iMLApp.slider-learning', [])
 
 
-.controller('SLCtrl',  ['$scope', '$location',
+.controller('SLCtrl',
     function ($scope, $location) {
 
         $scope.learningContainerVisible = true;
@@ -9,15 +9,10 @@ angular.module('iMLApp.slider-learning', [])
         let pathParts = $location.$$path.split("/");
         $scope.currentSID = pathParts[pathParts.length - 1];
 
-        console.log($scope.currentSID);
-
-
         $scope.redirectToSurvey = function(sid) {
 
             $location.path('/interactive-learning/'+ sid);
         };
 
-    }
+    });
 
-
-]);
