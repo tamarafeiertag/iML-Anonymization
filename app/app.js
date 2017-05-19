@@ -2,7 +2,6 @@
 
 // Declare app level module which depends on views, components and reusable_components
 angular.module('iMLApp', [
-  'ngRoute',
   'ngResource',
   'ngAnimate',
   'iMLApp.routes',
@@ -19,9 +18,10 @@ angular.module('iMLApp', [
   'pageslide-directive',
   'ngCookies',
   'iMLApp.user-overview'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+]);
+
+  /*.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
   $routeProvider.otherwise({redirectTo: '/login'});
-}]);
+}]);*/

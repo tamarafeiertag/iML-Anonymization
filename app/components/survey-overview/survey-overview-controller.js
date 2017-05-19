@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.survey-overview.survey-overview-controller', [])
 
-  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope, FlashService) {
+  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope, $state, FlashService) {
 
     $scope.vm = this;
     $scope.vm.allSurveys = [];
@@ -23,9 +23,9 @@ angular.module('iMLApp.survey-overview.survey-overview-controller', [])
 
   $scope.redirectToSurvey = function(sid) {
 
-    if(! SurveyService.SetId(sid))
+    if(!SurveyService.SetId(sid))
       return;
 
-    $location.path('/slider-learning/' + sid);
+    $state.go('slider-learning');
   };
 });

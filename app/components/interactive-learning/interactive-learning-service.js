@@ -199,8 +199,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             alert("fail");
 
           cluster_obj.weights = weights1;
-          cluster_obj.cluster1.cost = san1.calculateGIL(cluster_obj.cluster1, cluster_obj.dataPoint);
-          cluster_obj.cluster2.cost = san2.calculateGIL(cluster_obj.cluster2, cluster_obj.dataPoint);
+          //cluster_obj.cluster1.cost = san1.calculateGIL(cluster_obj.cluster1, cluster_obj.dataPoint);
+          //cluster_obj.cluster2.cost = san2.calculateGIL(cluster_obj.cluster2, cluster_obj.dataPoint);
 
           // calculate the level of the features
           function getLevelOfCategoryNodeCluster(san, Cl) {
