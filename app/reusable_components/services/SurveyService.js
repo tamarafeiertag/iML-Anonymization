@@ -6,7 +6,7 @@ angular.module('iMLApp.services.survey-service',[])
 
     return {
 
-      currentID: 0,
+      currentID: 1,
 
       surveys: {
         1: {sid:1, description:"Marital Status", target_column: "marital-status", remote_target: "marital-status"},
