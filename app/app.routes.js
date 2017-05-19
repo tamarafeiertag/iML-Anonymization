@@ -38,12 +38,12 @@ angular.module('iMLApp.routes', ['ui.router'])
         controller: 'UserOverviewCtrl'
       })
       .state('summary', {
-        url: 'summary',
-        templateUrl: 'app/components/summary/summary.html',
+        url: '/summary',
+        templateUrl: 'components/summary/summary.html',
         controller: 'SummaryCtrl'
       });
 
-      $urlRouterProvider.otherwise('/login')
+      $urlRouterProvider.otherwise('/login');
   })
 
   .run(['$rootScope', '$cookies', '$http', '$state',
