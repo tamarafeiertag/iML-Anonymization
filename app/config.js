@@ -18,8 +18,8 @@ angular.module('iMLApp.config', [])
         "target_income"
       ],
       gen_base: 'assets/genHierarchies/',
-      nrOfCases: 1,  //number of triples per k factor
-      startKFactor: 6,
+      nrOfCases: 5,  //number of triples per k factor
+      startKFactor: 2,
       maxKFactor: 7
     }
   )
