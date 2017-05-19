@@ -5,11 +5,17 @@
 'use strict';
 
 angular.module('iMLApp.sliders', [])
-    .controller('SlidersCtrl',  ['$scope',
-        function ($scope) {
+  .service('SlidersService', function() {
+      return {
+            sliderGroups: {},
+            sliders: {}
+      };
+  })
+    .controller('SlidersCtrl',  ['$scope', 'SlidersService',
+        function ($scope, SlidersService) {
             // observe changes in attribute - could also be scope.$watch
-            $scope.sliderGroups = {};
-            $scope.sliders = {};
+            $scope.sliderGroups = SlidersService.sliderGroups;
+            $scope.sliders = SlidersService.sliders;
         }
     ])
 
