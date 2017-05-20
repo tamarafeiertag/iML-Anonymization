@@ -12,7 +12,8 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse" style="visibility: visible" id="menu_options">
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="menu_options"
+             ng-style="{'visibility': $state.$current.toString() === 'login' ? 'hidden' : 'visible'}">
             <ul class="nav navbar-nav navbar-right">
                 <li><a ui-sref="user-overview">{{globals.currentUser.username}} </a>
                 </li>

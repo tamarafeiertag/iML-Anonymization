@@ -13,7 +13,6 @@ angular.module('iMLApp', [
   'iMLApp.services.survey-service',
   'iMLApp.summary',
   'iMLApp.version',
-  'iMLApp.register',
   'iMLApp.sliders',
   'pageslide-directive',
   'ngCookies',

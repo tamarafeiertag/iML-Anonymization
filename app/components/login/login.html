@@ -2,18 +2,17 @@
   <div class="container">
 
     <form class="form-signin">
-      <h2 class="form-signin-heading">Please sign in</h2>
+      <h2 class="form-signin-heading">General Informations:</h2>
       <label for="inputAge" >Age</label>
-      <input type="number" ng-model="viewm.age" id="inputAge" class="form-control" placeholder="Age" required="required" autofocus="">
+      <input type="number" ng-model="context.age" id="inputAge" class="form-control" placeholder="Age" required="required" autofocus="">
       <br/>
       <label for="inputEducation">Highest School Graduation</label>
       <select id="inputEducation" class="form-control"
-
-        ng-model="viewm.selectedEducation"> <!-- ng-options="d.description for d in degree" -->
-        <option ng-repeat="data in degree" value="{{data.id}}">{{data.description}}</option>
+        ng-model="context.selectedEducation"> <!-- ng-options="d.description for d in degree" -->
+        <option ng-repeat="data in context.degrees" value="{{data.id}}">{{data.description}}</option>
       </select>
       <br/>
-      <button type="submit" ng-disabled="viewm.age === undefined || viewm.age < 0 || viewm.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
+      <button type="submit" ng-disabled="context.age === undefined || context.age < 0 || context.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
     </form>
 
   </div>
