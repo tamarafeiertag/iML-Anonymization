@@ -48,7 +48,7 @@ angular.module('iMLApp.routes', ['ui.router'])
 
   .run(['$rootScope', '$cookies', '$http', '$state',
     function ($rootScope, $cookies, $http, $state) {
-      // keep user logged in after page refresh
+      // keep user logged in after page refresh (token is save)
       $rootScope.globals = $cookies.getObject('globals') || {};
       $rootScope.$state = $state;
 
@@ -58,7 +58,7 @@ angular.module('iMLApp.routes', ['ui.router'])
 
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in and trying to access a restricted page
-        var restrictedPage = !($state.includes('login') || $state.includes('register'));
+        var restrictedPage = !($state.includes('login'));
         var loggedIn = $rootScope.globals.currentUser;
 
         if (restrictedPage && !loggedIn) {

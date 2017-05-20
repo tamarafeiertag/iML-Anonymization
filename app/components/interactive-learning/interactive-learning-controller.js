@@ -158,14 +158,14 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.showDiagram = true;
     };
 
-    $scope.keyDown = function(value){
+    angular.element(document).bind('keydown', function(event) {
       //console.log(value.keyCode);
-      if(value.keyCode == 38) { //arrow up key pressed
-        $scope.up();
-      } else if(value.keyCode == 40) { //arrow down key pressed
-        $scope.down();
+      if(event.keyCode == 38) { //arrow up key pressed
+        $("#buttonUp").click()
+      } else if(event.keyCode == 40) { //arrow down key pressed
+        $("#buttonDown").click()
       }
-    };
+    });
 
 
     //TODO Christine: name differently (what is JSON supposed to mean?)

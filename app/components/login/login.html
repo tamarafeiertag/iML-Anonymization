@@ -8,7 +8,7 @@
       <br/>
       <label for="inputEducation">Highest School Graduation</label>
       <select id="inputEducation" class="form-control"
-        ng-model="context.selectedEducation"> <!-- ng-options="d.description for d in degree" -->
+        ng-model="context.selectedEducation">
         <option ng-repeat="data in context.degrees" value="{{data.id}}">{{data.description}}</option>
       </select>
       <br/>

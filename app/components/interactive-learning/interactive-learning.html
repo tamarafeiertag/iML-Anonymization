@@ -1,4 +1,4 @@
-<div id="il" ng-keydown="keyDown($event)" >
+<div id="il">
 
   <div pageslide ps-open="showDiagram" ps-size="80rem" ps-auto-close="true" style="display: none">
     <div style="padding:20px" id="demo-right">
@@ -90,7 +90,7 @@
     </div>
 
     <div class="button-arrow">
-      <button type="button" class="btn btn-default" aria-label="arrow down" data-ng-click="down()"
+      <button type="button" class="btn btn-default" id="buttonDown" aria-label="arrow down" data-ng-click="down()"
               ng-class="{'hover': movedDown}">
         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
       </button>
