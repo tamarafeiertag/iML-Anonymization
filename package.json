@@ -34,6 +34,7 @@
   "dependencies": {
     "angular-resource": "^1.6.3",
     "anonymiationjs": "0.0.5",
+    "anonymizationjs": "0.1.5",
     "browserify": "^14.3.0",
     "watchify": "^3.9.0"
   }
