@@ -27,16 +27,6 @@ angular.module('iMLApp.routes', ['ui.router'])
         templateUrl: 'components/survey-overview/survey-overview.html',
         controller: 'SurveyOverviewCtrl'
       })
-      .state('register', {
-        url: '/register',
-        templateUrl: 'components/login/register.html',
-        controller: 'RegisterCtrl'
-      })
-      .state('user-overview', {
-        url: '/user-overview',
-        templateUrl: 'components/user-overview/user-overview.html',
-        controller: 'UserOverviewCtrl'
-      })
       .state('summary', {
         url: '/summary',
         templateUrl: 'components/summary/summary.html',
