@@ -1,8 +1,13 @@
+/*
+ * Copyright (c) 2017
+ * Feiertag Tamara, Waltl Christine, Wolf Julian
+ */
+
 'use strict';
 
 angular.module('iMLApp.services.data-send-service',[])
 
-  .factory('DataSendService', function($rootScope, SlidersService, SurveyService) {
+  .factory('DataSendService', function($rootScope, SlidersService, SurveyService, ServerCom) {
 
     return {
       sendAnonymizationData: function(csvstring){
@@ -20,7 +25,13 @@ angular.module('iMLApp.services.data-send-service',[])
 
         json_object.csvstring = csvstring;
 
-        console.log(JSON.stringify(json_object, null, 2));
+        let json_string = JSON.stringify(json_object, null, 2);
+        console.log(json_string);
+        ServerCom.send(json_string, function () {
+          console.log("successfully send json file");
+        }, function () {
+          console.log("fail send json file");
+        })
       }
 
     };

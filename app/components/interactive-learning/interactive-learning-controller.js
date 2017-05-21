@@ -61,8 +61,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         // TODO missing calculation ?
         // ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
 
-        // last round finished, send json file
-        DataSendService.sendAnonymizationData(ILService.getCSVStringWithFinalWeights());
+        // last round finished, send final json file
+        ILService.sendFinalJSONFile();
 
         $scope.learningContainerVisible = false;
         $scope.showLoading = false;

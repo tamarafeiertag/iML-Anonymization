@@ -421,7 +421,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         return defer.promise;
       },
 
-      getCSVStringWithFinalWeights: function () {
+      sendFinalJSONFile: function () {
 
         this.getCSVStringWithFinalWeightsPromise().then(
           function (csvstring) {

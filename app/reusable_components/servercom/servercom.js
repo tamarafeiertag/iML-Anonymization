@@ -1,5 +1,6 @@
-/**
- * Created by julian on 28.03.17.
+/*
+ * Copyright (c) 2017
+ * Feiertag Tamara, Waltl Christine, Wolf Julian
  */
 
 'use strict';
@@ -20,10 +21,12 @@ angular.module('myApp.servercom', [])
                     }
                 };
 
+                /*
                 if(serverDatabase.method === "POST")
                     $http.post(config.url , data, config.config).then(onSuccess, onError);
                 else
                     throw new Error("Unimplemented method: " + serverDatabase.method + "; Reason: 'cause F*** you, that's why!");
+                    */
             }
         };
     });

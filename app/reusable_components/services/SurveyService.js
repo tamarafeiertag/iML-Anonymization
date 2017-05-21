@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017
+ * Feiertag Tamara, Waltl Christine, Wolf Julian
+ */
 'use strict';
 
 angular.module('iMLApp.services.survey-service',[])

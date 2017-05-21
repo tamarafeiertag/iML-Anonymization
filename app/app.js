@@ -16,7 +16,8 @@ angular.module('iMLApp', [
   'iMLApp.version',
   'iMLApp.sliders',
   'pageslide-directive',
-  'ngCookies'
+  'ngCookies',
+  'myApp.servercom'
 ]);
 
   /*.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
