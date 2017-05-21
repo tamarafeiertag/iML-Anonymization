@@ -11,12 +11,12 @@ angular.module('iMLApp', [
   'iMLApp.slider-learning',
   'iMLApp.survey-overview',
   'iMLApp.services.survey-service',
+  'iMLApp.services.data-send-service',
   'iMLApp.summary',
   'iMLApp.version',
   'iMLApp.sliders',
   'pageslide-directive',
-  'ngCookies',
-  'iMLApp.user-overview'
+  'ngCookies'
 ]);
 
   /*.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {

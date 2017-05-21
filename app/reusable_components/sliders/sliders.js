@@ -44,8 +44,6 @@ angular.module('iMLApp.sliders', [])
             weights[name].iml = value;
           }
 
-          console.log(weights);
-
           return weights;
         },
 

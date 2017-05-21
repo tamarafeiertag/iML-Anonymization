@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, SurveyService, SlidersService) {
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, DataSendService) {
 
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
@@ -61,9 +61,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         // TODO missing calculation ?
         // ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
 
-        // last round finished, send json object
-        sendResultsAsJSON();
-
+        // last round finished, send json file
+        DataSendService.sendAnonymizationData(ILService.getCSVStringWithFinalWeights());
 
         $scope.learningContainerVisible = false;
         $scope.showLoading = false;
@@ -169,26 +168,5 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $("#buttonDown").click()
       }
     });
-
-
-    //TODO Christine: name differently (what is JSON supposed to mean?)
-    function sendResultsAsJSON()
-    {
-      $scope.json_object = {};
-      $scope.json_object.user = {};
-      $scope.json_object.user.token = $rootScope.globals.currentUser.token;
-      $scope.json_object.user.education = $rootScope.globals.currentUser.education;
-      $scope.json_object.user.age = $rootScope.globals.currentUser.age;
-      $scope.json_object.user.username = $rootScope.globals.currentUser.username;
-
-      $scope.json_object.weights = {};
-      $scope.json_object.weights = SlidersService.getJSONformattedWeightVectors();
-
-      $scope.json_object.survey_id = SurveyService.GetCurrent();
-
-      //$scope.json_object.payload =
-
-      console.log(JSON.stringify($scope.json_object, null, 2));
-    }
 
   });

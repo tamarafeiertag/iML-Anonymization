@@ -61,8 +61,6 @@ angular.module('iMLApp.routes', ['ui.router'])
         var restrictedPage = !($state.includes('login'));
         var loggedIn = $rootScope.globals.currentUser;
 
-        console.log($rootScope.globals.currentUser)
-
         if (restrictedPage && !loggedIn) {
           $location.path('login');
         }

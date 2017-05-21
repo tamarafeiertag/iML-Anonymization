@@ -30,7 +30,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     };
   })
 
-  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, SurveyService, algoConfig) {
+  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, SurveyService, algoConfig, DataSendService) {
     //use $resource later for retrieval from webservice
     //let dataResource = $resource('assets/testdata/marital-status-k2.json');
     //let data = dataResource.query();
@@ -394,8 +394,39 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         console.log("our new weights are: ", new_weights);
       },
 
+      getCSVStringWithFinalWeightsPromise: function () {
+        // get global config data of config.js
+        let config = anonymizationConfig;
+        let k = algoConfig.finalCSVStringKFactor;
+        config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
+        config.K_FACTOR = k;
+        config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
+        config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
+
+        let defer = $q.defer();
+        //this returns a promise, as we call a return in then block
+
+        this.createSan(config).then(function (san) {
+
+          // Remotely read the original data and anonymize
+          csvIn.readCSVFromURL(url, function (csv) {
+            san.instantiateGraph(csv, false);
+            san.anonymizeGraph();
+            let result_string = san.constructAnonymizedCSV();
+            defer.resolve(result_string);
+          });
+
+        });
+
+        return defer.promise;
+      },
+
       getCSVStringWithFinalWeights: function () {
 
+        this.getCSVStringWithFinalWeightsPromise().then(
+          function (csvstring) {
+            DataSendService.sendAnonymizationData(csvstring);
+          });
       }
     }
   });
