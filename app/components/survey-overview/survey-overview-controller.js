@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.survey-overview.survey-overview-controller', [])
 
-  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope, $state, FlashService) {
+  .controller('SurveyOverviewCtrl', function ($location, SurveyService, $scope, $state) {
 
     $scope.vm = this;
     $scope.vm.allSurveys = [];
