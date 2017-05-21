@@ -1,32 +1,29 @@
-/*
- * Copyright (c) 2017
- * Feiertag Tamara, Waltl Christine, Wolf Julian
+/**
+ * Created by julian on 28.03.17.
  */
 
 'use strict';
 
-angular.module('myApp.servercom', [])
+angular.module('iMLApp.servercom', [])
 
-    .service('ServerCom', function() {
+    .service('ServerCom', function($http) {
 
         return {
             send: function (data, onSuccess, onError) {
 
                 let config= {
                     url: 'http://servergraz.ddns.net:3000',
-                        method: 'POST',
+                    method: 'POST',
                     config: {
                         headers: {
                             'Content-Type': 'application/json'}
                     }
                 };
 
-                /*
-                if(serverDatabase.method === "POST")
+                if(config.method === "POST")
                     $http.post(config.url , data, config.config).then(onSuccess, onError);
                 else
-                    throw new Error("Unimplemented method: " + serverDatabase.method + "; Reason: 'cause F*** you, that's why!");
-                    */
+                    throw new Error("Unimplemented method: " + config.method + "; Reason: 'cause F*** you, that's why!");
             }
         };
     });
