@@ -18,6 +18,5 @@ angular.module('iMLApp.slider-learning', [])
         $scope.columnString = $scope.columns.join(",");
     }
 
-    console.log($scope);
 });
 
