@@ -1,17 +1,5 @@
 <div id="il">
 
-  <div pageslide ps-open="showDiagram" ps-size="80rem" ps-auto-close="true" style="display: none">
-    <div style="padding:20px" id="demo-right">
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <h1>Learning Algorithm Diagram</h1>
-      <br/>
-      <img src="../../assets/img/diagram_gradient_boosting.png" style="display: block;margin: auto;width: 80%;"/>
-    </div>
-  </div>
-
   <div id="loading" ng-hide="!showLoading " style="text-align: center; width: 105px; margin: 0 auto; ">
     <h3>Loading</h3>
     <img src="../../assets/img/loading.gif" alt="Loading..."  />
@@ -33,17 +21,17 @@
           <td ng-repeat="weight in weightVecTop track by $index">{{formatNumber(weight)}}</td>
         </tr>
         <tr ng-repeat="times in [0 ,1]">
-          <td>{{dataTop[0].gen_ranges.age == "all" ? "*" : dataTop[0].gen_ranges.age}}</td>
-          <td></td>
-          <td>{{dataTop[0].gen_ranges["hours-per-week"] == "all" ? "*" : dataTop[0].gen_ranges["hours-per-week"]}}</td>
-          <td>{{dataTop[0].gen_feat.workclass == "all" ? "*" : dataTop[0].gen_feat.workclass}}</td>
-          <td>{{dataTop[0].gen_feat["native-country"] == "all" ? "*" : dataTop[0].gen_feat["native-country"]}}</td>
-          <td>{{dataTop[0].gen_feat.sex == "all" ? "*" : dataTop[0].gen_feat.sex}}</td>
-          <td>{{dataTop[0].gen_feat.race == "all" ? "*" : dataTop[0].gen_feat.race}}</td>
-          <td>{{dataTop[0].gen_feat.relationship == "all" ? "*" : dataTop[0].gen_feat.relationship}}</td>
-          <td>{{dataTop[0].gen_feat.occupation == "all" ? "*" : dataTop[0].gen_feat.occupation}}</td>
-          <td>{{dataTop[0].gen_feat.income == "all" ? "*" : dataTop[0].gen_feat.income}}</td>
-          <td>{{dataTop[0].gen_feat["marital-status"] == "all" ? "*" : dataTop[0].gen_feat["marital-status"]}}</td>
+          <td ng-if="dataTop[0].gen_ranges.age">{{dataTop[0].gen_ranges.age == 'all' ? '*' : dataTop[0].gen_ranges.age}}</td>
+          <td ng-if="dataTop[0].gen_ranges['education-num']">{{dataTop[0].gen_ranges['education-num'] == 'all' ? '*' : dataTop[0].gen_ranges['education-num']}}</td>
+          <td ng-if="dataTop[0].gen_ranges['hours-per-week']">{{dataTop[0].gen_ranges['hours-per-week'] == 'all' ? '*' : dataTop[0].gen_ranges['hours-per-week']}}</td>
+          <td ng-if="dataTop[0].gen_feat.workclass">{{dataTop[0].gen_feat.workclass == 'all' ? '*' : dataTop[0].gen_feat.workclass}}</td>
+          <td ng-if="dataTop[0].gen_feat['native-country']">{{dataTop[0].gen_feat['native-country'] == 'all' ? '*' : dataTop[0].gen_feat['native-country']}}</td>
+          <td ng-if="dataTop[0].gen_feat.sex">{{dataTop[0].gen_feat.sex == 'all' ? '*' : dataTop[0].gen_feat.sex}}</td>
+          <td ng-if="dataTop[0].gen_feat.race">{{dataTop[0].gen_feat.race == 'all' ? '*' : dataTop[0].gen_feat.race}}</td>
+          <td ng-if="dataTop[0].gen_feat.relationship">{{dataTop[0].gen_feat.relationship == 'all' ? '*' : dataTop[0].gen_feat.relationship}}</td>
+          <td ng-if="dataTop[0].gen_feat.occupation">{{dataTop[0].gen_feat.occupation == 'all' ? '*' : dataTop[0].gen_feat.occupation}}</td>
+          <td ng-if="dataTop[0].gen_feat.income">{{dataTop[0].gen_feat.income == 'all' ? '*' : dataTop[0].gen_feat.income}}</td>
+          <td ng-if="dataTop[0].gen_feat['marital-status']">{{dataTop[0].gen_feat['marital-status'] == 'all' ? '*' : dataTop[0].gen_feat['marital-status']}}</td>
         </tr>
         </tbody>
       </table>
@@ -66,17 +54,17 @@
           </thead>
           <tbody>
           <tr>
-            <td>{{center['age']}}</td>
-            <td>{{center['education-num']}}</td>
-            <td>{{center['hours-per-week']}}</td>
-            <td>{{center['workclass']}}</td>
-            <td>{{center['native-country']}}</td>
-            <td>{{center['sex']}}</td>
-            <td>{{center['race']}}</td>
-            <td>{{center['relationship']}}</td>
-            <td>{{center['occupation']}}</td>
-            <td>{{center['income']}}</td>
-            <td>{{center['marital-status']}}</td>
+            <td ng-if="dataTop[0].gen_ranges.age">{{center['age']}}</td>
+            <td ng-if="dataTop[0].gen_ranges['education-num']">{{center['education-num']}}</td>
+            <td ng-if="dataTop[0].gen_ranges['hours-per-week']">{{center['hours-per-week']}}</td>
+            <td ng-if="dataTop[0].gen_feat.workclass">{{center['workclass']}}</td>
+            <td ng-if="dataTop[0].gen_feat['native-country']">{{center['native-country']}}</td>
+            <td ng-if="dataTop[0].gen_feat.sex">{{center['sex']}}</td>
+            <td ng-if="dataTop[0].gen_feat.race">{{center['race']}}</td>
+            <td ng-if="dataTop[0].gen_feat.relationship">{{center['relationship']}}</td>
+            <td ng-if="dataTop[0].gen_feat.occupation">{{center['occupation']}}</td>
+            <td ng-if="dataTop[0].gen_feat.income">{{center['income']}}</td>
+            <td ng-if="dataTop[0].gen_feat['marital-status']">{{center['marital-status']}}</td>
           </tr>
           </tbody>
         </table>
@@ -109,17 +97,17 @@
           <td ng-repeat="weight in weightVecBottom track by $index">{{formatNumber(weight)}}</td>
         </tr>
         <tr ng-repeat="times in [0 ,1]">
-          <td>{{dataBottom[0].gen_ranges.age == "all" ? "*" : dataBottom[0].gen_ranges.age}}</td>
-          <td></td>
-          <td>{{dataBottom[0].gen_ranges["hours-per-week"] == "all" ? "*" : dataBottom[0].gen_ranges["hours-per-week"]}}</td>
-          <td>{{dataBottom[0].gen_feat.workclass == "all" ? "*" : dataBottom[0].gen_feat.workclass}}</td>
-          <td>{{dataBottom[0].gen_feat["native-country"] == "all" ? "*" : dataBottom[0].gen_feat["native-country"]}}</td>
-          <td>{{dataBottom[0].gen_feat.sex == "all" ? "*" : dataBottom[0].gen_feat.sex}}</td>
-          <td>{{dataBottom[0].gen_feat.race == "all" ? "*" : dataBottom[0].gen_feat.race}}</td>
-          <td>{{dataBottom[0].gen_feat.relationship == "all" ? "*" : dataBottom[0].gen_feat.relationship}}</td>
-          <td>{{dataBottom[0].gen_feat.occupation == "all" ? "*" : dataBottom[0].gen_feat.occupation}}</td>
-          <td>{{dataBottom[0].gen_feat.income == "all" ? "*" : dataBottom[0].gen_feat.income}}</td>
-          <td>{{dataBottom[0].gen_feat["marital-status"] == "all" ? "*" : dataBottom[0].gen_feat["marital-status"]}}</td>
+          <td ng-if="dataBottom[0].gen_ranges.age">{{dataBottom[0].gen_ranges.age == 'all' ? '*' : dataBottom[0].gen_ranges.age}}</td>
+          <td ng-if="dataBottom[0].gen_ranges['education-num']">{{dataBottom[0].gen_ranges['education-num'] == 'all' ? '*' : dataBottom[0].gen_ranges['education-num']}}</td>
+          <td ng-if="dataBottom[0].gen_ranges['hours-per-week']">{{dataBottom[0].gen_ranges['hours-per-week'] == 'all' ? '*' : dataBottom[0].gen_ranges['hours-per-week']}}</td>
+          <td ng-if="dataBottom[0].gen_feat.workclass">{{dataBottom[0].gen_feat.workclass == 'all' ? '*' : dataBottom[0].gen_feat.workclass}}</td>
+          <td ng-if="dataBottom[0].gen_feat['native-country']">{{dataBottom[0].gen_feat['native-country'] == 'all' ? '*' : dataBottom[0].gen_feat['native-country']}}</td>
+          <td ng-if="dataBottom[0].gen_feat.sex">{{dataBottom[0].gen_feat.sex == 'all' ? '*' : dataBottom[0].gen_feat.sex}}</td>
+          <td ng-if="dataBottom[0].gen_feat.race">{{dataBottom[0].gen_feat.race == 'all' ? '*' : dataBottom[0].gen_feat.race}}</td>
+          <td ng-if="dataBottom[0].gen_feat.relationship">{{dataBottom[0].gen_feat.relationship == 'all' ? '*' : dataBottom[0].gen_feat.relationship}}</td>
+          <td ng-if="dataBottom[0].gen_feat.occupation">{{dataBottom[0].gen_feat.occupation == 'all' ? '*' : dataBottom[0].gen_feat.occupation}}</td>
+          <td ng-if="dataBottom[0].gen_feat.income">{{dataBottom[0].gen_feat.income == 'all' ? '*' : dataBottom[0].gen_feat.income}}</td>
+          <td ng-if="dataBottom[0].gen_feat['marital-status']">{{dataBottom[0].gen_feat['marital-status'] == 'all' ? '*' : dataBottom[0].gen_feat['marital-status']}}</td>
         </tr>
         </tbody>
       </table>

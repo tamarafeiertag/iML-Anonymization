@@ -38,7 +38,7 @@ angular.module('iMLApp.config', [])
       'AVERAGE_OUTPUT_RANGES': false,
       'NR_DRAWS': 300,
       'RANDOM_DRAWS': false,  //must be false if center should not be picked from data points that might be anonymized
-      'EDGE_MIN': 3,
+      'EDGE_MIN': 2,
       'EDGE_MAX': 10,
       'K_FACTOR': 2,
       'ALPHA': 1,

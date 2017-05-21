@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, DataSendService) {
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, SurveyService) {
 
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
@@ -13,8 +13,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       return Math.round(i * 10000)/10000;
     };
 
-    $scope.columnNames = ["age", "education-num","hours-per-week", "workclass", "native-country", "sex", "race",
-      "relationship","occupation","income", "marital-status"];
+    $scope.columnNames = SurveyService.GetVisibleColumnNames();
 
     $scope.loading = true;
     $scope.allCases = [];
@@ -61,7 +60,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         // ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
 
         // last round finished, send final json file
-        ILService.sendFinalJSONFile();
+        ILService.sendFinalResultsFile();
 
         $scope.learningContainerVisible = false;
         $scope.showLoading = false;

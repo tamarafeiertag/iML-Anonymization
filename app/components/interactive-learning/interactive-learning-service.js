@@ -93,10 +93,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       },
 
       getWeightsArray: function (custom_weights) {
-
         let weights = [];
         weights.push(custom_weights.range['age']);
-        weights.push((custom_weights.range['education-num']) ? custom_weights.range['education-num'] : 0.0);
+        if (custom_weights.range['education-num'])
+          weights.push(custom_weights.range['education-num']);
         weights.push(custom_weights.range['hours-per-week']);
         weights.push(custom_weights.categorical['workclass']);
         weights.push(custom_weights.categorical['native-country']);
@@ -104,8 +104,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         weights.push(custom_weights.categorical['race']);
         weights.push(custom_weights.categorical['relationship']);
         weights.push(custom_weights.categorical['occupation']);
-        weights.push((custom_weights.categorical['income']) ? custom_weights.categorical['income'] : 0.0);
-        weights.push((custom_weights.categorical['marital-status']) ? custom_weights.categorical['marital-status'] : 0.0);
+        if (custom_weights.categorical['income'])
+          weights.push(custom_weights.categorical['income']);
+        if (custom_weights.categorical['marital-status'])
+          weights.push(custom_weights.categorical['marital-status']);
 
         return weights;
       },
@@ -266,7 +268,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
         config.K_FACTOR = k;
         config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
-        config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
+        //config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
+        config.GEN_WEIGHT_VECTORS.equal_weights = SurveyService.GetCurrent().equal_weights;
+
+        //console.log("Configuration: ", config);
 
         let defer = $q.defer();
         //this returns a promise, as we call a return in then block
@@ -421,7 +426,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         return defer.promise;
       },
 
-      sendFinalJSONFile: function () {
+      sendFinalResultsFile: function () {
 
         this.getCSVStringWithFinalWeightsPromise().then(
           function (csvstring) {
