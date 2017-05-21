@@ -137,7 +137,7 @@ angular.module('iMLApp.sliders', [])
                 /**************************************************************************************
                  * CREATE THE SLIDERS
                  */
-                console.log(attr.groupname);
+                //console.log(attr.groupname);
                 if(!attr.groupname)
                     return; //attr.groupname = guid();
 

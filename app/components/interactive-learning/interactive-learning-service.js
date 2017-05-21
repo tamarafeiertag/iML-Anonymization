@@ -321,7 +321,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
         //Calculate mean of range and cat
         userDecisions.forEach((dec) => {
-          console.log(dec);
           for (let level in dec.cat_level) {
             if (!dec.cat_level.hasOwnProperty(level))
               continue;

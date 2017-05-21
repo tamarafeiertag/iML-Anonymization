@@ -25,7 +25,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.center = {};
     $scope.movedUp = false;
     $scope.movedDown = false;
-    $scope.currentRound = 0;
+    $scope.currentRound = 1;
     $scope.currentKFactor = algoConfig.startKFactor;
 
     let currentRecordIdx = 0;
@@ -47,7 +47,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.showLoading = false;
         $scope.learningContainerVisible = true;
       } else if ($scope.currentRound < (algoConfig.maxKFactor - algoConfig.startKFactor)) {
-        console.log("user decisions for this round: ", $scope.userDecisions);
+        console.log("user decisions for round " + $scope.currentRound + ": ", $scope.userDecisions);
         $scope.learningContainerVisible = false;
         $scope.showLoading = true;
         $scope.currentRound += 1;
@@ -56,14 +56,13 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
         $scope.retrieveNewCases();
       } else {
-        // TODO missing calculation ?
-        // ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
-
-        // last round finished, send final json file
-        ILService.sendFinalResultsFile();
-
         $scope.learningContainerVisible = false;
-        $scope.showLoading = false;
+        $scope.showLoading = true;
+
+        ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
+
+        // last round finished, send final results in json file
+        ILService.sendFinalResultsFile();
         $state.go('summary');
       }
     };
@@ -84,7 +83,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     var centerRecordTag = $("#panel-center");
 
     $scope.up = function () {
-      console.log("[ILCtrl] data record sent up");
+      //console.log("[ILCtrl] data record sent up");
 
       let userDecision = {};
       userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster1_cat_level;
@@ -105,7 +104,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     };
 
     $scope.down = function () {
-      console.log("[ILCtrl] data record sent down");
+      //console.log("[ILCtrl] data record sent down");
 
       let userDecision = {};
       userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster2_cat_level;
