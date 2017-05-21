@@ -392,6 +392,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         anonymizationConfig['VECTOR'] = 'weights';
 
         console.log("our new weights are: ", new_weights);
+      },
+
+      getCSVStringWithFinalWeights: function () {
+
       }
     }
   });

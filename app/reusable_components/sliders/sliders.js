@@ -5,10 +5,65 @@
 'use strict';
 
 angular.module('iMLApp.sliders', [])
-  .service('SlidersService', function() {
+  .service('SlidersService', function(anonymizationConfig) {
       return {
-            sliderGroups: {},
-            sliders: {}
+        sliderGroups: {},
+        sliders: {},
+
+        getWeightVectors: function() {
+          var weights = {};
+
+          for (let slider in this.sliderGroups.learning) {
+            if (!this.sliderGroups.learning.hasOwnProperty(slider) || slider.startsWith("_"))
+              continue;
+
+            let name = slider;
+            let value = this.sliderGroups.learning[name].value;
+
+            weights[name] = {name: name, user: value, iml: 0};
+          }
+
+          let cats = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].categorical;
+          let ranges = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].range;
+
+          for (let weight in cats) {
+            if (!cats.hasOwnProperty(weight))
+              continue;
+
+            let name = weight;
+            let value = cats[weight];
+            weights[name].iml = value;
+          }
+
+          for (let weight in ranges) {
+            if (!ranges.hasOwnProperty(weight))
+              continue;
+
+            let name = weight;
+            let value = ranges[weight];
+            weights[name].iml = value;
+          }
+
+          console.log(weights);
+
+          return weights;
+        },
+
+        getJSONformattedWeightVectors : function () {
+          var weights = this.getWeightVectors();
+
+          var json_weights = {};
+          json_weights.user = {};
+          json_weights.iml = {};
+
+          for (let weight in weights) {
+            var var_name = weight;
+            json_weights.user[var_name] = weights[weight].user;
+            json_weights.iml[var_name] = weights[weight].iml;
+          }
+
+          return json_weights;
+        }
       };
   })
     .controller('SlidersCtrl',  ['$scope', 'SlidersService',

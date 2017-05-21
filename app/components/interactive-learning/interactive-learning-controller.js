@@ -2,11 +2,7 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state) {
-
-    initJSONObject();
-    //TODO example of round add to json
-    addRoundToJSONObject(1, "blabla");
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, SurveyService, SlidersService) {
 
     $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
@@ -62,6 +58,13 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
         $scope.retrieveNewCases();
       } else {
+        // TODO missing calculation ?
+        // ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
+
+        // last round finished, send json object
+        initAndSendJSONObject();
+
+
         $scope.learningContainerVisible = false;
         $scope.showLoading = false;
         $state.go('summary');
@@ -169,7 +172,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
 
     //TODO Christine: name differently (what is JSON supposed to mean?)
-    function initJSONObject()
+    function initAndSendJSONObject()
     {
       $scope.json_object = {};
       $scope.json_object.user = {};
@@ -178,22 +181,12 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       $scope.json_object.user.age = $rootScope.globals.currentUser.age;
       $scope.json_object.user.username = $rootScope.globals.currentUser.username;
 
-      //let pathParts = $location.$$path.split("/");
-     // $scope.json_object.survey_id = pathParts[pathParts.length - 1];
+      $scope.json_object.weights = {};
+      $scope.json_object.weights = SlidersService.getJSONformattedWeightVectors();
 
+      $scope.json_object.survey_id = SurveyService.GetCurrent();
 
-      $scope.json_object.rounds = new Array();
-
-    }
-
-    //TODO Christine: name differently (what is JSON supposed to mean?)
-    function addRoundToJSONObject(number, furtherinfos)
-    {
-      $scope.round = {}
-      $scope.round.number = number
-      $scope.round.info = furtherinfos
-
-      $scope.json_object.rounds.push($scope.round)
+      //$scope.json_object.payload =
 
       console.log(JSON.stringify($scope.json_object, null, 2));
     }
