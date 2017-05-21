@@ -2,7 +2,9 @@
 
 angular.module('iMLApp.interactive-learning.interactive-learning-controller', [])
 
-  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, SurveyService) {
+  .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, anonymizationConfig, $rootScope, $state, SurveyService) {
+
+    anonymizationConfig['VECTOR'] = 'equal_weights';
 
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
@@ -29,6 +31,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.currentKFactor = algoConfig.startKFactor;
 
     let currentRecordIdx = 0;
+    console.log(currentRecordIdx);
 
     $scope.setRecords = function() {
       $scope.dataTop = [];
@@ -85,6 +88,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.up = function () {
       //console.log("[ILCtrl] data record sent up");
 
+      if($scope.movedUp || $scope.movedDown)
+        return;
+
       let userDecision = {};
       userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster1_cat_level;
       userDecision.cont_range = $scope.allCases[currentRecordIdx].cluster1_cont_range;
@@ -105,6 +111,9 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
     $scope.down = function () {
       //console.log("[ILCtrl] data record sent down");
+
+      if($scope.movedUp || $scope.movedDown)
+        return;
 
       let userDecision = {};
       userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster2_cat_level;
