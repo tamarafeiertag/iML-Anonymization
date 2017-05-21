@@ -1,19 +1,20 @@
 
 <div class="slider" ng-repeat="data in sliders" >
-    <div class="col-xs-2">  {{data.name}}:</div>
-    <div class="col-xs-9"> <input id="{{data.id}}"
-                                  ng-change="valueChanged(data.id)"
-                                  class="{{data.groupName}}"
-                                  type="range"
-                                  min="{{data.min}}"
-                                  max="{{data.max}}"
-                                  value="{{data.userInput}}"
-                                  step="0.01"
-                                  ng-model="data.userInput" />
+    <div class="row" ng-if="data.groupName == attr.groupname">
+        <div class="col-xs-2">  {{data.name}}:</div>
+        <div class="col-xs-9"> <input id="{{data.id}}"
+                                      ng-change="valueChanged(data.id)"
+                                      class="{{data.groupName}}"
+                                      type="range"
+                                      min="{{data.min}}"
+                                      max="{{data.max}}"
+                                      value="{{data.userInput}}"
+                                      step="0.01"
+                                      ng-model="data.userInput" />
+        </div>
+        <div class="col-xs-1">
+            <input ng-hide="data.noTextBox" id="text{{data.id}}" value="{{data.value.toFixed(2)  }}" type="text" />
+        </div>
     </div>
-    <div class="col-xs-1">
-        <input ng-hide="data.noTextBox" id="text{{data.id}}" value="{{data.value.toFixed(2)  }}" type="text" />
-    </div>
-
 </div>
 

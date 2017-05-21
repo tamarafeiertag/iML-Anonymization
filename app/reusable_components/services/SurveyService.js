@@ -37,6 +37,7 @@ angular.module('iMLApp.services.survey-service',[])
       },
 
       GetCurrent: function (){
+        console.log(this.currentID);
         return this.surveys[this.currentID];
       },
 

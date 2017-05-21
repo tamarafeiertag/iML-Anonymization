@@ -1,22 +1,23 @@
 angular.module('iMLApp.slider-learning', [])
-  .service('SLService', function() {
-    return {
-        slidergroup: SlidersCtrl.$scope.sliderGroups['learning']
-    };
-  })
+.controller('SLCtrl', function ($scope, SurveyService) {
 
-  .controller('SLCtrl', function ($scope, SlidersService, $location) {
+    let currSurv = SurveyService.GetCurrent();
 
-    $scope.learningContainerVisible = true;
+    if(currSurv) {
+        $scope.columns = ["age", "education-num", "hours-per-week", "workclass", "native-country", "sex", "race", "relationship", "occupation", "income", "marital-status"];
+        $scope.target_column = currSurv.target_column;
 
-    //TODO Christine delete just test
-    $scope.navigateToLearning = function () {
-      SlidersService.getWeightVectors();
+        console.log(currSurv.target_column);
 
-      SlidersService.getJSONformattedWeightVectors();
+        let index = $scope.columns.indexOf($scope.target_column);
 
-      $location.path('/interactive-learning');
+
+        if(index > -1)
+          $scope.columns.splice(index, 1);
+
+        $scope.columnString = $scope.columns.join(",");
     }
 
-  });
+    console.log($scope);
+});
 

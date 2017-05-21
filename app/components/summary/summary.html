@@ -1,41 +1,45 @@
 <div id="summary">
-  <div class="col-xs-12">
-    <h3>You are done. Thank you for your help!</h3>
-    <h3>Here are your results:</h3>
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>You are done. Thank you for your help!</h3>
+      <h3>Here are your results:</h3>
 
-    <div id="userWeights" class="weights col-xs-5">
+      <div id="userWeights" class="weights col-xs-5">
+        <span class="label">Your weights</span>
 
-      <div ng-repeat="weight in weights" class="progress">
-        <div
-            class="progress-bar"
-            role="progressbar"
-            aria-valuenow="{{weight.user * 100}}"
-            aria-valuemin="0" aria-valuemax="100" style="width:{{weight.user * 100}}%">
-          <span class="sr-only">{{weight.user * 100}}%</span>
+        <div ng-repeat="weight in weights" class="progress">
+
+          <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="{{weight.user * 100}}"
+              aria-valuemin="0" aria-valuemax="100" style="width:{{weight.user * 100}}%">
+            <span class="sr-only">{{weight.user * 100}}%</span>
+          </div>
         </div>
       </div>
+      <div id="weightLabels" class=" col-xs-2">
+        <span class="label">&nbsp;</span>
+        <span class="header" ng-repeat="weight in weights">
+            {{weight.name}}
+        </span>
+      </div>
+      <div id="imlWeights" class="weights  col-xs-5">
+        <span class="label">Calculated weights</span>
 
-      <span class="label">Your weights</span>
-    </div>
-    <div id="weightLabels" class=" col-xs-2">
-            <span ng-repeat="weight in weights">
-                {{weight.name}}
-            </span>
-    </div>
-    <div id="imlWeights" class="weights  col-xs-5">
-      <div ng-repeat="weight in weights" class="progress">
-        <div
-            class="progress-bar"
-            role="progressbar"
-            aria-valuenow="{{weight.iml * 100}}"
-            aria-valuemin="0" aria-valuemax="100" style="width:{{weight.iml * 100}}%">
-          <span class="sr-only">{{weight.iml * 100}}%</span>
+        <div ng-repeat="weight in weights" class="progress">
+          <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="{{weight.iml * 100}}"
+              aria-valuemin="0" aria-valuemax="100" style="width:{{weight.iml * 100}}%">
+            <span class="sr-only">{{weight.iml * 100}}%</span>
+          </div>
         </div>
       </div>
-
-      <span class="label">Calculated weights</span>
     </div>
   </div>
+
 
   <div id="imgAlgo1" class="col-md-6 ">
     <div class="algoImg">

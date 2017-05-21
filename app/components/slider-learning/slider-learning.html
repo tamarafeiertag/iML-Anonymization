@@ -2,17 +2,12 @@
 
         <h3 > Please set the importance of the single features for this study</h3>
 
-    <div id="loading" ng-hide="learningContainerVisible" style="text-align: center; width: 105px; margin: 0 auto; ">
-        <h3>Loading</h3>
-        <img src="../../assets/img/loading.gif" alt="Loading..."  />
-    </div>
 
 
-    <div id="sliderlearning-container" ng-hide="!learningContainerVisible" >
-
+    <div id="sliderlearning-container" >
         <slidergroup ng-controller="SlidersCtrl"
-                     groupname="learning"
-                     slidernames="age, education-num, hours-per-week, workclass, native-country, sex, race, relationship, occupation, income, marital-status"
+                     groupname="{{target_column}}"
+                     slidernames="{{columnString}}"
                      noTextbox="1">
 
         </slidergroup>
@@ -20,8 +15,6 @@
 
 
     <div class="col-xs-11" id="SL-next-container">
-      <!-- TODO Christine just test -->
-      <!--<button ui-sref="interactive-learning" class="btn btn-primary">Next &gt;</button> -->
-        <button ng-click="navigateToLearning()" class="btn btn-primary">Next &gt;</button>
+     <button ui-sref="interactive-learning" class="btn btn-primary">Next &gt;</button>
     </div>
 </div>

@@ -5,20 +5,20 @@
 'use strict';
 
 angular.module('iMLApp.sliders', [])
-  .service('SlidersService', function(anonymizationConfig) {
+  .service('SlidersService', function(anonymizationConfig, SurveyService) {
       return {
         sliderGroups: {},
         sliders: {},
 
         getWeightVectors: function() {
           var weights = {};
-
-          for (let slider in this.sliderGroups.learning) {
-            if (!this.sliderGroups.learning.hasOwnProperty(slider) || slider.startsWith("_"))
+          let groupName = SurveyService.GetCurrent().target_column;
+          for (let slider in this.sliderGroups[groupName]) {
+            if (!this.sliderGroups[groupName].hasOwnProperty(slider) || slider.startsWith("_"))
               continue;
 
             let name = slider;
-            let value = this.sliderGroups.learning[name].value;
+            let value = this.sliderGroups[groupName][name].value;
 
             weights[name] = {name: name, user: value, iml: 0};
           }
@@ -27,7 +27,7 @@ angular.module('iMLApp.sliders', [])
           let ranges = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].range;
 
           for (let weight in cats) {
-            if (!cats.hasOwnProperty(weight))
+            if (!cats.hasOwnProperty(weight) || !weights.hasOwnProperty(weight))
               continue;
 
             let name = weight;
@@ -36,7 +36,7 @@ angular.module('iMLApp.sliders', [])
           }
 
           for (let weight in ranges) {
-            if (!ranges.hasOwnProperty(weight))
+            if (!ranges.hasOwnProperty(weight) || !weights.hasOwnProperty(weight))
               continue;
 
             let name = weight;
@@ -137,29 +137,30 @@ angular.module('iMLApp.sliders', [])
                 /**************************************************************************************
                  * CREATE THE SLIDERS
                  */
+                console.log(attr.groupname);
                 if(!attr.groupname)
-                    attr.groupname = guid();
+                    return; //attr.groupname = guid();
 
                 if(!$scope.sliderGroups[attr.groupname]) {
                     $scope.sliderGroups[attr.groupname] = {};
                     $scope.sliderGroups[attr.groupname]['_length'] = 0;
                 }
 
+                let names = attr.slidernames.split(",");
+                let value = 1 / names.length;
+                for(name of names) {
+                    name = name.trim();
+                    $scope.attr = attr;
 
-                for(name of attr.slidernames.split(",")) {
-                    attr.name = name.trim();
-                    var i = 0;
-                    var checkName = attr.name;
-                    while ($scope.sliderGroups[attr.groupname][checkName])
-                        checkName = attr.name + (i++).toString();
+                    let slider = {};
 
-                    attr.name = checkName;
-                    $scope.attributes = attr;
+                    if($scope.sliderGroups[attr.groupname][name])
+                      slider = $scope.sliderGroups[attr.groupname][name];
 
-                    var lenGroup = $scope.sliderGroups[attr.groupname]['_length'];
-                    var value = 1 / (lenGroup + 1);
-                    var slider = {
-                        name: attr.name,
+
+                    if(! slider.id)
+                      slider = {
+                        name: name ,
                         noTextBox: parseInt(attr.notextbox),
                         groupName: attr.groupname,
                         id: guid(),
@@ -205,12 +206,16 @@ angular.module('iMLApp.sliders', [])
                             return diff;
                         }
                     };
+                    else
+                      $scope.sliderGroups[attr.groupname]['_length']--; // gets added 2 line later
 
-                    $scope.sliderGroups[attr.groupname][attr.name] = slider;
+
+                    $scope.sliderGroups[attr.groupname][name] = slider;
                     $scope.sliderGroups[attr.groupname]['_length']++;
                     $scope.sliders[slider.id] = slider;
 
-                    $scope.changeValueOfAllSliders($scope.sliderGroups[attr.groupname], 1.0, true);
+                    $scope.changeValueOfAllSliders($scope.sliderGroups[attr.groupname]);
+
                 }
 
             },
