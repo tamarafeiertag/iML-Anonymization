@@ -4,7 +4,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
   .controller('ILCtrl', function ($scope, $q, ILService, algoConfig, $rootScope, $state, DataSendService) {
 
-    $scope.showDiagram = false;
     $scope.showTooltipFirst = false;
     $scope.showTooltipSecond = false;
     $scope.learningContainerVisible = false;
@@ -153,11 +152,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.showTooltipSecond = val;
       }
 
-    };
-
-    $scope.openDiagram = function()
-    {
-      $scope.showDiagram = true;
     };
 
     angular.element(document).bind('keydown', function(event) {

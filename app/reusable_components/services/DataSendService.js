@@ -11,7 +11,7 @@ angular.module('iMLApp.services.data-send-service',[])
 
     return {
       sendAnonymizationData: function(csvstring){
-        var json_object = {};
+        let json_object = {};
         json_object.user = {};
         json_object.user.token = $rootScope.globals.currentUser.token;
         json_object.user.education = $rootScope.globals.currentUser.education;
