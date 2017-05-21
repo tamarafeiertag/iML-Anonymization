@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.login.login-controller', [])
 
-  .controller('LoginCtrl', function ($scope, $location, AuthenticationService, LoginService) {
+  .controller('LoginCtrl', function ($scope, AuthenticationService, LoginService, $location) {
 
       $scope.context = {};
       $scope.context.degrees = LoginService.getDegrees();
@@ -17,7 +17,7 @@ angular.module('iMLApp.login.login-controller', [])
       $scope.takeSurvey = function () {
         var degree_index = $scope.context.selectedEducation - 1;
         AuthenticationService.SetInfos($scope.context.age, $scope.context.degrees[degree_index], (new Date()).getTime());
-        $location.path('/survey-overview');
+        $location.path('survey-overview').replace();
       };
 
   });

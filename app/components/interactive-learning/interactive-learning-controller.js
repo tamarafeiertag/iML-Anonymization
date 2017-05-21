@@ -62,7 +62,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         // ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
 
         // last round finished, send json object
-        initAndSendJSONObject();
+        sendResultsAsJSON();
 
 
         $scope.learningContainerVisible = false;
@@ -172,7 +172,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
 
     //TODO Christine: name differently (what is JSON supposed to mean?)
-    function initAndSendJSONObject()
+    function sendResultsAsJSON()
     {
       $scope.json_object = {};
       $scope.json_object.user = {};

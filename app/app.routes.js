@@ -43,11 +43,11 @@ angular.module('iMLApp.routes', ['ui.router'])
         controller: 'SummaryCtrl'
       });
 
-      $urlRouterProvider.otherwise('/login');
+      $urlRouterProvider.otherwise('survey-overview');
   })
 
-  .run(['$rootScope', '$cookies', '$http', '$state',
-    function ($rootScope, $cookies, $http, $state) {
+  .run(['$rootScope', '$cookies', '$http', '$state', '$location',
+    function ($rootScope, $cookies, $http, $state, $location) {
       // keep user logged in after page refresh (token is save)
       $rootScope.globals = $cookies.getObject('globals') || {};
       $rootScope.$state = $state;
@@ -61,8 +61,10 @@ angular.module('iMLApp.routes', ['ui.router'])
         var restrictedPage = !($state.includes('login'));
         var loggedIn = $rootScope.globals.currentUser;
 
+        console.log($rootScope.globals.currentUser)
+
         if (restrictedPage && !loggedIn) {
-          $state.go('login');
+          $location.path('login');
         }
       });
     }
