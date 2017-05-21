@@ -27,10 +27,10 @@ angular.module('iMLApp.services.data-send-service',[])
 
         let json_string = JSON.stringify(json_object, null, 2);
         console.log(json_string);
-        ServerCom.send(json_string, function () {
-          console.log("successfully send json file");
-        }, function () {
-          console.log("fail send json file");
+        ServerCom.send(json_string, function (data) {
+          console.log("successfully send json file" + data);
+        }, function (data) {
+          console.log("fail send json file" + data);
         })
       }
 
