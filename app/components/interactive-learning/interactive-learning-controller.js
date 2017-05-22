@@ -31,7 +31,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.currentKFactor = algoConfig.startKFactor;
 
     let currentRecordIdx = 0;
-    console.log(currentRecordIdx);
 
     $scope.setRecords = function() {
       $scope.dataTop = [];

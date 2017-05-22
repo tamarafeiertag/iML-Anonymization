@@ -17,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr style="background-color: #CCFF99" ng-show="showTooltipFirst">
+        <tr style="background-color: #d9edf7" ng-show="showTooltipFirst" ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)">
           <td ng-repeat="weight in weightVecTop track by $index">{{formatNumber(weight)}}</td>
         </tr>
         <tr ng-repeat="times in [0 ,1]">
@@ -87,13 +87,13 @@
 
     <div class="panel panel-primary">
       <table class="table" id="cluster-bottom" >
-        <thead ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)" ng-click="openDiagram()">
+        <thead ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)">
         <tr class="bg-primary">
           <th ng-repeat="columnName in columnNames">{{columnName}}</th>
         </tr>
         </thead>
         <tbody>
-        <tr style="background-color: #CCFF99" ng-show="showTooltipSecond">
+        <tr style="background-color: #d9edf7" ng-show="showTooltipSecond" ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)">
           <td ng-repeat="weight in weightVecBottom track by $index">{{formatNumber(weight)}}</td>
         </tr>
         <tr ng-repeat="times in [0 ,1]">

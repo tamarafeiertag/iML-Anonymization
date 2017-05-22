@@ -1,11 +1,13 @@
-#cluster-top tbody > tr, #cluster-bottom tbody > tr {
-  -webkit-transition: background-color 1s; /* Safari */
-  transition: background-color 1s;
-}
 
-#cluster-top tbody > tr:hover, #cluster-bottom tbody > tr:hover {
-  background-color: #d9edf7;
-}
+/*#cluster-top tbody > tr, #cluster-bottom tbody > tr {*/
+  /*-webkit-transition: background-color 1s; !* Safari *!*/
+  /*transition: background-color 1s;*/
+/*}*/
+
+/*#cluster-top tbody > tr:hover, #cluster-bottom tbody > tr:hover {*/
+  /*background-color: #d9edf7;*/
+/*}*/
+
 
 #panel-center {
   position: relative;

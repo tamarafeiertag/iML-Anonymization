@@ -60,8 +60,25 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       income_file = gen_base + 'incomeGH.json';
 
     return {
+
+      correspondingHierarchyFiles: function (target_column) {
+        if (target_column === SurveyService.GetById(3).target_column) { //Education
+          return [workclass_file, nat_country_file, sex_file, race_file, marital_file,
+            relationship_file, occupation_file, income_file];
+        } else if (target_column === SurveyService.GetById(2).target_column) { //Income
+          return [workclass_file, nat_country_file, sex_file, race_file, marital_file,
+            relationship_file, occupation_file];
+        } else if (target_column === SurveyService.GetById(1).target_column) { //Marital-Status
+          return [workclass_file, nat_country_file, sex_file, race_file,
+            relationship_file, occupation_file, income_file];
+        }
+        return [];
+      },
+
       createSan: function (config) {
         let defer = $q.defer();
+
+        let hierarchy_files = this.correspondingHierarchyFiles(config.TARGET_COLUMN);
 
         setTimeout(function () {
           let san = new $A.algorithms.Sangreea("sangreea", config);
@@ -77,8 +94,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           });
 
           // Load Generalization hierarchies
-          [workclass_file, nat_country_file, sex_file, race_file, marital_file,
-            relationship_file, occupation_file, income_file].forEach(function (file) {
+          hierarchy_files.forEach(function (file) {
             var json = $.getJSON(file).responseText;
             //console.log(json);
             let strgh = new $A.genHierarchy.Category(json);
@@ -268,7 +284,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
         config.K_FACTOR = k;
         config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
-        //config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
+        config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
         config.GEN_WEIGHT_VECTORS.equal_weights = SurveyService.GetCurrent().equal_weights;
 
         //console.log("Configuration: ", config);

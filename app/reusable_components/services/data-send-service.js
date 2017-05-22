@@ -21,7 +21,7 @@ angular.module('iMLApp.services.data-send-service',[])
         json_object.weights = {};
         json_object.weights = SlidersService.getJSONformattedWeightVectors();
 
-        json_object.survey_id = SurveyService.GetCurrent();
+        json_object.survey = SurveyService.GetCurrent();
 
         json_object.csvstring = csvstring;
 
