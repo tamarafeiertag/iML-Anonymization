@@ -209,9 +209,18 @@ SUMMARY
   height: 12em;
 }
 
+#imgAlgo1 {
+  text-align: center;
+}
+
+#imgAlgo1 img {
+  margin: 0 auto;
+}
+
 #summary .algoImg .loadImg {
   width: 2em;
   padding-top: 1ex;
+  margin: 0 auto;
 }
 
 #summary span {
@@ -239,4 +248,5 @@ SUMMARY
 #summary #imlWeights{
   text-align: left;
 }
+
 
