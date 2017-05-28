@@ -10,9 +10,11 @@ angular.module('iMLApp.sliders', [])
         sliderGroups: {},
         sliders: {},
 
+
         getWeightVectors: function() {
           var weights = {};
           let groupName = SurveyService.GetCurrent().target_column;
+          //get all sliders and build the base object
           for (let slider in this.sliderGroups[groupName]) {
             if (!this.sliderGroups[groupName].hasOwnProperty(slider) || slider.startsWith("_"))
               continue;
@@ -20,9 +22,11 @@ angular.module('iMLApp.sliders', [])
             let name = slider;
             let value = this.sliderGroups[groupName][name].value;
 
+            //here the return object gets build with the user input, iml is placeholder
             weights[name] = {name: name, user: value, iml: 0};
           }
 
+          //Get all categories/ranges and build it for the iml
           let cats = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].categorical;
           let ranges = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].range;
 
@@ -47,6 +51,32 @@ angular.module('iMLApp.sliders', [])
           return weights;
         },
 
+
+
+          getUserWeightsObject: function () {
+            let weights_array = this.sliderGroups[SurveyService.GetCurrent().target_column];
+            let custom_weights = {range: {}, categorical: {}};
+
+            console.log(weights_array);
+
+            custom_weights.range['age'] = weights_array['age'].value;
+            custom_weights.range['hours-per-week'] = weights_array['hours-per-week'].value;
+            custom_weights.categorical['workclass'] = weights_array['workclass'].value;
+            custom_weights.categorical['native-country'] = weights_array['native-country'].value;
+            custom_weights.categorical['sex'] = weights_array['sex'].value;
+            custom_weights.categorical['race'] = weights_array['race'].value;
+            custom_weights.categorical['relationship'] = weights_array['relationship'].value;
+            custom_weights.categorical['occupation'] = weights_array['occupation'].value;
+            if (weights_array['income'])
+              custom_weights.categorical['income'] = weights_array['income'].value;
+            if (weights_array['marital-status'])
+              custom_weights.categorical['marital-status'] = weights_array['marital-status'].value;
+            if (weights_array['education-num'])
+              custom_weights.range['education-num'] = weights_array['education-num'].value;
+
+            console.log("custom weights", custom_weights);
+            return custom_weights;
+          },
         getJSONformattedWeightVectors : function () {
           var weights = this.getWeightVectors();
 

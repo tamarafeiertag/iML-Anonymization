@@ -42,7 +42,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     //console.log("CSV Reader: ");
     //console.log(csvIn);
 
-    let url = basename + "/" + filename_originalData;
+    let CSVFileURL = basename + "/" + filename_originalData;
     let output = basename + "/output";
 
     //console.log("config:");
@@ -111,8 +111,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       getWeightsArray: function (custom_weights) {
         let weights = [];
         weights.push(custom_weights.range['age']);
-        if (custom_weights.range['education-num'])
-          weights.push(custom_weights.range['education-num']);
         weights.push(custom_weights.range['hours-per-week']);
         weights.push(custom_weights.categorical['workclass']);
         weights.push(custom_weights.categorical['native-country']);
@@ -124,10 +122,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
           weights.push(custom_weights.categorical['income']);
         if (custom_weights.categorical['marital-status'])
           weights.push(custom_weights.categorical['marital-status']);
+        if (custom_weights.range['education-num'])
+            weights.push(custom_weights.range['education-num']);
 
         return weights;
       },
-
       /**
        * Retrieves the data records from original csv that have not been anonymized
        * deprecated
@@ -135,7 +134,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       getNotAnonymizedRecords: function () {
         let deferred = $q.defer();
 
-        csvIn.readCSVFromURL(url, function (csv) {
+        csvIn.readCSVFromURL(this.CSVFileURL, function (csv) {
           let records = [];
           let headers = csv[0].split(", ");
           let anonymizedRecordsCount = config.NR_DRAWS;
@@ -279,6 +278,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
        */
       calculateRandomClusters: function (k, fixedIndex) {
 
+
         // get global config data of config.js
         let config = anonymizationConfig;
         config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
@@ -294,7 +294,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         this.createSan(config).then(function (san) {
 
           // Remotely read the original data and anonymize
-          csvIn.readCSVFromURL(url, function (csv) {
+          csvIn.readCSVFromURL(CSVFileURL, function (csv) {
             let randNrs = [];
             while (randNrs.length < config.NR_DRAWS - 1) {
               let randomnumber = Math.ceil(Math.random() * algoConfig.originalDataCSVLength);
@@ -423,30 +423,25 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
         config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
 
+        console.log("config", config);
         let defer = $q.defer();
         //this returns a promise, as we call a return in then block
 
         this.createSan(config).then(function (san) {
 
           // Remotely read the original data and anonymize
-          csvIn.readCSVFromURL(url, function (csv) {
+          csvIn.readCSVFromURL(CSVFileURL, function (csv) {
             san.instantiateGraph(csv, false);
             san.anonymizeGraph();
             let result_string = san.constructAnonymizedCSV();
+            console.log("returning csv of ILservice");
             defer.resolve(result_string);
           });
 
         });
 
         return defer.promise;
-      },
-
-      sendFinalResultsFile: function () {
-
-        this.getCSVStringWithFinalWeightsPromise().then(
-          function (csvstring) {
-            DataSendService.sendAnonymizationData(csvstring);
-          });
       }
+
     }
   });

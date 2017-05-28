@@ -16,7 +16,8 @@
     "tether": "1.4.0",
     "angular-pageslide-directive": "2.1.4",
     "angular-animate": "^1.6.4",
-    "angular-ui-router": "^1.0.3"
+    "angular-ui-router": "^1.0.3",
+    "socket.io": "^2.0.1"
   },
   "authors": [
     "Tamara Feiertag",

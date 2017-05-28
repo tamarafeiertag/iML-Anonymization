@@ -64,7 +64,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
 
         // last round finished, send final results in json file
-        ILService.sendFinalResultsFile();
         $state.go('summary');
       }
     };

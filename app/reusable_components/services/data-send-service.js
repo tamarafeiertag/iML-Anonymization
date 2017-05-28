@@ -10,7 +10,7 @@ angular.module('iMLApp.services.data-send-service',[])
   .factory('DataSendService', function($rootScope, SlidersService, SurveyService, ServerCom) {
 
     return {
-      sendAnonymizationData: function(csvstring){
+      sendAnonymizationData: function(csvuser, csviml){
         let json_object = {};
         json_object.user = {};
         json_object.user.token = $rootScope.globals.currentUser.token;
@@ -20,18 +20,16 @@ angular.module('iMLApp.services.data-send-service',[])
 
         json_object.weights = {};
         json_object.weights = SlidersService.getJSONformattedWeightVectors();
+        json_object.weights.bias = json_object.weights.user;
 
         json_object.survey = SurveyService.GetCurrent();
 
-        json_object.csvstring = csvstring;
+        json_object.csv = {bias: csvuser, iml: csviml};
 
         let json_string = JSON.stringify(json_object, null, 2);
-        console.log(json_string);
         ServerCom.send(json_string, function (data) {
-          console.log("successfully sent json file" + data);
-        }, function (data) {
-          console.log("fail sent json file" + data);
-        })
+          console.log("got callback on send", data);
+        });
       }
 
     };
