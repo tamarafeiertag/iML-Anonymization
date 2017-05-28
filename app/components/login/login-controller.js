@@ -16,7 +16,7 @@ angular.module('iMLApp.login.login-controller', [])
       // begin survey as new user (new token)
       $scope.takeSurvey = function () {
         var degree_index = $scope.context.selectedEducation - 1;
-        AuthenticationService.SetInfos($scope.context.age, $scope.context.degrees[degree_index], (new Date()).getTime());
+        AuthenticationService.SetInfos($scope.context.usertoken, $scope.context.age, $scope.context.degrees[degree_index], (new Date()).getTime());
         $location.path('survey-overview').replace();
       };
 

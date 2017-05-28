@@ -3,6 +3,10 @@
 
     <form class="form-signin">
       <h2 class="form-signin-heading">General Informations:</h2>
+
+      <label for="inputUserToken" >User-Token</label>
+      <input type="text" ng-model="context.usertoken" id="inputUserToken" class="form-control" placeholder="User-Token" required="required" autofocus="">
+      <br/>
       <label for="inputAge" >Age</label>
       <input type="number" ng-model="context.age" id="inputAge" class="form-control" placeholder="Age" required="required" autofocus="">
       <br/>
@@ -12,7 +16,7 @@
         <option ng-repeat="data in context.degrees" value="{{data.id}}">{{data.description}}</option>
       </select>
       <br/>
-      <button type="submit" ng-disabled="context.age === undefined || context.age < 0 || context.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
+      <button type="submit" ng-disabled="context.age === undefined || context.usertoken === undefined || context.age < 0 || context.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
     </form>
 
   </div>
