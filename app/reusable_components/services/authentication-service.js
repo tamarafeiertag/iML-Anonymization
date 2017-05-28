@@ -14,8 +14,8 @@
 
         return service;
 
-        function SetInfos(age, education, datetime, username) {
-          var token = Base64.encode(age + ':' + education + ':' + datetime + ':' + username);
+        function SetInfos(usertoken, age, education, datetime, username) {
+          var token = Base64.encode(age + ':' + education + ':' + datetime + ':' + username + ':' + usertoken);
 
           if(username === undefined)
               username = "Anonym"
@@ -24,7 +24,8 @@
               token: token,
               age: age,
               education: education,
-              username: username
+              username: username,
+              usertoken: usertoken
             }
           };
 
