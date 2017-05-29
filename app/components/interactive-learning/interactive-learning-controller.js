@@ -30,22 +30,24 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.currentRound = 1;
     $scope.currentKFactor = algoConfig.startKFactor;
 
-    let currentRecordIdx = 0;
+    $scope.currentRecordIdx = 0;
+    $scope.currentStep = 0;
+    $scope.maximumSteps = (algoConfig.maxKFactor - algoConfig.startKFactor) * algoConfig.nrOfCases;
 
     $scope.setRecords = function() {
       $scope.dataTop = [];
       $scope.dataBottom = [];
       $scope.center = {};
-      if ($scope.allCases.length > currentRecordIdx) {
+      if ($scope.allCases.length > $scope.currentRecordIdx) {
         $scope.learningContainerVisible = false;
         $scope.showLoading = true;
-        $scope.center = $scope.allCases[currentRecordIdx].dataPoint._features;
-        $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
-        $scope.dataTop.push($scope.allCases[currentRecordIdx].cluster1);
-        $scope.dataBottom.push($scope.allCases[currentRecordIdx].cluster2);
-        $scope.dataBottom.push($scope.allCases[currentRecordIdx].cluster2);
-        $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
-        $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[currentRecordIdx].weights);
+        $scope.center = $scope.allCases[$scope.currentRecordIdx].dataPoint._features;
+        $scope.dataTop.push($scope.allCases[$scope.currentRecordIdx].cluster1);
+        $scope.dataTop.push($scope.allCases[$scope.currentRecordIdx].cluster1);
+        $scope.dataBottom.push($scope.allCases[$scope.currentRecordIdx].cluster2);
+        $scope.dataBottom.push($scope.allCases[$scope.currentRecordIdx].cluster2);
+        $scope.weightVecTop = ILService.getWeightsArray($scope.allCases[$scope.currentRecordIdx].weights);
+        $scope.weightVecBottom = ILService.getWeightsArray($scope.allCases[$scope.currentRecordIdx].weights);
         $scope.showLoading = false;
         $scope.learningContainerVisible = true;
       } else if ($scope.currentRound < (algoConfig.maxKFactor - algoConfig.startKFactor)) {
@@ -54,7 +56,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.showLoading = true;
         $scope.currentRound += 1;
         $scope.currentKFactor += 1;
-        currentRecordIdx = 0;
+        $scope.currentRecordIdx = 0;
         ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
         $scope.retrieveNewCases();
       } else {
@@ -90,18 +92,20 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         return;
 
       let userDecision = {};
-      userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster1_cat_level;
-      userDecision.cont_range = $scope.allCases[currentRecordIdx].cluster1_cont_range;
-      userDecision.dataPoint = $scope.allCases[currentRecordIdx].dataPoint;
-      userDecision.datapoint_cat_level = $scope.allCases[currentRecordIdx].datapoint_cat_level;
+      userDecision.cat_level = $scope.allCases[$scope.currentRecordIdx].cluster1_cat_level;
+      userDecision.cont_range = $scope.allCases[$scope.currentRecordIdx].cluster1_cont_range;
+      userDecision.dataPoint = $scope.allCases[$scope.currentRecordIdx].dataPoint;
+      userDecision.datapoint_cat_level = $scope.allCases[$scope.currentRecordIdx].datapoint_cat_level;
       $scope.userDecisions.push(userDecision);
 
       $scope.movedUp = true;
       centerRecordTag.one('webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd',
         function(e) {
           // code to execute after transition ends
-          currentRecordIdx += 1;
-          $scope.setRecords();
+          $scope.currentRecordIdx += 1;
+
+            $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx;
+            $scope.setRecords();
           $scope.movedUp = false;
           $scope.$digest();
       });
@@ -114,17 +118,18 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         return;
 
       let userDecision = {};
-      userDecision.cat_level = $scope.allCases[currentRecordIdx].cluster2_cat_level;
-      userDecision.cont_range = $scope.allCases[currentRecordIdx].cluster2_cont_range;
-      userDecision.dataPoint = $scope.allCases[currentRecordIdx].dataPoint;
-      userDecision.datapoint_cat_level = $scope.allCases[currentRecordIdx].datapoint_cat_level;
+      userDecision.cat_level = $scope.allCases[$scope.currentRecordIdx].cluster2_cat_level;
+      userDecision.cont_range = $scope.allCases[$scope.currentRecordIdx].cluster2_cont_range;
+      userDecision.dataPoint = $scope.allCases[$scope.currentRecordIdx].dataPoint;
+      userDecision.datapoint_cat_level = $scope.allCases[$scope.currentRecordIdx].datapoint_cat_level;
       $scope.userDecisions.push(userDecision);
 
       $scope.movedDown = true;
       centerRecordTag.one('webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd',
       function(e) {
         // code to execute after transition ends
-        currentRecordIdx += 1;
+        $scope.currentRecordIdx += 1;
+          $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx;
         $scope.setRecords();
         $scope.movedDown = false;
         $scope.$digest();
@@ -137,7 +142,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       var promise_case = ILService.getCases($scope.currentKFactor, 1);
 
       promise_case.then(function (data) {
-        currentRecordIdx += 1;      // skips the current case => no user decision
+        $scope.currentRecordIdx += 1;      // skips the current case => no user decision
         $scope.allCases.push(data[0]); //therefore, adds new case
         $scope.setRecords();
         console.log("case ", data[0]);

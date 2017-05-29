@@ -7,7 +7,17 @@
 
   <div id="learning-container" ng-hide="!learningContainerVisible" >
     <h3>Please move the data record to one cluster (up or down) with the more relevant data</h3>
+    <div id="overallProgress" class="progress" style="width: 80%; margin: 0 auto;">
+      <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="{{currentStep}}"
+              aria-valuemin="0" aria-valuemax="{{maximumSteps}}" style="width:{{currentStep/maximumSteps * 100}}%">
+        <span class="sr-only">{{currentStep/maximumSteps * 100}}%</span>
+      </div>
+    </div>
     <div class="panel panel-primary">
+
       <!-- option: could add panel header and content text here -->
       <table class="table" id="cluster-top" >
         <thead ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)" >
