@@ -156,6 +156,7 @@ SLIDERS
 
 .slider .title {
   text-align:center;
+  font-weight: bold;
 }
 
 .slider .slider-range {
