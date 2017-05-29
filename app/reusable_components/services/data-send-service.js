@@ -37,7 +37,14 @@ angular.module('iMLApp.services.data-send-service',[])
         console.log(json_object);
 
         ServerCom.sendXHR(json_object, function (data) {
-          console.log("got callback on send", data);
+            console.log("SUCCESS result from server:");
+            let result_obj = data.overall_results;
+            console.log(result_obj);
+
+            //document.querySelector("#results_json").innerHTML = JSON.stringify(result_obj, undefined, 2);
+            document.querySelector("#imgAlgo1").innerHTML = '<img src="' + data.plotURL + '" alt="algorithm img" />';
+            //document.querySelector("#progress-bar-outer").style = "display: none;";
+            //document.querySelector("#progress-update").style = "display: none;";
         }, function(data) {
           console.log("error while sending data to server:", data);
         });
