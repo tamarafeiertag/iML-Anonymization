@@ -7,9 +7,9 @@
 
   <div id="learning-container" ng-hide="!learningContainerVisible" >
     <h3>Please move the data record to one cluster (up or down) with the more relevant data</h3>
-    <div id="overallProgress" class="progress" style="width: 80%; margin: 0 auto;">
+    <div id="overallProgress" class="progress" style="width: 80%; margin: 0 auto; margin-top: -1em; margin-bottom: 1em;">
       <div
-              class="progress-bar"
+              class="progress-bar  progress-bar-striped"
               role="progressbar"
               aria-valuenow="{{currentStep}}"
               aria-valuemin="0" aria-valuemax="{{maximumSteps}}" style="width:{{currentStep/maximumSteps * 100}}%">

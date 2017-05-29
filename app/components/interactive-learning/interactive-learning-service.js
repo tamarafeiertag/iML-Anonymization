@@ -95,7 +95,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
 
           // Load Generalization hierarchies
           hierarchy_files.forEach(function (file) {
-            var json = $.getJSON(file).responseText;
+            let json = $.getJSON(file).responseText;
             //console.log(json);
             let strgh = new $A.genHierarchy.Category(json);
             san.setCatHierarchy(strgh._name, strgh);
@@ -126,35 +126,6 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
             weights.push(custom_weights.range['education-num']);
 
         return weights;
-      },
-      /**
-       * Retrieves the data records from original csv that have not been anonymized
-       * deprecated
-       */
-      getNotAnonymizedRecords: function () {
-        let deferred = $q.defer();
-
-        csvIn.readCSVFromURL(this.CSVFileURL, function (csv) {
-          let records = [];
-          let headers = csv[0].split(", ");
-          let anonymizedRecordsCount = config.NR_DRAWS;
-
-          for (let recordIdx = 1; recordIdx <= (500 - anonymizedRecordsCount); recordIdx++) {
-            let record = csv[anonymizedRecordsCount + recordIdx].split(", ");
-            records[recordIdx - 1] = {};
-            for (let i = 0; i < headers.length; i++) {
-              records[recordIdx - 1][headers[i]] = record[i];
-            }
-          }
-
-          //TODO: order records / data point randomly
-
-          //console.log("nodes: ", records);
-
-          deferred.resolve(records);
-        });
-
-        return deferred.promise;
       },
 
       /**

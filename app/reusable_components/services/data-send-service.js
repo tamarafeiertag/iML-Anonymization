@@ -13,7 +13,7 @@ angular.module('iMLApp.services.data-send-service',[])
       sendAnonymizationData: function(csvuser, csviml){
         let json_object = {};
 
-        json_object.usertoken = $rootScope.globals.currentUser.usertoken;
+        json_object.usertoken = $rootScope.globals.currentUser.token;
         json_object.grouptoken = appConstants.GROUP_TOKEN;
 
         json_object.user = {};
@@ -26,15 +26,20 @@ angular.module('iMLApp.services.data-send-service',[])
         json_object.weights = SlidersService.getJSONformattedWeightVectors();
 
         json_object.target = SurveyService.GetCurrent().target_column;
+        json_object.survey = {
+          "sid": SurveyService.GetCurrent().sid,
+          "target_column": SurveyService.GetCurrent().target_column
+        };
 
         json_object.csv = {bias: csvuser, iml: csviml};
 
-        let json_string = JSON.stringify(json_object, null, 2);
 
-        console.log(json_string);
+        console.log(json_object);
 
-        ServerCom.send(json_string, function (data) {
+        ServerCom.sendXHR(json_object, function (data) {
           console.log("got callback on send", data);
+        }, function(data) {
+          console.log("error while sending data to server:", data);
         });
       }
 
