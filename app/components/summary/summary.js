@@ -11,7 +11,7 @@ angular.module('iMLApp.summary', [])
 
 
       $q.all([ILService.getCSVStringWithFinalWeightsPromise(appConstants.WEIGHT_VECTOR_USER),
-        ILService.getCSVStringWithFinalWeightsPromise(appConstants.WEIGHT_VECTOR_IML)]).then((values) => {
+        ILService.getCSVStringWithFinalWeightsPromise(appConstants.WEIGHT_VECTOR_IML)]).then(function (values) {
         console.log("Both promises returned", values);
         DataSendService.sendAnonymizationData(values[0], values[1]);
       });

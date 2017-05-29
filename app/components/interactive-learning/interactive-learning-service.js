@@ -415,17 +415,19 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
       },
 
       getCSVStringWithFinalWeightsPromise: function (weight_vector) {
-        // get global config data of config.js
-        let config = anonymizationConfig;
+        // get global config data of config.js - DEEP COPY
+        let config = JSON.parse(JSON.stringify(anonymizationConfig));
+
         let k = algoConfig.finalCSVStringKFactor;
-        config.NR_DRAWS = algoConfig.nrOfDrawsMultiplier * k + 1;
+        config.NR_DRAWS = algoConfig.finalCSVNrDraws;
         config.K_FACTOR = k;
         config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
         config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
         config.VECTOR = weight_vector;
-        config.GEN_WEIGHT_VECTORS[appConstants.WEIGHT_VECTOR_USER] = SlidersService.getUserWeightsObject();
-        console.log("WWWWWWWWWWWWWWWWw" + weight_vector)
-        console.log(config.GEN_WEIGHT_VECTORS[config.VECTOR])
+        if(weight_vector === appConstants.WEIGHT_VECTOR_USER)
+        {
+          config.GEN_WEIGHT_VECTORS[appConstants.WEIGHT_VECTOR_USER] = SlidersService.getUserWeightsObject();
+        }
 
         console.log("config", config);
         let defer = $q.defer();
