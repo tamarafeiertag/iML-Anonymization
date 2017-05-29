@@ -150,19 +150,30 @@ SLIDERS
 
 
 .slider {
-  clear: both;
+  padding-top:10px;
+  padding-bottom:10px;
 }
 
 .slider .title {
-  float: left;
+  text-align:center;
+  font-weight: bold;
+}
+
+.slider .slider-range {
+  text-align: center;
 }
 
 .slider input[type=range] {
-  border: 0px solid black; /*force visibilty of middle range bar */
-  float: right;
+  border: 0 solid black; /*force visibilty of middle range bar */
+  display: inline;
+  width: 50%;
+  margin-left: 10px;
+  margin-right: 10px;
 }
+
 input[type='range'] {
   -webkit-appearance: none;
+  -webkit-border-radius: 5px;
   border-radius: 5px;
   box-shadow: none;
   background-color: #999;
