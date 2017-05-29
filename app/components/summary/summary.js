@@ -20,7 +20,7 @@ angular.module('iMLApp.summary', [])
           console.log("Computation started signal received.");
 
           NR_RESULTS = data.nr_intermediary_results;
-          console.log(`Expecting ${NR_RESULTS} intermediary results.`);
+          console.log('Expecting ${NR_RESULTS} intermediary results.');
 
       });
 
@@ -28,10 +28,10 @@ angular.module('iMLApp.summary', [])
       ServerCom.on('intermediaryComputed', (data) => {
           // console.log(data.result);
           let progress_width = ++current_results / NR_RESULTS;
-          console.log(`New progress bar width: ${progress_width}`);
-          //document.querySelector("#progress-bar-inner").style.width = `${progress_width*100}%`;
+          console.log('New progress bar width: ${progress_width}');
+          //document.querySelector("#progress-bar-inner").style.width = '${progress_width*100}%';
 
-          //let report_string = `<h3> Intermediate result from ${data.result.algorithm} (F1 Score): ${data.result.f1} </h3>`;
+          //let report_string = '<h3> Intermediate result from ${data.result.algorithm} (F1 Score): ${data.result.f1} </h3>';
           //document.querySelector("#progress-update").innerHTML = report_string;
       });
 
