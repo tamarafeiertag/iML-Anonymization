@@ -30,7 +30,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
     };
   })
 
-  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, SurveyService, algoConfig, DataSendService) {
+  .factory('ILService', function (Util, $resource, $q, anonymizationConfig, SurveyService, algoConfig, SlidersService, appConstants) {
     //use $resource later for retrieval from webservice
     //let dataResource = $resource('assets/testdata/marital-status-k2.json');
     //let data = dataResource.query();
@@ -414,7 +414,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         console.log("our new weights are: ", new_weights);
       },
 
-      getCSVStringWithFinalWeightsPromise: function () {
+      getCSVStringWithFinalWeightsPromise: function (weight_vector) {
         // get global config data of config.js
         let config = anonymizationConfig;
         let k = algoConfig.finalCSVStringKFactor;
@@ -422,6 +422,10 @@ angular.module('iMLApp.interactive-learning.interactive-learning-service', [])
         config.K_FACTOR = k;
         config.TARGET_COLUMN = SurveyService.GetCurrent().target_column;
         config.REMOTE_TARGET = SurveyService.GetCurrent().remote_target;
+        config.VECTOR = weight_vector;
+        config.GEN_WEIGHT_VECTORS[appConstants.WEIGHT_VECTOR_USER] = SlidersService.getUserWeightsObject();
+        console.log("WWWWWWWWWWWWWWWWw" + weight_vector)
+        console.log(config.GEN_WEIGHT_VECTORS[config.VECTOR])
 
         console.log("config", config);
         let defer = $q.defer();

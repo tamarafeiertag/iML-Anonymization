@@ -7,6 +7,13 @@ angular.module('iMLApp.config', [])
     })
 
   .constant(
+    'appConstants', {
+      'GROUP_TOKEN': 'cafebabe',
+      'WEIGHT_VECTOR_USER': 'user',
+      'WEIGHT_VECTOR_IML': 'weights',
+    })
+
+  .constant(
     'algoConfig', {
       nrOfDrawsMultiplier: 10,  //nrOfDraws needs to be in relation to k in order to result in good random clusters
       originalData: "original_data_500_rows.csv",

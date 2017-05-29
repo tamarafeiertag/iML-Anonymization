@@ -2,7 +2,7 @@
 
 angular.module('iMLApp.summary', [])
 
-  .controller('SummaryCtrl', function ($q, $scope, SlidersService, ILService, SLService, ServerCom, DataSendService) {
+  .controller('SummaryCtrl', function ($q, $scope, SlidersService, ILService, SLService, ServerCom, DataSendService, appConstants) {
 
       $scope.weights = SlidersService.getWeightVectors();
 
@@ -10,7 +10,8 @@ angular.module('iMLApp.summary', [])
       let current_results = 0;
 
 
-      $q.all([SLService.getCSVStringWithFinalWeightsPromise(), ILService.getCSVStringWithFinalWeightsPromise()]).then((values) => {
+      $q.all([ILService.getCSVStringWithFinalWeightsPromise(appConstants.WEIGHT_VECTOR_USER),
+        ILService.getCSVStringWithFinalWeightsPromise(appConstants.WEIGHT_VECTOR_IML)]).then((values) => {
         console.log("Both promises returned", values);
         DataSendService.sendAnonymizationData(values[0], values[1]);
       });

@@ -27,8 +27,8 @@ angular.module('iMLApp.sliders', [])
           }
 
           //Get all categories/ranges and build it for the iml
-          let cats = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].categorical;
-          let ranges = anonymizationConfig.GEN_WEIGHT_VECTORS[anonymizationConfig.VECTOR].range;
+          let cats = anonymizationConfig.GEN_WEIGHT_VECTORS['weights'].categorical;
+          let ranges = anonymizationConfig.GEN_WEIGHT_VECTORS['weights'].range;
 
           for (let weight in cats) {
             if (!cats.hasOwnProperty(weight) || !weights.hasOwnProperty(weight))
@@ -81,12 +81,12 @@ angular.module('iMLApp.sliders', [])
           var weights = this.getWeightVectors();
 
           var json_weights = {};
-          json_weights.user = {};
+          json_weights.bias = {};
           json_weights.iml = {};
 
           for (let weight in weights) {
             var var_name = weight;
-            json_weights.user[var_name] = weights[weight].user;
+            json_weights.bias[var_name] = weights[weight].user;
             json_weights.iml[var_name] = weights[weight].iml;
           }
 

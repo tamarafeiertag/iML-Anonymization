@@ -11,7 +11,7 @@ angular.module('iMLApp.slider-learning', [])
 })
 .service('SLService', function($q, anonymizationConfig, algoConfig, SurveyService, ILService, SlidersService) {
     return {
-        getCSVStringWithFinalWeightsPromise: function () {
+        getCSVStringWithFinalWeightsPromiseDEP: function () {
 
             let basename = algoConfig.basename;
             let filename_originalData = algoConfig.originalData;
