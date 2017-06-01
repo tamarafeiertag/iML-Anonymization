@@ -38,8 +38,10 @@ angular.module('iMLApp.services.data-send-service',[])
 
         ServerCom.sendXHR(json_object, function (data) {
             console.log("SUCCESS result from server:");
-            let result_obj = data.overall_results;
-            console.log(result_obj);
+            console.log(data);
+
+            if(typeof data === "string")
+                data = JSON.parse(data);
 
             //document.querySelector("#results_json").innerHTML = JSON.stringify(result_obj, undefined, 2);
             document.querySelector("#imgAlgo1").innerHTML = '<img src="' + data.plotURL + '" alt="algorithm img" />';

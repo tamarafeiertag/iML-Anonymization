@@ -38,11 +38,10 @@ angular.module('iMLApp.summary', [])
 
       ServerCom.on('computationCompleted', (data) => {
           console.log("SUCCESS result from server:");
-          let result_obj = data.overall_results;
-          console.log(result_obj);
+          console.log(data);
 
           //document.querySelector("#results_json").innerHTML = JSON.stringify(result_obj, undefined, 2);
-          document.querySelector("#imgAlgo1").innerHTML = '<img src="' + result_obj.plotURL + '" alt="algorithm img" />';
+          document.querySelector("#imgAlgo1").innerHTML = '<img src="' + data.plotURL + '" alt="algorithm img" />';
           //document.querySelector("#progress-bar-outer").style = "display: none;";
           //document.querySelector("#progress-update").style = "display: none;";
       });
