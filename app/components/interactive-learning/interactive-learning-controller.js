@@ -165,7 +165,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     };
 
     angular.element(document).bind('keydown', function(event) {
-      //console.log(value.keyCode);
+      //console.log(event.keyCode);
       if(event.keyCode == 38) { //arrow up key pressed
         $("#buttonUp").click()
       } else if(event.keyCode == 40) { //arrow down key pressed

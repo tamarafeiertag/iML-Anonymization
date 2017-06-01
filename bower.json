@@ -8,7 +8,6 @@
     "angular": "1.6.3",
     "angular-loader": "~1.5.0",
     "angular-mocks": "~1.5.0",
-    "bootstrap": "3.3.7",
     "html5-boilerplate": "^5.3.0",
     "d3": "^4.7.3",
     "jquery": "^3.2.1",
@@ -17,7 +16,9 @@
     "angular-pageslide-directive": "2.1.4",
     "angular-animate": "^1.6.4",
     "angular-ui-router": "^1.0.3",
-    "socket.io": "^2.0.1"
+    "socket.io": "^2.0.1",
+    "flexboxgrid-sass": "^8.0.5",
+    "bootstrap-sass": "^3.3.7"
   },
   "authors": [
     "Tamara Feiertag",

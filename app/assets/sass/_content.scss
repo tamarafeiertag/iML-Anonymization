@@ -1,0 +1,154 @@
+
+.brand-primary-lighter {
+ background-color: $brand-primary-lighter;
+}
+
+main {
+ display: flex;
+ justify-content: center;
+ width: 100vw;
+
+ .loader {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 105px;
+  margin-bottom: $gutter;
+ }
+
+ section {
+  width: 80%;
+  min-width: 800px;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h3.centered {
+   text-align: center;
+  }
+
+  button {
+   transition: background-color 0.25s ease;
+  }
+
+  tr {
+   transition: background-color 0.25s ease;
+  }
+
+  div {
+   display: flex;
+   justify-content: center;
+
+   &.panel {
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+   }
+
+   &.sliders {
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+     .slider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: $gutter;
+      margin-bottom: $gutter;
+
+       .title {
+        text-align:center;
+        font-weight: bold;
+       }
+
+       .slider-range {
+        display: flex;
+        align-items: center;
+        width: 80%;
+        text-align: center;
+
+         input[type='range'] {
+          flex: 5;
+          border: 0 solid black; /*force visibilty of middle range bar */
+          margin-left: $gutter;
+          margin-right: $gutter;
+         }
+
+        p {
+         flex: 2;
+         margin: 0;
+        }
+       }
+     }
+   }
+
+   &.progress {
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+
+    display: flex;
+    justify-content: flex-start;
+   }
+
+   &.center {
+
+    .button-skip {
+     margin-left: $gutter;
+     align-self: center;
+    }
+
+    div {
+     transition: opacity 0.25s 0.3s, transform 1s ease;
+
+     &.panel {
+      flex: 1;
+     }
+
+     &.movedUp {
+      transform: translateY(-20rem);
+      opacity: 0;
+     }
+
+     &.movedDown {
+      transform: translateY(+20rem);
+      opacity: 0;
+     }
+    }
+   }
+
+   &.weights {
+    display: flex;
+    flex-direction: column;
+
+    .userWeights {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: center;
+
+     .progress {
+      flex: 2;
+      display: flex;
+
+      &:first-child {
+       justify-content: flex-end;
+      }
+
+      &:last-child {
+       justify-content: flex-start;
+      }
+     }
+
+     p {
+      flex: 1;
+      text-align: center;
+     }
+    }
+   }
+  }
+ }
+}
+

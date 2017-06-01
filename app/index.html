@@ -6,15 +6,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
-  <meta name="description" content="">
+  <title>iML-Anonymization</title>
+  <meta name="description" content="Research project about Anonymization through interactive Machine Learning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- app.css must be last link included here -->
-  <link rel="stylesheet" href="assets/css/app.css">
-  <link rel="stylesheet" href="assets/css/transitions.css">
 
   <script src="assets/js/graphinius.min.js"></script>
   <script src="assets/js/anonymization.js"></script>
@@ -29,12 +23,15 @@
           crossorigin="anonymous"> </script>
   <script src="bower_components/d3/d3.min.js"> </script>
   <script src="bower_components/tether/dist/js/tether.min.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+  <!-- app.css must be last link included here -->
+  <link rel="stylesheet" href="assets/css/app.css">
 
 </head>
 <body data-ng-app="iMLApp">
-<div ng-include='"reusable_components/header/header.html"' id="header"></div>
+<header ng-include='"reusable_components/header/header.html"' id="header"></header>
   <!--[if lt IE 7]>
   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->

@@ -1,13 +1,13 @@
-<div id="il">
+<main>
 
-  <div id="loading" ng-hide="!showLoading " style="text-align: center; width: 105px; margin: 0 auto; ">
+  <div class="loader" ng-hide="!showLoading">
     <h3>Loading</h3>
     <img src="../../assets/img/loading.gif" alt="Loading..."  />
   </div>
 
-  <div id="learning-container" ng-hide="!learningContainerVisible" >
-    <h3>Please move the data record to one cluster (up or down) with the more relevant data</h3>
-    <div id="overallProgress" class="progress" style="width: 80%; margin: 0 auto; margin-top: -1em; margin-bottom: 1em;">
+  <section ng-hide="!learningContainerVisible" >
+    <h3 class="centered">Please move the data record to one cluster (up or down) with the more relevant data</h3>
+    <div class="progress">
       <div
               class="progress-bar  progress-bar-striped"
               role="progressbar"
@@ -26,7 +26,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr style="background-color: #d9edf7" ng-show="showTooltipFirst" ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)">
+        <tr class="brand-primary-lighter" ng-show="showTooltipFirst" ng-mouseenter="showTooltip('true', 1)" ng-mouseleave="showTooltip(false, 1)">
           <td ng-repeat="weight in weightVecTop track by $index">{{formatNumber(weight)}}</td>
         </tr>
         <tr ng-repeat="times in [0 ,1]">
@@ -53,9 +53,9 @@
       </button>
     </div>
 
-    <div id="center" class="panel">
-      <div class="panel panel-primary" id="panel-center" ng-class="{'movedUp': movedUp, 'movedDown': movedDown} ">
-        <table class="table" id="new-record">
+    <div class="center">
+      <div class="panel panel-primary" ng-class="{'movedUp': movedUp, 'movedDown': movedDown}" id="panel-center">
+        <table class="table">
           <thead>
           <tr class="bg-primary">
             <th ng-repeat="columnName in columnNames">{{columnName}}</th>
@@ -77,9 +77,8 @@
           </tr>
           </tbody>
         </table>
-
       </div>
-      <div id="button-skip">
+      <div class="button-skip">
         <button type="button" class="btn btn-danger" data-ng-click="trash()">
           <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"> skip</span>
         </button>
@@ -102,7 +101,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr style="background-color: #d9edf7" ng-show="showTooltipSecond" ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)">
+        <tr class="brand-primary-lighter" ng-show="showTooltipSecond" ng-mouseenter="showTooltip('true', 2)" ng-mouseleave="showTooltip(false, 2)">
           <td ng-repeat="weight in weightVecBottom track by $index">{{formatNumber(weight)}}</td>
         </tr>
         <tr ng-repeat="times in [0 ,1]">
@@ -122,6 +121,6 @@
       </table>
 
     </div>
-  </div>
+  </section>
 
-</div>
+</main>

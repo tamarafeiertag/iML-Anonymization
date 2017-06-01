@@ -1,11 +1,10 @@
 
 <div class="slider" ng-repeat="data in sliders" >
-  <div class="row" ng-if="data.groupName == attr.groupname">
-    <div class="col-xs-12 title">{{data.name}} <span ng-hide="data.noTextBox" id="text{{data.id}}">({{data.value.toFixed(2)}})</span></div>
+  <div ng-if="data.groupName == attr.groupname">
+    <div class="title">{{data.name}} <span ng-hide="data.noTextBox" id="text{{data.id}}">({{data.value.toFixed(2)}})</span></div>
   </div>
-  <div class="row slider-range" ng-if="data.groupName == attr.groupname">
-      <div class="col-xs-12">
-        not important
+  <div class="slider-range" ng-if="data.groupName == attr.groupname">
+    <p>not important</p>
         <input id="{{data.id}}"
           ng-change="valueChanged(data.id)"
           class="{{data.groupName}}"
@@ -15,8 +14,7 @@
           value="{{data.userInput}}"
           step="0.01"
           ng-model="data.userInput" />
-        very important
-      </div>
+    <p>very important</p>
   </div>
 </div>
 
