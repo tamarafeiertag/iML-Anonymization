@@ -60,6 +60,15 @@ main {
     margin-bottom: $gutter;
    }
 
+   &.space-between {
+    display: flex;
+    justify-content: space-between;
+
+    h4 {
+     color: $brand-primary;
+    }
+   }
+
    &.sliders {
     margin-top: $gutter;
     margin-bottom: $gutter;
