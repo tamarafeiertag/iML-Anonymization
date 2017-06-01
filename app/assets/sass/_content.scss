@@ -30,6 +30,12 @@ main {
 
   button {
    transition: background-color 0.25s ease;
+
+   &.btn-danger {
+    &:hover {
+     background-color: lighten($brand-danger, 10%);
+    }
+   }
   }
 
   tr {
