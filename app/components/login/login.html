@@ -1,9 +1,8 @@
-<div id="loginView">
-  <div class="container">
+<main>
+  <section>
+    <h3 class="centered">General Information</h3>
 
-    <form class="form-signin">
-      <h2 class="form-signin-heading">General Informations:</h2>
-
+    <form class="narrow">
       <label for="inputUserToken" >User-Token</label>
       <input type="text" ng-model="context.usertoken" id="inputUserToken" class="form-control" placeholder="User-Token" required="required" autofocus="">
       <br/>
@@ -19,5 +18,5 @@
       <button type="submit" ng-disabled="context.age === undefined || context.usertoken === undefined || context.age < 0 || context.age > 100" class="btn btn-lg btn-primary btn-block" ng-click="takeSurvey()" >Take Survey</button>
     </form>
 
-  </div>
-</div>
+  </section>
+</main>
