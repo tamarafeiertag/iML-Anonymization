@@ -31,6 +31,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
     $scope.currentKFactor = algoConfig.startKFactor;
 
     $scope.currentRecordIdx = 0;
+    $scope.skippedRecordIdx = 0;
     $scope.currentStep = 0;
     $scope.maximumSteps = (algoConfig.maxKFactor - algoConfig.startKFactor) * algoConfig.nrOfCases;
 
@@ -57,6 +58,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         $scope.currentRound += 1;
         $scope.currentKFactor += 1;
         $scope.currentRecordIdx = 0;
+        $scope.skippedRecordIdx = 0;
         ILService.saveUserDecisionsAndCalculateNewWeights($scope.userDecisions);
         $scope.retrieveNewCases();
       } else {
@@ -104,7 +106,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
           // code to execute after transition ends
           $scope.currentRecordIdx += 1;
 
-            $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx;
+            $scope.calculateProgress();
             $scope.setRecords();
           $scope.movedUp = false;
           $scope.$digest();
@@ -129,7 +131,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       function(e) {
         // code to execute after transition ends
         $scope.currentRecordIdx += 1;
-          $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx;
+          $scope.calculateProgress();
         $scope.setRecords();
         $scope.movedDown = false;
         $scope.$digest();
@@ -143,6 +145,7 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
       promise_case.then(function (data) {
         $scope.currentRecordIdx += 1;      // skips the current case => no user decision
+          $scope.skippedRecordIdx += 1;
         $scope.allCases.push(data[0]); //therefore, adds new case
         $scope.setRecords();
         console.log("case ", data[0]);
@@ -150,6 +153,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
         console.log("ILCTrl " + "[error] retrieving of anonymized clusters and centers failed: ", reason);
       });
     };
+
+
+      $scope.calculateProgress = function() {
+          $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx - $scope.skippedRecordIdx;
+      };
 
     $scope.showTooltip = function (val, element) {
       $scope.showDiagram = false;
