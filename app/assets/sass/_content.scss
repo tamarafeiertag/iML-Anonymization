@@ -66,6 +66,10 @@ main {
 
     h4 {
      color: $brand-primary;
+
+     &:first-child {
+      color: $brand-danger;
+     }
     }
    }
 
