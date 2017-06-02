@@ -6,11 +6,13 @@ angular.module('iMLApp.login.login-service', [])
     return {
       getDegrees: function() {
         var degrees = [
-        { id: 1, description: 'secondary modern school' },
-        { id: 2, description: 'Abitur' },
-        { id: 3, description: 'Bachelor degree' },
-        { id: 4, description: 'Master degree' },
-        { id: 5, description: 'Doctoral degree' }];
+        { id: 1, description: "Less than high school" },
+        { id: 2, description: "High school diploma" },
+        { id: 3, description: "College" },
+        { id: 4, description: "Associate's degree" },
+        { id: 5, description: "Bachelor's degree" },
+        { id: 6, description: "Master's degree" },
+        { id: 7, description: "Doctoral degree" }];
 
         return degrees;
       }
