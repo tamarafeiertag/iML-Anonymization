@@ -1,9 +1,9 @@
 
-<div class="slider" ng-repeat="data in sliders" >
-  <div ng-if="data.groupName == attr.groupname">
+<div class="slider" ng-repeat="data in sliders" ng-if="data.groupName == attr.groupname">
+  <div>
     <div class="title">{{data.name}} <span ng-hide="data.noTextBox" id="text{{data.id}}">({{data.value.toFixed(2)}})</span></div>
   </div>
-  <div class="slider-range" ng-if="data.groupName == attr.groupname">
+  <div class="slider-range" >
     <p>not important</p>
         <input id="{{data.id}}"
           ng-change="valueChanged(data.id)"
