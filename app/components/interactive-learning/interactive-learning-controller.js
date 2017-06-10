@@ -106,8 +106,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
           // code to execute after transition ends
           $scope.currentRecordIdx += 1;
 
-            $scope.calculateProgress();
-            $scope.setRecords();
+          $scope.calculateProgress();
+          $scope.setRecords();
           $scope.movedUp = false;
           $scope.$digest();
       });
@@ -154,6 +154,11 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
       });
     };
 
+
+    $scope.calculateProgress = function() {
+        $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx - $scope.skippedRecordIdx;
+    };
+
     $scope.showTooltip = function (val, element) {
       $scope.showDiagram = false;
       if(element == 1)
@@ -167,12 +172,8 @@ angular.module('iMLApp.interactive-learning.interactive-learning-controller', []
 
     };
 
-    $scope.calculateProgress = function() {
-          $scope.currentStep = ($scope.currentRound - 1) * algoConfig.nrOfCases + $scope.currentRecordIdx - $scope.skippedRecordIdx;
-  };
-
     angular.element(document).bind('keydown', function(event) {
-      //console.log(value.keyCode);
+      //console.log(event.keyCode);
       if(event.keyCode == 38) { //arrow up key pressed
         $("#buttonUp").click()
       } else if(event.keyCode == 40) { //arrow down key pressed

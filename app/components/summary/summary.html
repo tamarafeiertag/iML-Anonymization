@@ -1,14 +1,16 @@
-<div id="summary">
-  <div class="row">
-    <div class="col-xs-12">
-      <h3>You are done. Thank you for your help!</h3>
-      <h3>Here are your results:</h3>
+<main>
+  <section>
+    <h3 class="centered">You are done. Thank you for your help!</h3>
+    <h3 class="centered">Here are your results:</h3>
 
-      <div id="userWeights" class="weights col-xs-5">
-        <span class="label">Your weights</span>
+    <div class="space-between">
+      <h4>Your weights</h4>
+      <h4>Calculated weights</h4>
+    </div>
 
-        <div ng-repeat="weight in weights" class="progress">
-
+    <div class="weights">
+      <div ng-repeat="weight in weights" class="userWeights">
+        <div class="progress">
           <div
               class="progress-bar progress-bar-danger"
               role="progressbar"
@@ -17,17 +19,8 @@
             <span class="sr-only">{{weight.user * 100}}%</span>
           </div>
         </div>
-      </div>
-      <div id="weightLabels" class=" col-xs-2">
-        <span class="label">&nbsp;</span>
-        <span class="header" ng-repeat="weight in weights">
-            {{weight.name}}
-        </span>
-      </div>
-      <div id="imlWeights" class="weights  col-xs-5">
-        <span class="label">Calculated weights</span>
-
-        <div ng-repeat="weight in weights" class="progress">
+        <p>{{weight.name}}</p>
+        <div class="progress">
           <div
               class="progress-bar"
               role="progressbar"
@@ -38,19 +31,15 @@
         </div>
       </div>
     </div>
-  </div>
 
-
-  <div id="imgAlgo1" class="col-md-12 ">
-    <div class="algoImg">
-      <div class="loading" style="text-align: center; margin: 0 auto; ">
-        <h3>Loading image
-          <img id="resultImg1" src="../../assets/img/loading.gif" alt="..." class="loadImg"/></h3>
+    <div id="imgAlgo1">
+      <div class="loader">
+        <h3>Loading</h3>
+        <img src="../../assets/img/loading.gif" alt="Loading..."  />
       </div>
     </div>
-  </div>
 
+    <a class="text-center register" ui-sref="survey-overview">Back to survey overview</a>
+  </section>
 
-  <a class="text-center register" ui-sref="survey-overview">Back to survey overview</a>
-
-</div>
+</main>

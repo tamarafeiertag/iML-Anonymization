@@ -1,17 +1,18 @@
-<div id="sliderlearner" ng-controller="SLCtrl">
+<main ng-controller="SLCtrl">
+  <section>
+    <h3 class="centered"> Please set the importance of the single features for this study</h3>
 
-  <h3> Please set the importance of the single features for this study</h3>
+    <div class="sliders">
+      <slidergroup ng-controller="SlidersCtrl"
+                   groupname="{{target_column}}"
+                   slidernames="{{columnString}}"
+                   noTextbox="0">
 
-  <div id="sliderlearning-container">
-    <slidergroup ng-controller="SlidersCtrl"
-                 groupname="{{target_column}}"
-                 slidernames="{{columnString}}"
-                 noTextbox="0">
+      </slidergroup>
+    </div>
 
-    </slidergroup>
-  </div>
-
-  <div class="col-xs-11" id="SL-next-container">
-    <button ui-sref="interactive-learning" class="btn btn-primary">Next &gt;</button>
-  </div>
-</div>
+    <div class="button">
+      <button ui-sref="interactive-learning" class="btn btn-primary">Next &gt;</button>
+    </div>
+  </section>
+</main>

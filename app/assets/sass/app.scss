@@ -1,0 +1,8 @@
+@import "vars";          // gathering all variables and setups
+@import "mixins";        // some useful fucntions
+
+@import "reset";         // getting all browsers on one level
+@import "content";
+
+@import "js_overwrites";  // overwriting styles from external sources
+@import "shame";
