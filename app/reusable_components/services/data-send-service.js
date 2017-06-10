@@ -13,7 +13,7 @@ angular.module('iMLApp.services.data-send-service',[])
       sendAnonymizationData: function(csvuser, csviml){
         let json_object = {};
 
-        json_object.usertoken = $rootScope.globals.currentUser.token;
+        json_object.usertoken = $rootScope.globals.currentUser.usertoken;
         json_object.grouptoken = appConstants.GROUP_TOKEN;
 
         json_object.user = {};
